@@ -1,0 +1,9 @@
+{
+  "spaceUnits": 4,
+  "language": {
+    "javascript": { "spaceUnits": 2 },
+    "css": { "spaceUnits": 2 },
+    "html": { "spaceUnits": 2 },
+    "go": { "useTabChar": true, "tabSize": 4 }
+  }
+}
