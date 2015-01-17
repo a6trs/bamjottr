@@ -1,7 +1,6 @@
 package soil
 
 import (
-	"errors"
 	"fmt"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -54,7 +53,7 @@ func (this *Account) Find(key int) int {
 func (this *Account) Load(key int) error {
 	this.ID = this.Find(key)
 	if this.ID == -1 {
-		return errors.New("Account.Load: Not found")
+		return ErrRowNotFound
 	}
 	row := db.QueryRow(fmt.Sprintf(`SELECT * FROM accounts WHERE id = %d`, this.ID))
 	return row.Scan(&this.ID, &this.Name, &this.Email, &this.Password)

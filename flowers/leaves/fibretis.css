@@ -3,3 +3,8 @@
 .am-form-field {
   border-radius: 8px !important;
 }
+
+/* Main part */
+.simple-padding {
+  padding: 4px 4px 4px 4px;
+}

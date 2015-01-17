@@ -16,6 +16,8 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			returnAddr = "/"
 		}
+		//uname := r.FormValue("uname")
+		//pwd := r.FormValue("pwd")
 		http.Redirect(w, r, returnAddr, http.StatusFound)
 	}
 }

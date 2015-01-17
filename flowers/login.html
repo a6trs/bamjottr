@@ -5,14 +5,10 @@
     {{template "_html_head.html"}}
   </head>
   <body>
-    <form class='am-form'>
+    <form class='am-form' action='/login' method='POST'>
       <legend>Log In</legend>
-      <div class='am-form-group'>
-        <input type='text' class='am-form-field' id='ipt-uname' placeholder='User name or e-mail'>
-      </div>
-      <div class='am-form-group'>
-        <input type='password' class='am-form-field' id='ipt-pwd' placeholder='Password'>
-      </div>
+      <div class='simple-padding'><input type='text' class='am-form-field' id='ipt-uname' name='uname' placeholder='User name or e-mail'></div>
+      <div class='simple-padding'><input type='password' class='am-form-field' id='ipt-pwd' name='pwd' placeholder='Password'></div>
       <button type='submit' class='am-btn am-btn-default'>Log in</button>
     </form>
   </body>

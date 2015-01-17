@@ -1,6 +1,7 @@
 package soil
 
 import (
+	"errors"
 	"database/sql"
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -10,6 +11,8 @@ type Storable interface {
 	Load(key int) error
 	Save(key int) error
 }
+
+var ErrRowNotFound = errors.New("Storable.Load: Not found")
 
 var db *sql.DB
 

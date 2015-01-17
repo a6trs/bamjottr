@@ -13,7 +13,7 @@ func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/", grass.IndexHandler)
 	r.HandleFunc("/login", grass.LoginHandler).Methods("GET", "POST")
-	r.HandleFunc("/login/{return}", grass.LoginHandler).Methods("GET", "POST")
+	r.HandleFunc("/login/{return}", grass.LoginHandler).Methods("GET")
 	r.PathPrefix("/leaves").Handler(http.FileServer(http.Dir("./flowers/")))
 	http.Handle("/", r)
 	soil.InitDatabase()

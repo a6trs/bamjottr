@@ -5,5 +5,5 @@ import (
 )
 
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
-	renderTemplate(w, "index", nil)
+	renderTemplate(w, "index", map[string]interface{}{"authcookie": "u1"})
 }
