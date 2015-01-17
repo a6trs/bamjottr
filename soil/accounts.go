@@ -75,3 +75,9 @@ func (this *Account) Save(key int) error {
 	_, err := db.Exec(fmt.Sprintf(`UPDATE accounts SET name = '%s', email = '%s' WHERE id = %d`, this.Name, this.Email, this.ID))
 	return err
 }
+
+func (this *Account) MatchesPassword(pwd []byte) bool {
+	//err := bcrypt.CompareHashAndPassword(this.Password, pwd)
+	//return (err == nil)
+	return string(this.Password) == string(pwd)
+}
