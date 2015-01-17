@@ -1,0 +1,5 @@
+/* Amaze UI improvements */
+.am-btn,
+.am-form-field {
+  border-radius: 8px !important;
+}

@@ -1,7 +1,6 @@
 package grass
 
 import (
-	_ "../soil"
 	"net/http"
 )
 
