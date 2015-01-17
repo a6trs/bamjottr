@@ -7,7 +7,7 @@ import (
 	"github.com/gorilla/sessions"
 )
 
-var sess = sessions.NewCookieStore([]byte("these-are-very-important-yeah"))
+var sstore = sessions.NewCookieStore([]byte("these-are-very-important-yeah"))
 
 var templates, _ =
 	template.New("IDONTKNOW").

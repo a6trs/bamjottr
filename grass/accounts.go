@@ -16,8 +16,15 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			returnAddr = "/"
 		}
-		//uname := r.FormValue("uname")
+		uname := r.FormValue("uname")
 		//pwd := r.FormValue("pwd")
+		sess, err := sstore.Get(r, "account-auth")
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		sess.Values["cookie-id"] = uname
+		sess.Save(r, w)
 		http.Redirect(w, r, returnAddr, http.StatusFound)
 	}
 }
