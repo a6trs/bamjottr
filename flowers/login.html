@@ -7,7 +7,9 @@
   <body>
     <form class='am-form' action='/login' method='POST'>
       <legend>Log In</legend>
-      {{.loginmsg}}
+      {{if .loginmsg}}
+        <div id='errmsg' class='bg-danger'>{{.loginmsg}}</div>
+      {{end}}
       <input type='text' class='am-form-field' id='ipt-uname' name='uname' placeholder='User name or e-mail'>
       <input type='password' class='am-form-field' id='ipt-pwd' name='pwd' placeholder='Password'>
       <button type='submit' class='am-btn am-btn-default'>Log in</button>
