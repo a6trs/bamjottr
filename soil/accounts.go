@@ -2,7 +2,7 @@ package soil
 
 import (
 	"fmt"
-	//"golang.org/x/crypto/bcrypt"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type Account struct {
@@ -62,7 +62,7 @@ func (this *Account) Load(key int) error {
 func (this *Account) Save(key int) error {
 	this.ID = this.Find(key)
 	if this.ID == -1 {
-		passhash, err := this.Password, error(nil) //bcrypt.GenerateFromPassword(this.Password, 10)
+		passhash, err := bcrypt.GenerateFromPassword(this.Password, 10)
 		if err != nil {
 			return err
 		}
@@ -77,7 +77,6 @@ func (this *Account) Save(key int) error {
 }
 
 func (this *Account) MatchesPassword(pwd []byte) bool {
-	//err := bcrypt.CompareHashAndPassword(this.Password, pwd)
-	//return (err == nil)
-	return string(this.Password) == string(pwd)
+	err := bcrypt.CompareHashAndPassword(this.Password, pwd)
+	return (err == nil)
 }

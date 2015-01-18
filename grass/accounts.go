@@ -140,9 +140,7 @@ func LogoutHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	fmt.Println(sess.Values)
 	sess.Values["cookie-id"] = ""
-	fmt.Println(sess.Values)
 	sess.Save(r, w)
 	http.Redirect(w, r, returnAddr, http.StatusFound)
 }
