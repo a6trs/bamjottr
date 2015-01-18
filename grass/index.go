@@ -10,9 +10,9 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	s := sess.Values["cookie-id"]
+	s := sess.Values["id"]
 	if s == nil {
-		s = ""
+		s = -1
 	}
 	renderTemplate(w, "index", map[string]interface{}{"authcookie": s})
 }

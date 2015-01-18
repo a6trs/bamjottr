@@ -10,8 +10,8 @@ import (
 
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
-		sess, _ := sstore.Get(r, "login-msg")
-		flash := sess.Flashes()
+		sess, _ := sstore.Get(r, "flash")
+		flash := sess.Flashes("errmsg")
 		msg := ""
 		if flash != nil {
 			msg = flash[0].(string)
@@ -44,12 +44,12 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 			errmsg = "Incorrect password"
 		}
 		if errmsg != "" {
-			sess, err := sstore.Get(r, "login-msg")
+			sess, err := sstore.Get(r, "flash")
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
 			}
-			sess.AddFlash(errmsg)
+			sess.AddFlash(errmsg, "errmsg")
 			sess.Save(r, w)
 			http.Redirect(w, r, r.URL.Path, http.StatusFound)
 			return
@@ -59,7 +59,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		sess.Values["cookie-id"] = acc.Name
+		sess.Values["id"] = acc.ID
 		sess.Save(r, w)
 		http.Redirect(w, r, returnAddr, http.StatusFound)
 	}
@@ -67,8 +67,8 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 
 func SignupHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
-		sess, _ := sstore.Get(r, "signup-msg")
-		flash := sess.Flashes()
+		sess, _ := sstore.Get(r, "flash")
+		flash := sess.Flashes("errmsg")
 		msg := ""
 		if flash != nil {
 			msg = flash[0].(string)
@@ -100,12 +100,12 @@ func SignupHandler(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 		if errmsg != "" {
-			sess, err := sstore.Get(r, "signup-msg")
+			sess, err := sstore.Get(r, "flash")
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
 			}
-			sess.AddFlash(errmsg)
+			sess.AddFlash(errmsg, "errmsg")
 			sess.Save(r, w)
 			http.Redirect(w, r, r.URL.Path, http.StatusFound)
 			return
@@ -123,7 +123,7 @@ func SignupHandler(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		sess.Values["cookie-id"] = uname
+		sess.Values["id"] = acc.ID
 		sess.Save(r, w)
 		http.Redirect(w, r, returnAddr, http.StatusFound)
 	}
@@ -140,7 +140,7 @@ func LogoutHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	delete(sess.Values, "cookie-id")
+	delete(sess.Values, "id")
 	sess.Save(r, w)
 	http.Redirect(w, r, returnAddr, http.StatusFound)
 }

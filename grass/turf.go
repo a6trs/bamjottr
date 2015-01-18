@@ -14,15 +14,15 @@ var templates, _ =
 		Funcs(template.FuncMap{"validuser": validUser, "username": userName}).
 		ParseFiles("flowers/_html_head.html", "flowers/_topbar.html", "flowers/index.html", "flowers/login.html", "flowers/signup.html")
 
-func validUser(cookie string) bool {
-	acc := &soil.Account{Name: cookie}
-	err := acc.Load(soil.KEY_Account_Name)
+func validUser(aid int) bool {
+	acc := &soil.Account{ID: aid}
+	err := acc.Load(soil.KEY_Account_ID)
 	return (err == nil)
 }
 
-func userName(cookie string) string {
-	acc := &soil.Account{Name: cookie}
-	err := acc.Load(soil.KEY_Account_Name)
+func userName(aid int) string {
+	acc := &soil.Account{ID: aid}
+	err := acc.Load(soil.KEY_Account_ID)
 	if err == nil {
 		return acc.Name
 	} else {
