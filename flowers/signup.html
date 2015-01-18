@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Sign Up - Fibretis</title>
+    {{template "_html_head.html"}}
+  </head>
+  <body>
+    <script type='application/javascript' src='/leaves/checkform.js'></script>
+    <form class='am-form' action='/signup' method='POST'>
+      <legend>Sign Up</legend>
+      {{if .signupmsg}}
+        <div id='errmsg' class='bg-danger'>{{.signupmsg}}</div>
+      {{else}}
+        <div id='errmsg'></div>
+      {{end}}
+      <input type='text' class='am-form-field' id='ipt-uname' name='uname' placeholder='User name'>
+      <input type='email' class='am-form-field' id='ipt-email' name='email' placeholder='E-mail'>
+      <input type='password' class='am-form-field' id='ipt-pwd' name='pwd' placeholder='Password'>
+      <input type='password' class='am-form-field' id='ipt-pwd-rpt' placeholder='Repeat password'>
+      <button type='submit' class='am-btn am-btn-default' onclick='return checkform_signup(event);'>Sign up</button>
+    </form>
+  </body>
+</html>

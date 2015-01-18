@@ -16,3 +16,20 @@
 .simple-padding {
   padding: 4px 4px 4px 4px;
 }
+
+/* Derived from Bootstrap 3 */
+.bg-danger {
+  margin: 12px;
+  padding: 0.5em;
+  background-color: #ffe1e1;
+  border: solid #ac5f5f 1px;
+  border-radius: 3px;
+}
+
+.bg-success {
+  margin: 12px;
+  padding: 0.5em;
+  background-color: #e1ffe3;
+  border: solid #6bac5f 1px;
+  border-radius: 3px;
+}
