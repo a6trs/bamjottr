@@ -15,3 +15,15 @@ checkform_signup = function (e) {
   }
   return true;
 };
+
+chgpwd_profedit = function () {
+  var chgpwd = document.getElementById('chgpwd');
+  var form = document.body.getElementsByTagName('form')[0];
+  var ipt = document.createElement('input');
+  ipt.setAttribute('type', 'password');
+  ipt.setAttribute('class', 'am-form-field');
+  ipt.setAttribute('id', 'ipt-pwd');
+  ipt.setAttribute('name', 'pwd');
+  form.insertBefore(ipt, chgpwd);
+  chgpwd.parentNode.removeChild(chgpwd);
+};

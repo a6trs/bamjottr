@@ -6,6 +6,7 @@
   </head>
   <body>
     <h1>Edit {{(account .aid).Name}}'s Profile</h1>
+    <script type='application/javascript' src='/leaves/checkform.js'></script>
     <form class='am-form' method='POST'>
       {{if .msg}}
         <div id='errmsg' class='{{if .iserr}}bg-danger{{else}}bg-success{{end}}'>{{.msg}}</div>
@@ -14,6 +15,10 @@
       <input type='text' class='am-form-field' id='ipt-uname' name='uname' value='{{(account .aid).Name}}'>
       <label for='ipt-email'>E-mail</label>
       <input type='email' class='am-form-field' id='ipt-email' name='email' value='{{(account .aid).Email}}'>
+      <label for='ipt-pwd'>Password</label><br>
+      <div id='chgpwd'>
+        ****** <button type='button' class='am-btn am-btn-secondary' onclick='chgpwd_profedit()'>Change</button><br>
+      </div>
       <button type='submit' class='am-btn am-btn-success'>Submit changes</button>
     </form>
   </body>

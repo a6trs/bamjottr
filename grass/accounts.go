@@ -171,6 +171,7 @@ func ProfEditHandler(w http.ResponseWriter, r *http.Request) {
 	} else {
 		uname := r.FormValue("uname")
 		email := r.FormValue("email")
+		pwd := r.FormValue("pwd")
 		errmsg := ""
 		for {
 			acc1 := &soil.Account{Name: uname}
@@ -203,6 +204,13 @@ func ProfEditHandler(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
+		}
+		if pwd != "" {
+			err = acc.ChangePassword(pwd)
+			if err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
 		}
 		fmt.Println("Account updated: #", acc.ID)
 		sess, err := sstore.Get(r, "flash")

@@ -80,3 +80,9 @@ func (this *Account) MatchesPassword(pwd []byte) bool {
 	err := bcrypt.CompareHashAndPassword(this.Password, pwd)
 	return (err == nil)
 }
+
+func (this *Account) ChangePassword(pwd string) error {
+	passhash, err := bcrypt.GenerateFromPassword([]byte(pwd), 10)
+	_, err = db.Exec(fmt.Sprintf(`UPDATE accounts SET password = %q WHERE id = %d`, passhash, this.ID))
+	return err
+}
