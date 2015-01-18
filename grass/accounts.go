@@ -144,3 +144,75 @@ func LogoutHandler(w http.ResponseWriter, r *http.Request) {
 	sess.Save(r, w)
 	http.Redirect(w, r, returnAddr, http.StatusFound)
 }
+
+func ProfEditHandler(w http.ResponseWriter, r *http.Request) {
+	sess, err := sstore.Get(r, "account-auth")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	aid := sess.Values["id"]
+	acc := &soil.Account{ID: aid.(int)}
+	if acc.Load(soil.KEY_Account_ID) != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	if r.Method == "GET" {
+		sess, _ := sstore.Get(r, "flash")
+		flash := sess.Flashes("errmsg")
+		msg := ""
+		iserr := true
+		if flash != nil {
+			msg = flash[0].(string)
+			iserr = flash[1].(bool)
+		}
+		sess.Save(r, w)
+		renderTemplate(w, "profedit", map[string]interface{}{"aid": aid, "msg": msg, "iserr": iserr})
+	} else {
+		uname := r.FormValue("uname")
+		email := r.FormValue("email")
+		errmsg := ""
+		for {
+			acc1 := &soil.Account{Name: uname}
+			if acc1.Load(soil.KEY_Account_Name) == nil && acc1.ID != acc.ID {
+				errmsg = "User name already exists"
+				break
+			}
+			acc1 = &soil.Account{Email: email}
+			if acc1.Load(soil.KEY_Account_Email) == nil && acc1.ID != acc.ID {
+				errmsg = "E-mail already exists"
+				break
+			}
+			break
+		}
+		if errmsg != "" {
+			sess, err := sstore.Get(r, "flash")
+			if err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
+			sess.AddFlash(errmsg, "errmsg")
+			sess.AddFlash(true, "errmsg")
+			sess.Save(r, w)
+			http.Redirect(w, r, r.URL.Path, http.StatusFound)
+			return
+		}
+		acc.Name = uname
+		acc.Email = email
+		err = acc.Save(soil.KEY_Account_ID)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		fmt.Println("Account updated: #", acc.ID)
+		sess, err := sstore.Get(r, "flash")
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		sess.AddFlash("Profile successfully updated", "errmsg")
+		sess.AddFlash(false, "errmsg")
+		sess.Save(r, w)
+		http.Redirect(w, r, r.URL.Path, http.StatusFound)
+	}
+}

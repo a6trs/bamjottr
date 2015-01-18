@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Edit Profile - Fibretis</title>
+    {{template "_html_head.html"}}
+  </head>
+  <body>
+    <h1>Edit {{(account .aid).Name}}'s Profile</h1>
+    <form class='am-form' method='POST'>
+      {{if .msg}}
+        <div id='errmsg' class='{{if .iserr}}bg-danger{{else}}bg-success{{end}}'>{{.msg}}</div>
+      {{end}}
+      <label for='ipt-uname'>User name</label>
+      <input type='text' class='am-form-field' id='ipt-uname' name='uname' value='{{(account .aid).Name}}'>
+      <label for='ipt-email'>E-mail</label>
+      <input type='email' class='am-form-field' id='ipt-email' name='email' value='{{(account .aid).Email}}'>
+      <button type='submit' class='am-btn am-btn-success'>Submit changes</button>
+    </form>
+  </body>
+</html>

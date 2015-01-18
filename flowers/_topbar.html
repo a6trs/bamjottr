@@ -1,5 +1,5 @@
 {{if validuser .}}
-  <a class='am-btn am-btn-default'>{{username .}} Profile</a>
+  <a href='/profedit' class='am-btn am-btn-default'>{{(account .).Name}} Profile</a>
   <a href='/logout' class='am-btn am-btn-warning'>Log out</a>
 {{else}}
   <a href='/login' class='am-btn am-btn-default'>Log in</button>

@@ -11,8 +11,8 @@ var sstore = sessions.NewCookieStore([]byte("these-are-very-important-yeah"))
 
 var templates, _ =
 	template.New("IDONTKNOW").
-		Funcs(template.FuncMap{"validuser": validUser, "username": userName}).
-		ParseFiles("flowers/_html_head.html", "flowers/_topbar.html", "flowers/index.html", "flowers/login.html", "flowers/signup.html")
+		Funcs(template.FuncMap{"validuser": validUser, "account": account}).
+		ParseFiles("flowers/_html_head.html", "flowers/_topbar.html", "flowers/index.html", "flowers/login.html", "flowers/signup.html", "flowers/profedit.html")
 
 func validUser(aid int) bool {
 	acc := &soil.Account{ID: aid}
@@ -20,13 +20,13 @@ func validUser(aid int) bool {
 	return (err == nil)
 }
 
-func userName(aid int) string {
+func account(aid int) *soil.Account {
 	acc := &soil.Account{ID: aid}
 	err := acc.Load(soil.KEY_Account_ID)
 	if err == nil {
-		return acc.Name
+		return acc
 	} else {
-		return ""
+		return nil
 	}
 }
 

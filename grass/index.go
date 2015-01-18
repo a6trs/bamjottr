@@ -14,5 +14,5 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	if s == nil {
 		s = -1
 	}
-	renderTemplate(w, "index", map[string]interface{}{"authcookie": s})
+	renderTemplate(w, "index", map[string]interface{}{"aid": s})
 }
