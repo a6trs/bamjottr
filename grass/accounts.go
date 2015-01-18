@@ -128,3 +128,21 @@ func SignupHandler(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, returnAddr, http.StatusFound)
 	}
 }
+
+func LogoutHandler(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	returnAddr, err := url.QueryUnescape(vars["return"])
+	if err != nil {
+		returnAddr = "/"
+	}
+	sess, err := sstore.Get(r, "account-auth")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	fmt.Println(sess.Values)
+	sess.Values["cookie-id"] = ""
+	fmt.Println(sess.Values)
+	sess.Save(r, w)
+	http.Redirect(w, r, returnAddr, http.StatusFound)
+}
