@@ -4,6 +4,14 @@
   border-radius: 8px !important;
 }
 
+.am-form input {
+  margin: 4px 4px 4px 4px;
+}
+
+.am-form button {
+  margin: 4px auto 4px 4px;
+}
+
 /* Main part */
 .simple-padding {
   padding: 4px 4px 4px 4px;
