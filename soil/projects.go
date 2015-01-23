@@ -2,6 +2,7 @@ package soil
 
 import (
 	"fmt"
+	"time"
 )
 
 type Project struct {
@@ -11,6 +12,7 @@ type Project struct {
 	Author    int
 	State     int
 	BannerImg string
+	CreatedAt time.Time
 }
 
 func init_Project() error {
@@ -21,6 +23,7 @@ func init_Project() error {
 		author INTEGER,
 		state INTEGER,
 		banner_img VARCHAR(64),
+		created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
 		FOREIGN KEY(author) REFERENCES accounts(id)
 	)`)
 	return err
@@ -62,7 +65,7 @@ func (this *Project) Load(key int) error {
 		return ErrRowNotFound
 	}
 	row := db.QueryRow(fmt.Sprintf(`SELECT * FROM projects WHERE id = %d`, this.ID))
-	return row.Scan(&this.ID, &this.Title, &this.Desc, &this.Author, &this.State, &this.BannerImg)
+	return row.Scan(&this.ID, &this.Title, &this.Desc, &this.Author, &this.State, &this.BannerImg, &this.CreatedAt)
 }
 
 func (this *Project) Save(key int) error {

@@ -10,7 +10,7 @@
     <a href='/project_create' class='am-btn am-btn-secondary'><span class='am-icon-plus'>New Project</span></a>
     {{range .prjpage}}
       <h1><a href='/project/{{.ID}}'>{{.Title}}</a></h1>
-      <p class='grey'>Created by {{(account .Author).Name}}</p>
+      <p class='grey'>Created by {{(account .Author).Name}} at {{timestr .CreatedAt}}</p>
       <p>{{.Desc}}</p>
     {{end}}
   </body>
