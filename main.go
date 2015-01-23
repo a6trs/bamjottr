@@ -21,6 +21,8 @@ func main() {
 	r.HandleFunc("/logout", grass.LogoutHandler)
 	r.HandleFunc("/logout/{return}", grass.LogoutHandler)
 	r.HandleFunc("/profedit", grass.ProfEditHandler)
+	// Projects-related [grass/projects.go]
+	r.HandleFunc("/projects", grass.ProjectsHandler)
 	// Static file server
 	r.PathPrefix("/leaves").Handler(http.FileServer(http.Dir("./flowers/")))
 	http.Handle("/", r)

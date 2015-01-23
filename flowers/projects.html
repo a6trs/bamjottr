@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Fibretis</title>
+    {{template "_html_head.html"}}
+  </head>
+  <body>
+    {{template "_topbar.html" .aid}}
+    <br><br>
+    <button type='button' class='am-btn am-btn-secondary'><span class='am-icon-plus'>New Project</span></button>
+    {{range .prjpage}}
+      <p>{{.Title}}</p>
+    {{end}}
+  </body>
+</html>

@@ -30,5 +30,9 @@ func InitDatabase() error {
 	if err != nil {
 		return err
 	}
+	err = init_Project()
+	if err != nil {
+		return err
+	}
 	return nil
 }
