@@ -8,6 +8,7 @@ type Project struct {
 	ID        int
 	Title     string
 	Desc      string
+	Author    int
 	State     int
 	BannerImg string
 }
@@ -17,8 +18,10 @@ func init_Project() error {
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
 		title VARCHAR(64),
 		desc VARCHAR(64),
+		author INTEGER,
 		state INTEGER,
-		banner_img VARCHAR(64)
+		banner_img VARCHAR(64),
+		FOREIGN KEY(author) REFERENCES accounts(id)
 	)`)
 	return err
 }
@@ -30,6 +33,7 @@ const (
 
 const (
 	Project_StUnsaved = iota
+	Project_StPurposed
 )
 
 func (this *Project) Find(key int) int {
@@ -58,7 +62,7 @@ func (this *Project) Load(key int) error {
 		return ErrRowNotFound
 	}
 	row := db.QueryRow(fmt.Sprintf(`SELECT * FROM projects WHERE id = %d`, this.ID))
-	return row.Scan(&this.ID, &this.Title, &this.Desc, &this.State, &this.BannerImg)
+	return row.Scan(&this.ID, &this.Title, &this.Desc, &this.Author, &this.State, &this.BannerImg)
 }
 
 func (this *Project) Save(key int) error {
@@ -68,9 +72,12 @@ func (this *Project) Save(key int) error {
 		if err != nil {
 			return err
 		}
+		state := this.State
+		this.State = Project_StUnsaved
 		this.ID = this.Find(KEY_Project_State)
+		this.State = state
 	}
-	stmt := fmt.Sprintf(`UPDATE projects SET title = '%s', desc = '%s', state = %d, banner_img = '%s' WHERE id = %d`, this.Title, this.Desc, this.State, this.BannerImg)
+	stmt := fmt.Sprintf(`UPDATE projects SET title = '%s', desc = '%s', author = %d, state = %d, banner_img = '%s' WHERE id = %d`, this.Title, this.Desc, this.Author, this.State, this.BannerImg, this.ID)
 	_, err := db.Exec(stmt)
 	return err
 }
