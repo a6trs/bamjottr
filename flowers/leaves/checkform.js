@@ -27,3 +27,7 @@ chgpwd_profedit = function () {
   form.insertBefore(ipt, chgpwd);
   chgpwd.parentNode.removeChild(chgpwd);
 };
+
+completeform_post = function () {
+  document.getElementById('ipt-body').value = document.getElementById('txt-body').innerHTML;
+};
