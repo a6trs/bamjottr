@@ -5,8 +5,8 @@ import (
 	"./grass"
 	"./soil"
 	"fmt"
-	"net/http"
 	"github.com/gorilla/mux"
+	"net/http"
 )
 
 func main() {

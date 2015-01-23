@@ -2,10 +2,10 @@ package grass
 
 import (
 	"../soil"
+	"fmt"
+	"github.com/gorilla/mux"
 	"net/http"
 	"net/url"
-	"github.com/gorilla/mux"
-	"fmt"
 )
 
 func LoginHandler(w http.ResponseWriter, r *http.Request) {

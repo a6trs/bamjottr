@@ -1,8 +1,8 @@
 package soil
 
 import (
-	"errors"
 	"database/sql"
+	"errors"
 	_ "github.com/mattn/go-sqlite3"
 )
 
