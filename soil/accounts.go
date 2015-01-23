@@ -26,6 +26,7 @@ const (
 	KEY_Account_ID = iota
 	KEY_Account_Name
 	KEY_Account_Email
+	Account_PswdChangeMark = 233
 )
 
 func (this *Account) Find(key int) int {
@@ -72,7 +73,14 @@ func (this *Account) Save(key int) error {
 		}
 		this.ID = this.Find(KEY_Account_Name)
 	}
-	_, err := db.Exec(fmt.Sprintf(`UPDATE accounts SET name = '%s', email = '%s' WHERE id = %d`, this.Name, this.Email, this.ID))
+	changingPswd := this.Password[0] == Account_PswdChangeMark
+	var stmt string
+	if changingPswd {
+		stmt = fmt.Sprintf(`UPDATE accounts SET name = '%s', email = '%s', password = %q WHERE id = %d`, this.Name, this.Email, this.Password[1:], this.ID)
+	} else {
+		stmt = fmt.Sprintf(`UPDATE accounts SET name = '%s', email = '%s' WHERE id = %d`, this.Name, this.Email, this.ID)
+	}
+	_, err := db.Exec(stmt)
 	return err
 }
 
@@ -81,8 +89,10 @@ func (this *Account) MatchesPassword(pwd []byte) bool {
 	return (err == nil)
 }
 
-func (this *Account) ChangePassword(pwd string) error {
+func (this *Account) ChangePassword(pwd string) {
 	passhash, err := bcrypt.GenerateFromPassword([]byte(pwd), 10)
-	_, err = db.Exec(fmt.Sprintf(`UPDATE accounts SET password = %q WHERE id = %d`, passhash, this.ID))
-	return err
+	// stackoverflow.com/q/16248241
+	if err == nil {
+		this.Password = append([]byte{Account_PswdChangeMark}, passhash...)
+	}
 }

@@ -200,17 +200,13 @@ func ProfEditHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		acc.Name = uname
 		acc.Email = email
+		if pwd != "" {
+			acc.ChangePassword(pwd)
+		}
 		err = acc.Save(soil.KEY_Account_ID)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
-		}
-		if pwd != "" {
-			err = acc.ChangePassword(pwd)
-			if err != nil {
-				http.Error(w, err.Error(), http.StatusInternalServerError)
-				return
-			}
 		}
 		fmt.Println("Account updated: #", acc.ID)
 		sess, err := sstore.Get(r, "flash")
