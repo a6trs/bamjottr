@@ -35,3 +35,16 @@ func renderTemplate(w http.ResponseWriter, title string, arg interface{}) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
+
+func accountInSession(w http.ResponseWriter, r *http.Request) int {
+	sess, err := sstore.Get(r, "account-auth")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return -1
+	}
+	s := sess.Values["id"]
+	if s == nil {
+		s = -1
+	}
+	return s.(int)
+}
