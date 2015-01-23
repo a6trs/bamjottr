@@ -24,6 +24,7 @@ func main() {
 	// Projects-related [grass/projects.go]
 	r.HandleFunc("/projects", grass.ProjectsHandler)
 	r.HandleFunc("/project_create", grass.ProjectCreateHandler)
+	r.HandleFunc("/project/{prjid:[0-9]+}", grass.ProjectPageHandler)
 	// Static file server
 	r.PathPrefix("/leaves").Handler(http.FileServer(http.Dir("./flowers/")))
 	http.Handle("/", r)

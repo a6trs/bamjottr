@@ -3,7 +3,9 @@ package grass
 import (
 	"../soil"
 	"fmt"
+	"github.com/gorilla/mux"
 	"net/http"
+	"strconv"
 )
 
 func ProjectsHandler(w http.ResponseWriter, r *http.Request) {
@@ -30,4 +32,20 @@ func ProjectCreateHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		http.Redirect(w, r, fmt.Sprintf("/project/%d", prj.ID), http.StatusFound)
 	}
+}
+
+func ProjectPageHandler(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	prjid, err := strconv.Atoi(vars["prjid"])
+	if err != nil {
+		// Should we use HTTP 303 (StatusSeeOther) here??
+		http.Redirect(w, r, "/projects", http.StatusSeeOther)
+		return
+	}
+	prj := &soil.Project{ID: prjid}
+	if err := prj.Load(soil.KEY_Project_ID); err != nil {
+		http.Redirect(w, r, "/projects", http.StatusSeeOther)
+		return
+	}
+	renderTemplate(w, "project_page", map[string]interface{}{"aid": accountInSession(w, r), "prj": prj})
 }
