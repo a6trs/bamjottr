@@ -6,6 +6,7 @@
   </head>
   <body>
     <script type='application/javascript' src='/leaves/checkform.js'></script>
+    {{template "_topbar.html" .aid}}
     <form class='am-form' action='/signup' method='POST'>
       <legend>Sign Up</legend>
       {{if .signupmsg}}

@@ -5,5 +5,5 @@ import (
 )
 
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
-	renderTemplate(w, "index", map[string]interface{}{"aid": accountInSession(w, r)})
+	renderTemplate(w, r, "index", map[string]interface{}{})
 }

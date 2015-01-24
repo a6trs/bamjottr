@@ -16,7 +16,7 @@ func PostCreateHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if r.Method == "GET" {
-		renderTemplate(w, "post_create", map[string]interface{}{"aid": accountInSession(w, r), "prjid": prjid})
+		renderTemplate(w, r, "post_create", map[string]interface{}{"prjid": prjid})
 	} else {
 		title := r.FormValue("title")
 		body := r.FormValue("body")
@@ -41,5 +41,5 @@ func PostPageHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusNotFound)
 		return
 	}
-	renderTemplate(w, "post_page", map[string]interface{}{"aid": accountInSession(w, r), "post": post})
+	renderTemplate(w, r, "post_page", map[string]interface{}{"post": post})
 }

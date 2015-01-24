@@ -4,6 +4,10 @@
   border-radius: 8px !important;
 }
 
+.am-form {
+  padding: 16px;
+}
+
 .am-form input, .am-form textarea, .am-form div {
   margin: 4px 4px 4px 4px;
 }
@@ -20,9 +24,41 @@
   font-size: 24px;
 }
 
+.am-topbar a.am-btn-primary,
+.am-topbar a.am-btn-secondary,
+.am-topbar a.am-btn-success,
+.am-topbar a.am-btn-warning,
+.am-topbar a.am-btn-danger {
+  color: #fff;
+}
+
 /* Main part */
 .simple-padding {
   padding: 4px 4px 4px 4px;
+}
+
+.big-title {
+  margin: 0.4em auto 0.4em 24px;
+  font-size: 48px;
+  font-weight: bold;
+}
+
+.small-title {
+  margin: 0.4em auto 0.4em 0px;
+  font-size: 32px;
+  font-weight: normal;
+}
+
+.project-summary {
+  padding: 32px;
+}
+
+.project-summary .bg {
+  opacity: 0.4;
+  position: absolute;
+  left: 0px;
+  z-index: -1;
+  background: url(/leaves/lined_paper.png) repeat scroll center center #F0F0F0;
 }
 
 /* Derived from Bootstrap 3 */
@@ -44,6 +80,25 @@
 
 .grey {
   color: #888;
+}
+
+.banner {
+  /* Background image fallback is lined_paper.png */
+  background: url(/leaves/lined_paper.png) repeat scroll center center #F0F0F0;
+  padding: 0.8em 0px 0.8em 24px;
+  font-size: 18px;
+}
+
+.banner .big-title {
+  margin-left: 0px;
+}
+
+.banner.project-banner .desc {
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.banner.project-banner .big-title {
+  text-shadow: 2px 3px 1px rgba(0, 0, 0, 0.3);
 }
 
 .post_area h1 {

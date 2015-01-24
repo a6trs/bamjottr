@@ -7,9 +7,11 @@
   <body>
     {{template "_topbar.html" .aid}}
     {{with .prj}}
-    <h1>{{.Title}}</h1>
-    <p class='grey'>Created by {{(account .Author).Name}} at {{timestr .CreatedAt}}</p>
-    <p>{{.Desc}}</p>
+    <div class='banner project-banner' style='background-image: url(/uploads/banner_img/{{.BannerImg}}'>
+      <p class='big-title'>{{.Title}}</p>
+      <p class='grey'>Created by {{(account .Author).Name}} at {{timestr .CreatedAt}}</p>
+      <p class='desc'>{{.Desc}}</p>
+    </div>
     <hr>
     <a class='am-btn' href='/post_create/{{.ID}}'>New post</a>
     {{end}}

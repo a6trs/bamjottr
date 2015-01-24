@@ -5,9 +5,10 @@
     {{template "_html_head.html"}}
   </head>
   <body>
-    <h1>Edit {{(account .aid).Name}}'s Profile</h1>
+    {{template "_topbar.html" .aid}}
     <script type='application/javascript' src='/leaves/checkform.js'></script>
     <form class='am-form' method='POST'>
+      <legend>Edit {{(account .aid).Name}}'s Profile</legend>
       {{if .msg}}
         <div id='errmsg' class='{{if .iserr}}bg-danger{{else}}bg-success{{end}}'>{{.msg}}</div>
       {{end}}

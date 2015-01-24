@@ -13,7 +13,7 @@ var sstore = sessions.NewCookieStore([]byte("these-are-very-important-yeah"))
 
 var templates, _ = template.New("IDONTKNOW").
 	Funcs(template.FuncMap{"validuser": validUser, "account": account, "project": project, "post": post, "raw": rawhtml, "timestr": timestr, "nutshell": nutshell}).
-	ParseFiles("flowers/_html_head.html", "flowers/_topbar.html", "flowers/index.html", "flowers/login.html", "flowers/signup.html", "flowers/profedit.html", "flowers/projects.html", "flowers/project_create.html", "flowers/project_page.html", "flowers/post_create.html", "flowers/post_page.html")
+	ParseFiles("flowers/_html_head.html", "flowers/_topbar.html", "flowers/_icons.svg", "flowers/index.html", "flowers/login.html", "flowers/signup.html", "flowers/profedit.html", "flowers/projects.html", "flowers/project_create.html", "flowers/project_page.html", "flowers/post_create.html", "flowers/post_page.html")
 
 func validUser(aid int) bool {
 	acc := &soil.Account{ID: aid}
@@ -73,7 +73,8 @@ func nutshell(body string) string {
 	}
 }
 
-func renderTemplate(w http.ResponseWriter, title string, arg interface{}) {
+func renderTemplate(w http.ResponseWriter, r *http.Request, title string, arg map[string]interface{}) {
+	arg["aid"] = accountInSession(w, r)
 	err := templates.ExecuteTemplate(w, title+".html", arg)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

@@ -16,16 +16,16 @@ func ProjectsHandler(w http.ResponseWriter, r *http.Request) {
 			prjpage = append(prjpage, prj)
 		}
 	}
-	renderTemplate(w, "projects", map[string]interface{}{"aid": accountInSession(w, r), "prjpage": prjpage})
+	renderTemplate(w, r, "projects", map[string]interface{}{"prjpage": prjpage})
 }
 
 func ProjectCreateHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
-		renderTemplate(w, "project_create", map[string]interface{}{"aid": accountInSession(w, r)})
+		renderTemplate(w, r, "project_create", map[string]interface{}{})
 	} else {
 		title := r.FormValue("title")
 		desc := r.FormValue("desc")
-		prj := &soil.Project{Title: title, Desc: desc, Author: accountInSession(w, r), State: soil.Project_StPurposed, BannerImg: ""}
+		prj := &soil.Project{Title: title, Desc: desc, Author: accountInSession(w, r), State: soil.Project_StPurposed, BannerImg: "github-showcase-emoji.svg"}
 		if err := prj.Save(soil.KEY_Project_ID); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
@@ -52,5 +52,5 @@ func ProjectPageHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	renderTemplate(w, "project_page", map[string]interface{}{"aid": accountInSession(w, r), "prj": prj, "pstpage": pstpage})
+	renderTemplate(w, r, "project_page", map[string]interface{}{"prj": prj, "pstpage": pstpage})
 }

@@ -17,7 +17,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 			msg = flash[0].(string)
 		}
 		sess.Save(r, w)
-		renderTemplate(w, "login", map[string]interface{}{"loginmsg": msg})
+		renderTemplate(w, r, "login", map[string]interface{}{"loginmsg": msg})
 	} else {
 		vars := mux.Vars(r)
 		returnAddr, err := url.QueryUnescape(vars["return"])
@@ -74,7 +74,7 @@ func SignupHandler(w http.ResponseWriter, r *http.Request) {
 			msg = flash[0].(string)
 		}
 		sess.Save(r, w)
-		renderTemplate(w, "signup", map[string]interface{}{"signupmsg": msg})
+		renderTemplate(w, r, "signup", map[string]interface{}{"signupmsg": msg})
 	} else {
 		vars := mux.Vars(r)
 		returnAddr, err := url.QueryUnescape(vars["return"])
@@ -167,7 +167,7 @@ func ProfEditHandler(w http.ResponseWriter, r *http.Request) {
 			iserr = flash[1].(bool)
 		}
 		sess.Save(r, w)
-		renderTemplate(w, "profedit", map[string]interface{}{"aid": aid, "msg": msg, "iserr": iserr})
+		renderTemplate(w, r, "profedit", map[string]interface{}{"aid": aid, "msg": msg, "iserr": iserr})
 	} else {
 		uname := r.FormValue("uname")
 		email := r.FormValue("email")

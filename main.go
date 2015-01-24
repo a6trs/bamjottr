@@ -30,6 +30,7 @@ func main() {
 	r.HandleFunc("/post/{pstid:[0-9]+}", grass.PostPageHandler)
 	// Static file server
 	r.PathPrefix("/leaves").Handler(http.FileServer(http.Dir("./flowers/")))
+	r.PathPrefix("/uploads").Handler(http.FileServer(http.Dir("./")))
 	http.Handle("/", r)
 	soil.InitDatabase()
 	fmt.Println("Now serving")
