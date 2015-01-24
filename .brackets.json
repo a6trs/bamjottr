@@ -5,5 +5,8 @@
     "css": { "spaceUnits": 2 },
     "html": { "spaceUnits": 2 },
     "go": { "useTabChar": true, "tabSize": 4 }
+  },
+  "language.fileNames": {
+    "main": "binary"
   }
 }

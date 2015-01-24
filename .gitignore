@@ -6,3 +6,5 @@
 
 *~
 *.db
+tools/record.lua
+main
