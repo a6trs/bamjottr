@@ -11,7 +11,7 @@
   <body>
     <script type='application/javascript' src='/leaves/checkform.js'></script>
     <form class='am-form' method='POST'>
-      <legend>Write A Post</legend>
+      <legend>Write A Post for {{(project .prjid).Title}}</legend>
       {{if .crpstmsg}}
         <div id='errmsg' class='bg-danger'>{{.crpstmsg}}</div>
       {{end}}

@@ -11,8 +11,8 @@ import (
 var sstore = sessions.NewCookieStore([]byte("these-are-very-important-yeah"))
 
 var templates, _ = template.New("IDONTKNOW").
-	Funcs(template.FuncMap{"validuser": validUser, "account": account, "timestr": timestr}).
-	ParseFiles("flowers/_html_head.html", "flowers/_topbar.html", "flowers/index.html", "flowers/login.html", "flowers/signup.html", "flowers/profedit.html", "flowers/projects.html", "flowers/project_create.html", "flowers/project_page.html", "flowers/post_create.html")
+	Funcs(template.FuncMap{"validuser": validUser, "account": account, "project": project, "post": post, "raw": rawhtml, "timestr": timestr}).
+	ParseFiles("flowers/_html_head.html", "flowers/_topbar.html", "flowers/index.html", "flowers/login.html", "flowers/signup.html", "flowers/profedit.html", "flowers/projects.html", "flowers/project_create.html", "flowers/project_page.html", "flowers/post_create.html", "flowers/post_page.html")
 
 func validUser(aid int) bool {
 	acc := &soil.Account{ID: aid}
@@ -28,6 +28,30 @@ func account(aid int) *soil.Account {
 	} else {
 		return nil
 	}
+}
+
+func project(prjid int) *soil.Project {
+	prj := &soil.Project{ID: prjid}
+	err := prj.Load(soil.KEY_Project_ID)
+	if err == nil {
+		return prj
+	} else {
+		return nil
+	}
+}
+
+func post(pstid int) *soil.Project {
+	pst := &soil.Project{ID: pstid}
+	err := pst.Load(soil.KEY_Post_ID)
+	if err == nil {
+		return pst
+	} else {
+		return nil
+	}
+}
+
+func rawhtml(s string) template.HTML {
+	return template.HTML(s)
 }
 
 func timestr(t time.Time) string {

@@ -27,6 +27,7 @@ func main() {
 	r.HandleFunc("/project/{prjid:[0-9]+}", grass.ProjectPageHandler)
 	// Posts-related [grass/posts.go]
 	r.HandleFunc("/post_create/{prjid:[0-9]+}", grass.PostCreateHandler)
+	r.HandleFunc("/post/{pstid:[0-9]+}", grass.PostPageHandler)
 	// Static file server
 	r.PathPrefix("/leaves").Handler(http.FileServer(http.Dir("./flowers/")))
 	http.Handle("/", r)

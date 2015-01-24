@@ -6,12 +6,20 @@
   </head>
   <body>
     {{template "_topbar.html" .aid}}
-    {{with .prj}}
+    {{with (project .post.ProjectID)}}
     <h1>{{.Title}}</h1>
     <p class='grey'>Created by {{(account .Author).Name}} at {{timestr .CreatedAt}}</p>
     <p>{{.Desc}}</p>
+    {{end}}
     <hr>
-    <a class='am-btn' href='/post_create/{{.ID}}'>New post</a>
+    {{with .post}}
+    <div class='post_area'>
+      <h1>{{.Title}}</h1>
+      <p class='grey'>Created by {{(account .Author).Name}} at {{timestr .CreatedAt}}</p>
+      <div class='post_body'>
+        {{raw .Body}}
+      </div>
+    </div>
     {{end}}
   </body>
 </html>

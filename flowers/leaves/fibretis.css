@@ -12,11 +12,11 @@
   margin: 4px auto 4px 4px;
 }
 
-.am-form div h3 {
+.am-form div h3, .post_body h3 {
   font-size: 32px;
 }
 
-.am-form div h4 {
+.am-form div h4, .post_body h4 {
   font-size: 24px;
 }
 
@@ -44,4 +44,13 @@
 
 .grey {
   color: #888;
+}
+
+.post_area h1 {
+  padding-top: 1em;
+  font-size: 32px;
+}
+
+.post_body {
+  padding: 12px;
 }
