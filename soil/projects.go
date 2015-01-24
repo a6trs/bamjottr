@@ -1,7 +1,7 @@
 package soil
 
 import (
-	"fmt"
+	"database/sql"
 	"time"
 )
 
@@ -41,16 +41,15 @@ const (
 
 func (this *Project) Find(key int) int {
 	result := -1
-	var stmt string
+	var row *sql.Row
 	switch key {
 	case KEY_Project_ID:
-		stmt = fmt.Sprintf(`SELECT id FROM projects WHERE id = %d`, this.ID)
+		row = db.QueryRow(`SELECT id FROM projects WHERE id = ?`, this.ID)
 	case KEY_Project_State:
-		stmt = fmt.Sprintf(`SELECT id FROM projects WHERE state = %d`, this.State)
+		row = db.QueryRow(`SELECT id FROM projects WHERE state = ?`, this.State)
 	default:
 		return -1
 	}
-	row := db.QueryRow(stmt)
 	err := row.Scan(&result)
 	if err == nil {
 		return result
@@ -64,14 +63,14 @@ func (this *Project) Load(key int) error {
 	if this.ID == -1 {
 		return ErrRowNotFound
 	}
-	row := db.QueryRow(fmt.Sprintf(`SELECT * FROM projects WHERE id = %d`, this.ID))
+	row := db.QueryRow(`SELECT * FROM projects WHERE id = ?`, this.ID)
 	return row.Scan(&this.ID, &this.Title, &this.Desc, &this.Author, &this.State, &this.BannerImg, &this.CreatedAt)
 }
 
 func (this *Project) Save(key int) error {
 	this.ID = this.Find(key)
 	if this.ID == -1 {
-		_, err := db.Exec(fmt.Sprintf(`INSERT INTO projects (state) VALUES (%d)`, Project_StUnsaved))
+		_, err := db.Exec(`INSERT INTO projects (state) VALUES (?)`, Project_StUnsaved)
 		if err != nil {
 			return err
 		}
@@ -80,7 +79,6 @@ func (this *Project) Save(key int) error {
 		this.ID = this.Find(KEY_Project_State)
 		this.State = state
 	}
-	stmt := fmt.Sprintf(`UPDATE projects SET title = '%s', desc = '%s', author = %d, state = %d, banner_img = '%s' WHERE id = %d`, this.Title, this.Desc, this.Author, this.State, this.BannerImg, this.ID)
-	_, err := db.Exec(stmt)
+	_, err := db.Exec(`UPDATE projects SET title = ?, desc = ?, author = ?, state = ?, banner_img = ? WHERE id = ?`, this.Title, this.Desc, this.Author, this.State, this.BannerImg, this.ID)
 	return err
 }

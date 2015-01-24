@@ -1,7 +1,7 @@
 package soil
 
 import (
-	"fmt"
+	"database/sql"
 	"time"
 )
 
@@ -41,16 +41,15 @@ const (
 
 func (this *Post) Find(key int) int {
 	result := -1
-	var stmt string
+	var row *sql.Row
 	switch key {
 	case KEY_Post_ID:
-		stmt = fmt.Sprintf(`SELECT id FROM posts WHERE id = %d`, this.ID)
+		row = db.QueryRow(`SELECT id FROM posts WHERE id = ?`, this.ID)
 	case KEY_Post_Priority:
-		stmt = fmt.Sprintf(`SELECT id FROM posts WHERE priority = %d`, this.Priority)
+		row = db.QueryRow(`SELECT id FROM posts WHERE priority = ?`, this.Priority)
 	default:
 		return -1
 	}
-	row := db.QueryRow(stmt)
 	err := row.Scan(&result)
 	if err == nil {
 		return result
@@ -64,14 +63,14 @@ func (this *Post) Load(key int) error {
 	if this.ID == -1 {
 		return ErrRowNotFound
 	}
-	row := db.QueryRow(fmt.Sprintf(`SELECT * FROM posts WHERE id = %d`, this.ID))
+	row := db.QueryRow(`SELECT * FROM posts WHERE id = ?`, this.ID)
 	return row.Scan(&this.ID, &this.ProjectID, &this.Title, &this.Body, &this.Author, &this.Priority, &this.CreatedAt)
 }
 
 func (this *Post) Save(key int) error {
 	this.ID = this.Find(key)
 	if this.ID == -1 {
-		_, err := db.Exec(fmt.Sprintf(`INSERT INTO posts (priority) VALUES (%d)`, Post_PrioUnsaved))
+		_, err := db.Exec(`INSERT INTO posts (priority) VALUES (?)`, Post_PrioUnsaved)
 		if err != nil {
 			return err
 		}
@@ -80,8 +79,7 @@ func (this *Post) Save(key int) error {
 		this.ID = this.Find(KEY_Post_Priority)
 		this.Priority = prio
 	}
-	stmt := fmt.Sprintf(`UPDATE posts SET prjid = %d, title = '%s', body = '%s', author = %d, priority = %d WHERE id = %d`, this.ProjectID, this.Title, this.Body, this.Author, this.Priority, this.ID)
-	_, err := db.Exec(stmt)
+	_, err := db.Exec(`UPDATE posts SET prjid = ?, title = ?, body = ?, author = ?, priority = ? WHERE id = ?`, this.ProjectID, this.Title, this.Body, this.Author, this.Priority, this.ID)
 	return err
 }
 

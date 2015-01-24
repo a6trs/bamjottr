@@ -1,7 +1,7 @@
 package soil
 
 import (
-	"fmt"
+	"database/sql"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -31,18 +31,17 @@ const (
 
 func (this *Account) Find(key int) int {
 	result := -1
-	var stmt string
+	var row *sql.Row
 	switch key {
 	case KEY_Account_ID:
-		stmt = fmt.Sprintf(`SELECT id FROM accounts WHERE id = %d`, this.ID)
+		row = db.QueryRow(`SELECT id FROM accounts WHERE id = ?`, this.ID)
 	case KEY_Account_Name:
-		stmt = fmt.Sprintf(`SELECT id FROM accounts WHERE name = '%s'`, this.Name)
+		row = db.QueryRow(`SELECT id FROM accounts WHERE name = ?`, this.Name)
 	case KEY_Account_Email:
-		stmt = fmt.Sprintf(`SELECT id FROM accounts WHERE email = '%s'`, this.Email)
+		row = db.QueryRow(`SELECT id FROM accounts WHERE email = ?`, this.Email)
 	default:
 		return -1
 	}
-	row := db.QueryRow(stmt)
 	err := row.Scan(&result)
 	if err == nil {
 		return result
@@ -56,7 +55,7 @@ func (this *Account) Load(key int) error {
 	if this.ID == -1 {
 		return ErrRowNotFound
 	}
-	row := db.QueryRow(fmt.Sprintf(`SELECT * FROM accounts WHERE id = %d`, this.ID))
+	row := db.QueryRow(`SELECT * FROM accounts WHERE id = ?`, this.ID)
 	return row.Scan(&this.ID, &this.Name, &this.Email, &this.Password)
 }
 
@@ -67,20 +66,19 @@ func (this *Account) Save(key int) error {
 		if err != nil {
 			return err
 		}
-		_, err = db.Exec(fmt.Sprintf(`INSERT INTO accounts (name, password) VALUES ('%s', %q)`, this.Name, passhash))
+		_, err = db.Exec(`INSERT INTO accounts (name, password) VALUES (?, ?)`, this.Name, passhash)
 		if err != nil {
 			return err
 		}
 		this.ID = this.Find(KEY_Account_Name)
 	}
 	changingPswd := this.Password[0] == Account_PswdChangeMark
-	var stmt string
+	var err error
 	if changingPswd {
-		stmt = fmt.Sprintf(`UPDATE accounts SET name = '%s', email = '%s', password = %q WHERE id = %d`, this.Name, this.Email, this.Password[1:], this.ID)
+		_, err = db.Exec(`UPDATE accounts SET name = ?, email = ?, password = ? WHERE id = ?`, this.Name, this.Email, this.Password[1:], this.ID)
 	} else {
-		stmt = fmt.Sprintf(`UPDATE accounts SET name = '%s', email = '%s' WHERE id = %d`, this.Name, this.Email, this.ID)
+		_, err = db.Exec(`UPDATE accounts SET name = ?, email = ? WHERE id = ?`, this.Name, this.Email, this.ID)
 	}
-	_, err := db.Exec(stmt)
 	return err
 }
 
