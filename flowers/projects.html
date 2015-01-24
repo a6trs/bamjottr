@@ -13,7 +13,7 @@
     <br><br>
     {{range .prjpage}}
       <div class='project-summary'>
-        <div class='bg' style='background-image: url(/uploads/banner_img/{{.BannerImg}}'></div>
+        <div class='bg' style='{{if ne .BannerImg ""}}background-image: url(/uploads/banner_img/{{.BannerImg}}){{end}}'></div>
         <p class='small-title'><a href='/project/{{.ID}}'>{{.Title}}</a></p>
         <span class='grey'>Created by {{(account .Author).Name}} at {{timestr .CreatedAt}}</span>
         <br>

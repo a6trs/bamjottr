@@ -1,4 +1,4 @@
-<div class='banner project-banner' style='background-image: url(/uploads/banner_img/{{.BannerImg}}'>
+<div class='banner project-banner' style='{{if ne .BannerImg ""}}background-image: url(/uploads/banner_img/{{.BannerImg}}){{end}}'>
   <p class='big-title'>{{.Title}}</p>
   <p class='grey'>Created by {{(account .Author).Name}} at {{timestr .CreatedAt}}</p>
   <p class='desc'>{{.Desc}}</p>

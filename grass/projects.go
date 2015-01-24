@@ -27,22 +27,27 @@ func ProjectCreateHandler(w http.ResponseWriter, r *http.Request) {
 	} else {
 		r.ParseMultipartForm(16 << 20) // 16 MB of memory
 		file, handler, err := r.FormFile("bannerimg")
-		if err != nil {
+		var bannerimg_file string
+		if err == http.ErrMissingFile {
+			bannerimg_file = ""
+		} else if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
+		} else {
+			bannerimg_file = handler.Filename
+			defer file.Close()
+			newfile, err := os.OpenFile("./uploads/banner_img/"+handler.Filename,
+				os.O_WRONLY | os.O_CREATE, 0666)
+			if err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
+			defer newfile.Close()
+			io.Copy(newfile, file)
 		}
-		defer file.Close()
-		newfile, err := os.OpenFile("./uploads/banner_img/"+handler.Filename,
-			os.O_WRONLY | os.O_CREATE, 0666)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-		defer newfile.Close()
-		io.Copy(newfile, file)
 		title := r.FormValue("title")
 		desc := r.FormValue("desc")
-		prj := &soil.Project{Title: title, Desc: desc, Author: accountInSession(w, r), State: soil.Project_StPurposed, BannerImg: handler.Filename}
+		prj := &soil.Project{Title: title, Desc: desc, Author: accountInSession(w, r), State: soil.Project_StPurposed, BannerImg: bannerimg_file}
 		err = prj.Save(soil.KEY_Project_ID)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
