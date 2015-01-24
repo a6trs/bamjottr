@@ -18,11 +18,11 @@ type Project struct {
 func init_Project() error {
 	_, err := db.Exec(`CREATE TABLE IF NOT EXISTS projects (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
-		title VARCHAR(64),
-		desc VARCHAR(64),
+		title TEXT,
+		desc TEXT,
 		author INTEGER,
 		state INTEGER,
-		banner_img VARCHAR(64),
+		banner_img TEXT,
 		created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
 		FOREIGN KEY(author) REFERENCES accounts(id)
 	)`)
