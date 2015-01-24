@@ -5,13 +5,14 @@ import (
 	"github.com/gorilla/sessions"
 	"html/template"
 	"net/http"
+	"regexp"
 	"time"
 )
 
 var sstore = sessions.NewCookieStore([]byte("these-are-very-important-yeah"))
 
 var templates, _ = template.New("IDONTKNOW").
-	Funcs(template.FuncMap{"validuser": validUser, "account": account, "project": project, "post": post, "raw": rawhtml, "timestr": timestr}).
+	Funcs(template.FuncMap{"validuser": validUser, "account": account, "project": project, "post": post, "raw": rawhtml, "timestr": timestr, "nutshell": nutshell}).
 	ParseFiles("flowers/_html_head.html", "flowers/_topbar.html", "flowers/index.html", "flowers/login.html", "flowers/signup.html", "flowers/profedit.html", "flowers/projects.html", "flowers/project_create.html", "flowers/project_page.html", "flowers/post_create.html", "flowers/post_page.html")
 
 func validUser(aid int) bool {
@@ -56,6 +57,20 @@ func rawhtml(s string) template.HTML {
 
 func timestr(t time.Time) string {
 	return t.Format(time.RFC822)
+}
+
+func nutshell(body string) string {
+	// Simply remove all HTML tags.
+	r, _ := regexp.Compile(`<\/?\w+(?:\s+\w+=['"].*['"])*>`)
+	body = r.ReplaceAllString(body, "")
+	// Help on rune arrays:
+	// http://www.cnblogs.com/howDo/archive/2013/04/20/GoLang-String.html
+	br := []rune(body)
+	if len(body) <= 80 {
+		return string(br)
+	} else {
+		return string(br[:80])+"..."
+	}
 }
 
 func renderTemplate(w http.ResponseWriter, title string, arg interface{}) {

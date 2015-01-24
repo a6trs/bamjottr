@@ -15,7 +15,7 @@
     {{with .post}}
     <div class='post_area'>
       <h1>{{.Title}}</h1>
-      <p class='grey'>Created by {{(account .Author).Name}} at {{timestr .CreatedAt}}</p>
+      <p class='grey'>Posted by {{(account .Author).Name}} at {{timestr .CreatedAt}}</p>
       <div class='post_body'>
         {{raw .Body}}
       </div>

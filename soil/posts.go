@@ -84,3 +84,19 @@ func (this *Post) Save(key int) error {
 	_, err := db.Exec(stmt)
 	return err
 }
+
+func PostsForProject(prjid int) []*Post {
+	posts := make([]*Post, 0)
+	rows, err := db.Query(`SELECT * FROM posts WHERE prjid = ?`, prjid)
+	if err != nil {
+		return nil
+	}
+	defer rows.Close()
+	for rows.Next() {
+		post := &Post{}
+		if rows.Scan(&post.ID, &post.ProjectID, &post.Title, &post.Body, &post.Author, &post.Priority, &post.CreatedAt) == nil {
+			posts = append(posts, post)
+		}
+	}
+	return posts
+}

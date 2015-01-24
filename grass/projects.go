@@ -47,5 +47,10 @@ func ProjectPageHandler(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/projects", http.StatusSeeOther)
 		return
 	}
-	renderTemplate(w, "project_page", map[string]interface{}{"aid": accountInSession(w, r), "prj": prj})
+	pstpage := soil.PostsForProject(prjid)
+	if pstpage == nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	renderTemplate(w, "project_page", map[string]interface{}{"aid": accountInSession(w, r), "prj": prj, "pstpage": pstpage})
 }

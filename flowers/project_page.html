@@ -13,5 +13,10 @@
     <hr>
     <a class='am-btn' href='/post_create/{{.ID}}'>New post</a>
     {{end}}
+    {{range .pstpage}}
+      <h1><a href='/post/{{.ID}}'>{{.Title}}</a></h1>
+      <p class='grey'>Posted by {{(account .Author).Name}} at {{timestr .CreatedAt}}</p>
+      <p>{{nutshell .Body}}</p>
+    {{end}}
   </body>
 </html>
