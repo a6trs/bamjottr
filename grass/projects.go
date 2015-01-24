@@ -4,7 +4,9 @@ import (
 	"../soil"
 	"fmt"
 	"github.com/gorilla/mux"
+	"io"
 	"net/http"
+	"os"
 	"strconv"
 )
 
@@ -23,10 +25,26 @@ func ProjectCreateHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		renderTemplate(w, r, "project_create", map[string]interface{}{})
 	} else {
+		r.ParseMultipartForm(16 << 20) // 16 MB of memory
+		file, handler, err := r.FormFile("bannerimg")
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		defer file.Close()
+		newfile, err := os.OpenFile("./uploads/banner_img/"+handler.Filename,
+			os.O_WRONLY | os.O_CREATE, 0666)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		defer newfile.Close()
+		io.Copy(newfile, file)
 		title := r.FormValue("title")
 		desc := r.FormValue("desc")
-		prj := &soil.Project{Title: title, Desc: desc, Author: accountInSession(w, r), State: soil.Project_StPurposed, BannerImg: "github-showcase-emoji.svg"}
-		if err := prj.Save(soil.KEY_Project_ID); err != nil {
+		prj := &soil.Project{Title: title, Desc: desc, Author: accountInSession(w, r), State: soil.Project_StPurposed, BannerImg: handler.Filename}
+		err = prj.Save(soil.KEY_Project_ID)
+		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}

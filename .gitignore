@@ -8,3 +8,5 @@
 *.db
 tools/record.lua
 main
+uploads/
+~uploads/banner_img/github-showcase-emoji.svg
