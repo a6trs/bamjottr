@@ -113,3 +113,9 @@
 .post_body {
   padding: 12px;
 }
+
+.emoji {
+  width: 1.5em;
+  height: 1.5em;
+  display: inline-block;
+}
