@@ -7,7 +7,10 @@
   <body>
     {{template "_topbar.html" .aid}}
     <p class='big-title'>Projects</p>
-    <a href='/project_create' class='am-btn am-btn-secondary'><span class='am-icon-plus'>New Project</span></a>
+    <div class='simple-padding'>
+      <a href='/project_create' class='am-btn am-btn-secondary'><span class='am-icon-plus'>&nbsp;New Project</span></a>
+    </div>
+    <br><br>
     {{range .prjpage}}
       <div class='project-summary'>
         <div class='bg' style='background-image: url(/uploads/banner_img/{{.BannerImg}}'></div>
@@ -16,7 +19,6 @@
         <br>
         <span>{{.Desc}}</span>
       </div>
-      <hr>
     {{end}}
     <!-- Use scripts to move backgrounds to correct positions -->
     <script type='application/javascript' src='/leaves/bg.js'></script>

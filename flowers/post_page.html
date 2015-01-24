@@ -6,15 +6,10 @@
   </head>
   <body>
     {{template "_topbar.html" .aid}}
-    {{with (project .post.ProjectID)}}
-    <div class='banner project-banner' style='background-image: url(/uploads/banner_img/{{.BannerImg}}'>
-      <p class='big-title'>{{.Title}}</p>
-      <p class='grey'>Created by {{(account .Author).Name}} at {{timestr .CreatedAt}}</p>
-      <p class='desc'>{{.Desc}}</p>
-    </div>
-    {{end}}
-    <hr>
     {{with .post}}
+    {{template "_project_banner.html" (project .ProjectID)}}
+    <hr>
+    <a class='am-btn' href='/project/{{(project .ProjectID).ID}}'>Back</a>
     <div class='post_area'>
       <h1>{{.Title}}</h1>
       <p class='grey'>Posted by {{(account .Author).Name}} at {{timestr .CreatedAt}}</p>

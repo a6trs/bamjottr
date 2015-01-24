@@ -101,6 +101,10 @@
   text-shadow: 2px 3px 1px rgba(0, 0, 0, 0.3);
 }
 
+.post_area, .postlist_area {
+  padding: 1em;
+}
+
 .post_area h1 {
   padding-top: 1em;
   font-size: 32px;
