@@ -34,5 +34,9 @@ func InitDatabase() error {
 	if err != nil {
 		return err
 	}
+	err = init_Post()
+	if err != nil {
+		return err
+	}
 	return nil
 }
