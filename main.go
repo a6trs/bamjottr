@@ -23,8 +23,9 @@ func main() {
 	r.HandleFunc("/profedit", grass.ProfEditHandler)
 	// Projects-related [grass/projects.go]
 	r.HandleFunc("/projects", grass.ProjectsHandler)
-	r.HandleFunc("/project_create", grass.ProjectCreateHandler)
+	r.HandleFunc("/project_create", grass.ProjectEditHandler)
 	r.HandleFunc("/project/{prjid:[0-9]+}", grass.ProjectPageHandler)
+	r.HandleFunc("/project_edit/{prjid:[0-9]+}", grass.ProjectEditHandler)
 	// Posts-related [grass/posts.go]
 	r.HandleFunc("/post_create/{prjid:[0-9]+}", grass.PostCreateHandler)
 	r.HandleFunc("/post/{pstid:[0-9]+}", grass.PostPageHandler)

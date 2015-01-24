@@ -21,9 +21,29 @@ func ProjectsHandler(w http.ResponseWriter, r *http.Request) {
 	renderTemplate(w, r, "projects", map[string]interface{}{"prjpage": prjpage})
 }
 
-func ProjectCreateHandler(w http.ResponseWriter, r *http.Request) {
+func ProjectEditHandler(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	prjid_s := vars["prjid"]
+	prjid := -1
+	if prjid_s != "" {
+		var err error
+		prjid, err = strconv.Atoi(prjid_s)
+		if err != nil {
+			prjid = -1
+		}
+	}
 	if r.Method == "GET" {
-		renderTemplate(w, r, "project_create", map[string]interface{}{})
+		var prj *soil.Project
+		if prjid != -1 {
+			prj = &soil.Project{ID: prjid}
+			err := prj.Load(soil.KEY_Project_ID)
+			if err != nil {
+				prj = &soil.Project{ID: -1}
+			}
+		} else {
+			prj = &soil.Project{ID: -1}
+		}
+		renderTemplate(w, r, "project_edit", map[string]interface{}{"prj": prj})
 	} else {
 		r.ParseMultipartForm(16 << 20) // 16 MB of memory
 		file, handler, err := r.FormFile("bannerimg")
@@ -47,7 +67,16 @@ func ProjectCreateHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		title := r.FormValue("title")
 		desc := r.FormValue("desc")
-		prj := &soil.Project{Title: title, Desc: desc, Author: accountInSession(w, r), State: soil.Project_StPurposed, BannerImg: bannerimg_file}
+		// If banner image is not changed, we read it and let it remain the same.
+		prj := &soil.Project{ID: prjid}
+		if bannerimg_file == "" && prjid != -1 {
+			err = prj.Load(soil.KEY_Project_ID)
+			if err == nil {
+				bannerimg_file = prj.BannerImg
+			}
+		}
+		// If creating project, prjid would be -1 and a new row would be created.
+		prj = &soil.Project{ID: prjid, Title: title, Desc: desc, Author: accountInSession(w, r), State: soil.Project_StPurposed, BannerImg: bannerimg_file}
 		err = prj.Save(soil.KEY_Project_ID)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)

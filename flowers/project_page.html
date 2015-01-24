@@ -8,6 +8,7 @@
     {{template "_topbar.html" .aid}}
     {{template "_project_banner.html" .prj}}
     <hr>
+    <a class='am-btn am-btn-warning' href='/project_edit/{{.prj.ID}}'><span class='am-icon-pencil'></span>&nbsp;Edit info</a>
     <a class='am-btn am-btn-success' href='/post_create/{{.prj.ID}}'><span class='am-icon-paint-brush'></span>&nbsp;New post</a>
     <div class='postlist_area'>
     {{range .pstpage}}

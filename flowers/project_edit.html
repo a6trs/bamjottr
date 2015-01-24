@@ -7,12 +7,12 @@
   <body>
     {{template "_topbar.html" .aid}}
     <form class='am-form' method='POST' enctype='multipart/form-data'>
-      <legend>Create Project</legend>
+      <legend>Create / Edit Project</legend>
       {{if .crprjmsg}}
         <div id='errmsg' class='bg-danger'>{{.crprjmsg}}</div>
       {{end}}
-      <input type='text' class='am-form-field' id='ipt-title' name='title' placeholder='Project title'>
-      <textarea class='am-form-field' rows='5' id='txt-desc' name='desc' placeholder='A brief description for the project...'></textarea>
+      <input type='text' class='am-form-field' id='ipt-title' name='title' placeholder='Project title' value='{{.prj.Title}}'>
+      <textarea class='am-form-field' rows='5' id='txt-desc' name='desc' placeholder='A brief description for the project...'>{{.prj.Desc}}</textarea>
       <label for='f-bannerimg'>Banner image</label>
       <input type='file' id='f-bannerimg' name='bannerimg'>
       <button type='submit' class='am-btn am-btn-default'>Create project</button>
