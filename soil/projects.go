@@ -6,13 +6,15 @@ import (
 )
 
 type Project struct {
-	ID        int
-	Title     string
-	Desc      string
-	Author    int
-	State     int
-	BannerImg string
-	CreatedAt time.Time
+	ID          int
+	Title       string
+	Desc        string
+	Author      int
+	State       int
+	TitleColour string
+	BannerImg   string
+	BannerType  int
+	CreatedAt   time.Time
 }
 
 func init_Project() error {
@@ -22,7 +24,9 @@ func init_Project() error {
 		desc TEXT,
 		author INTEGER,
 		state INTEGER,
+		title_clr VARCHAR(7),
 		banner_img TEXT,
+		banner_type INTEGER,
 		created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
 		FOREIGN KEY(author) REFERENCES accounts(id)
 	)`)
@@ -38,6 +42,23 @@ const (
 	Project_StUnsaved = iota
 	Project_StPurposed
 )
+
+const (
+	BI_Pattern = iota
+	BI_Cover
+)
+
+// Usage: class='banner <COBT(BT)>'
+func ClassOfBannerType(bitype int) string {
+	switch bitype {
+	case BI_Pattern:
+		return "bi-pattern"
+	case BI_Cover:
+		return "bi-cover"
+	default:
+		return ""
+	}
+}
 
 func (this *Project) Find(key int) int {
 	result := -1
@@ -64,7 +85,7 @@ func (this *Project) Load(key int) error {
 		return ErrRowNotFound
 	}
 	row := db.QueryRow(`SELECT * FROM projects WHERE id = ?`, this.ID)
-	return row.Scan(&this.ID, &this.Title, &this.Desc, &this.Author, &this.State, &this.BannerImg, &this.CreatedAt)
+	return row.Scan(&this.ID, &this.Title, &this.Desc, &this.Author, &this.State, &this.TitleColour, &this.BannerImg, &this.BannerType, &this.CreatedAt)
 }
 
 func (this *Project) Save(key int) error {
@@ -79,6 +100,6 @@ func (this *Project) Save(key int) error {
 		this.ID = this.Find(KEY_Project_State)
 		this.State = state
 	}
-	_, err := db.Exec(`UPDATE projects SET title = ?, desc = ?, author = ?, state = ?, banner_img = ? WHERE id = ?`, this.Title, this.Desc, this.Author, this.State, this.BannerImg, this.ID)
+	_, err := db.Exec(`UPDATE projects SET title = ?, desc = ?, author = ?, state = ?, title_clr = ?, banner_img = ?, banner_type = ? WHERE id = ?`, this.Title, this.Desc, this.Author, this.State, this.TitleColour, this.BannerImg, this.BannerType, this.ID)
 	return err
 }

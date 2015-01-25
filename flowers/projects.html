@@ -13,11 +13,11 @@
     <br><br>
     {{range .prjpage}}
       <div class='project-summary'>
-        <div class='bg' style='{{if ne .BannerImg ""}}background-image: url(/uploads/banner_img/{{.BannerImg}}){{end}}'></div>
-        <p class='small-title'><a href='/project/{{.ID}}'>{{.Title}}</a></p>
+        <div class='bg {{bannerclass .BannerType}}' style='{{if ne .BannerImg ""}}background-image: url(/uploads/banner_img/{{.BannerImg}}){{end}}'></div>
+        <p class='small-title big-shadow'><a href='/project/{{.ID}}' style='{{if ne .TitleColour ""}}color: {{.TitleColour}}{{end}}'>{{.Title}}</a></p>
         <span class='grey'>Created by {{(account .Author).Name}} at {{timestr .CreatedAt}}</span>
         <br>
-        <span>{{.Desc}}</span>
+        <span class='small-shadow' style='{{if ne .TitleColour ""}}color: {{.TitleColour}}{{end}}'>{{.Desc}}</span>
       </div>
     {{end}}
     <!-- Use scripts to move backgrounds to correct positions -->

@@ -58,7 +58,6 @@
   position: absolute;
   left: 0px;
   z-index: -1;
-  background: url(/leaves/lined_paper.png) repeat scroll center center #F0F0F0;
 }
 
 /* Derived from Bootstrap 3 */
@@ -83,21 +82,29 @@
 }
 
 .banner {
-  /* Background image fallback is lined_paper.png */
-  background: url(/leaves/lined_paper.png) repeat scroll center center #F0F0F0;
   padding: 0.8em 0px 0.8em 24px;
   font-size: 18px;
+}
+
+.bi-pattern {
+  /* Background image fallback is lined_paper.png */
+  background: url(/leaves/lined_paper.png) repeat scroll center center #F0F0F0;
+}
+
+.bi-cover {
+  /* Background image fallback is pure colour */
+  background: none no-repeat scroll center center / cover #F0F0F0;
 }
 
 .banner .big-title {
   margin-left: 0px;
 }
 
-.banner.project-banner .desc {
+.big-shadow, .banner.project-banner .desc {
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
 }
 
-.banner.project-banner .big-title {
+.small-shadow, .banner.project-banner .big-title {
   text-shadow: 2px 3px 1px rgba(0, 0, 0, 0.3);
 }
 

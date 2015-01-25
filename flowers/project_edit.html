@@ -6,6 +6,7 @@
   </head>
   <body>
     {{template "_topbar.html" .aid}}
+    <script type='application/javascript' src='/leaves/jscolor/jscolor.js'></script>
     <form class='am-form' method='POST' enctype='multipart/form-data'>
       <legend>Create / Edit Project</legend>
       {{if .crprjmsg}}
@@ -15,6 +16,14 @@
       <textarea class='am-form-field' rows='5' id='txt-desc' name='desc' placeholder='A brief description for the project...'>{{.prj.Desc}}</textarea>
       <label for='f-bannerimg'>Banner image</label>
       <input type='file' id='f-bannerimg' name='bannerimg'>
+      <label for='sel-bannertype'>Banner type</label>
+      <select id='sel-bannertype' name='bannertype'>
+        {{autoselitem .prj.BannerType 0 "Repeated"}}
+        {{autoselitem .prj.BannerType 1 "Cover"}}
+        {{autoselitem .prj.BannerType 2 "Invalid"}}
+      </select>
+      <label for='c-titlecolour'>Title text colour</label>
+      <input class='am-form-field color {hash: true}' type='text' id='c-titlecolour' name='titlecolour' value='{{if eq .prj.TitleColour ""}}#000000{{else}}{{.prj.TitleColour}}{{end}}'>
       <button type='submit' class='am-btn am-btn-default'>Create project</button>
     </form>
   </body>

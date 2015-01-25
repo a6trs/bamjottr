@@ -2,6 +2,7 @@ package grass
 
 import (
 	"../soil"
+	"fmt"
 	"github.com/gorilla/sessions"
 	"html/template"
 	"net/http"
@@ -12,7 +13,7 @@ import (
 var sstore = sessions.NewCookieStore([]byte("these-are-very-important-yeah"))
 
 var templates, _ = template.New("IDONTKNOW").
-	Funcs(template.FuncMap{"validuser": validUser, "account": account, "project": project, "post": post, "raw": rawhtml, "timestr": timestr, "nutshell": nutshell}).
+	Funcs(template.FuncMap{"validuser": validUser, "account": account, "project": project, "post": post, "bannerclass": soil.ClassOfBannerType, "raw": rawhtml, "timestr": timestr, "nutshell": nutshell, "autoselitem": autoSelectItem}).
 	ParseFiles("flowers/_html_head.html", "flowers/_topbar.html", "flowers/_icons.svg", "flowers/_project_banner.html", "flowers/_emojify.html", "flowers/index.html", "flowers/login.html", "flowers/signup.html", "flowers/profedit.html", "flowers/projects.html", "flowers/project_edit.html", "flowers/project_page.html", "flowers/post_create.html", "flowers/post_page.html")
 
 func validUser(aid int) bool {
@@ -69,8 +70,19 @@ func nutshell(body string) string {
 	if len(body) <= 80 {
 		return string(br)
 	} else {
-		return string(br[:80])+"..."
+		return string(br[:80]) + "..."
 	}
+}
+
+// stackoverflow.com/q/3518002
+func autoSelectItem(targetval int, value int, optstr string) template.HTML {
+	var selected string
+	if targetval == value {
+		selected = "selected='selected'"
+	} else {
+		selected = ""
+	}
+	return rawhtml(fmt.Sprintf("<option value='%d' %s>%s</option>", value, selected, optstr))
 }
 
 func renderTemplate(w http.ResponseWriter, r *http.Request, title string, arg map[string]interface{}) {

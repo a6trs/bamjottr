@@ -57,7 +57,7 @@ func ProjectEditHandler(w http.ResponseWriter, r *http.Request) {
 			bannerimg_file = handler.Filename
 			defer file.Close()
 			newfile, err := os.OpenFile("./uploads/banner_img/"+handler.Filename,
-				os.O_WRONLY | os.O_CREATE, 0666)
+				os.O_WRONLY|os.O_CREATE, 0666)
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
@@ -67,6 +67,11 @@ func ProjectEditHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		title := r.FormValue("title")
 		desc := r.FormValue("desc")
+		titlecolour := r.FormValue("titlecolour")
+		bannertype, err := strconv.Atoi(r.FormValue("bannertype"))
+		if err != nil {
+			bannertype = 0
+		}
 		// If banner image is not changed, we read it and let it remain the same.
 		prj := &soil.Project{ID: prjid}
 		if bannerimg_file == "" && prjid != -1 {
@@ -76,7 +81,7 @@ func ProjectEditHandler(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 		// If creating project, prjid would be -1 and a new row would be created.
-		prj = &soil.Project{ID: prjid, Title: title, Desc: desc, Author: accountInSession(w, r), State: soil.Project_StPurposed, BannerImg: bannerimg_file}
+		prj = &soil.Project{ID: prjid, Title: title, Desc: desc, Author: accountInSession(w, r), State: soil.Project_StPurposed, TitleColour: titlecolour, BannerImg: bannerimg_file, BannerType: bannertype}
 		err = prj.Save(soil.KEY_Project_ID)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
