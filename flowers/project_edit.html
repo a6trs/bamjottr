@@ -22,6 +22,18 @@
         {{autoselitem .prj.BannerType 1 "Cover"}}
         {{autoselitem .prj.BannerType 2 "Invalid"}}
       </select>
+      <label for='sel-state'>Project state</label>
+      <button type='button' class='am-btn am-btn-link' data-am-popover='{content: "<b>Explanation for project states</b><br><i>Purposed</i> &nbsp;The idea is found but whether to start is under consideration.<br><i>Seeded</i> &nbsp;The project was just started, but not much progress has been made.<br><i>Rooting</i> &nbsp;Some progress is made, (for computer projects) most basic features are implemented.<br><i>Sprouts</i> &nbsp;Embryonic form, (for computer projects) alpha version released.<br>TODO: Complete this"}'><span class='am-icon-question-circle' /></button>
+      <select id='sel-state' name='state'>
+        {{autoselitem .prj.State 1 "Purposed"}}
+        {{autoselitem .prj.State 2 "Seeded"}}
+        {{autoselitem .prj.State 3 "Rooting"}}
+        {{autoselitem .prj.State 4 "Sprouts"}}
+        {{autoselitem .prj.State 5 "Lawn"}}
+        {{autoselitem .prj.State 6 "Wood"}}
+        {{autoselitem .prj.State 7 "Jungle"}}
+        {{autoselitem .prj.State 8 "Forest"}}
+      </select>
       <label for='c-titlecolour'>Title text colour</label>
       <input class='am-form-field color {hash: true}' type='text' id='c-titlecolour' name='titlecolour' value='{{if eq .prj.TitleColour ""}}#000000{{else}}{{.prj.TitleColour}}{{end}}'>
       <button type='submit' class='am-btn am-btn-default'>Create project</button>

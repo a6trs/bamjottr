@@ -41,12 +41,44 @@ const (
 const (
 	Project_StUnsaved = iota
 	Project_StPurposed
+	Project_StSeeded
+	Project_StRooting
+	Project_StSprouts
+	Project_StLawn
+	Project_StWood
+	Project_StJungle
+	Project_StForest
 )
 
 const (
 	BI_Pattern = iota
 	BI_Cover
 )
+
+func StateName(state int) string {
+	switch state {
+	case Project_StUnsaved:
+		return "Unsaved"
+	case Project_StPurposed:
+		return "Purposed"
+	case Project_StSeeded:
+		return "Seeded"
+	case Project_StRooting:
+		return "Rooting"
+	case Project_StSprouts:
+		return "Sprouts"
+	case Project_StLawn:
+		return "Lawn"
+	case Project_StWood:
+		return "Wood"
+	case Project_StJungle:
+		return "Jungle"
+	case Project_StForest:
+		return "Forest"
+	default:
+		return "Unknown"
+	}
+}
 
 // Usage: class='banner <COBT(BT)>'
 func ClassOfBannerType(bitype int) string {
