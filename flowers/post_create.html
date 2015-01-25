@@ -19,6 +19,7 @@
         <div id='errmsg' class='bg-danger'>{{.crpstmsg}}</div>
       {{end}}
       <input type='text' class='am-form-field' id='ipt-title' name='title' placeholder='Post title'>
+      <input type='number' class='am-form-field' id='ipt-prio' name='prio' placeholder='Priority' min='0' max='23332'>
       <div class='am-form-field' id='txt-body'>Write something to tell them...</div>
       <input type='hidden' id='ipt-body' name='body'>
       <button type='submit' class='am-btn am-btn-default' onclick='completeform_post();'>Post</button>

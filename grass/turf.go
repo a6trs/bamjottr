@@ -13,7 +13,7 @@ import (
 var sstore = sessions.NewCookieStore([]byte("these-are-very-important-yeah"))
 
 var templates, _ = template.New("IDONTKNOW").
-	Funcs(template.FuncMap{"validuser": validUser, "account": account, "project": project, "post": post, "bannerclass": soil.ClassOfBannerType, "statebadge": stateBadge, "raw": rawhtml, "timestr": timestr, "nutshell": nutshell, "autoselitem": autoSelectItem}).
+	Funcs(template.FuncMap{"validuser": validUser, "account": account, "project": project, "post": post, "bannerclass": soil.ClassOfBannerType, "statebadge": stateBadge, "priobadge": priorityBadge, "raw": rawhtml, "timestr": timestr, "nutshell": nutshell, "autoselitem": autoSelectItem}).
 	ParseFiles("flowers/_html_head.html", "flowers/_topbar.html", "flowers/_icons.svg", "flowers/_project_banner.html", "flowers/_emojify.html", "flowers/index.html", "flowers/login.html", "flowers/signup.html", "flowers/profedit.html", "flowers/projects.html", "flowers/project_edit.html", "flowers/project_page.html", "flowers/post_create.html", "flowers/post_page.html")
 
 func validUser(aid int) bool {
@@ -55,6 +55,11 @@ func post(pstid int) *soil.Project {
 func stateBadge(state int) template.HTML {
 	bg, name := soil.StateStyles(state)
 	return rawhtml(fmt.Sprintf("<span class='am-badge am-round am-text-default' style='background-color: %s'>%s</span>", bg, name))
+}
+
+// TODO: Use different background colours for different ranges.
+func priorityBadge(prio int) template.HTML {
+	return rawhtml(fmt.Sprintf("<span class='am-badge am-radius am-text-sm'>%d</span>", prio))
 }
 
 func rawhtml(s string) template.HTML {

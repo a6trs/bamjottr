@@ -36,6 +36,8 @@ const (
 )
 
 const (
+	Post_PrioHighest = 0
+	Post_PrioLowest = 23332
 	Post_PrioUnsaved = 23333
 )
 

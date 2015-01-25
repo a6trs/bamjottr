@@ -12,7 +12,7 @@
     <a class='am-btn am-btn-success' href='/post_create/{{.prj.ID}}'><span class='am-icon-paint-brush'></span>&nbsp;New post</a>
     <div class='postlist_area'>
     {{range .pstpage}}
-      <h1><a href='/post/{{.ID}}'>{{.Title}}</a></h1>
+      <h1><a href='/post/{{.ID}}'>{{.Title}}</a> {{priobadge .Priority}}</h1>
       <p class='grey'>Posted by {{(account .Author).Name}} at {{timestr .CreatedAt}}</p>
       <p>{{nutshell .Body}}</p>
       <hr>

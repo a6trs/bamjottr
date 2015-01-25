@@ -20,7 +20,11 @@ func PostCreateHandler(w http.ResponseWriter, r *http.Request) {
 	} else {
 		title := r.FormValue("title")
 		body := r.FormValue("body")
-		post := &soil.Post{ProjectID: prjid, Title: title, Body: body, Author: accountInSession(w, r), Priority: 2}
+		prio, err := strconv.Atoi(r.FormValue("prio"))
+		if err != nil {
+			prio = soil.Post_PrioLowest
+		}
+		post := &soil.Post{ProjectID: prjid, Title: title, Body: body, Author: accountInSession(w, r), Priority: prio}
 		if err := post.Save(soil.KEY_Post_ID); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return

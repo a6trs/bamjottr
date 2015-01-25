@@ -11,7 +11,7 @@
     <hr>
     <a class='am-btn' href='/project/{{(project .ProjectID).ID}}'>Back</a>
     <div class='post_area'>
-      <h1>{{.Title}}</h1>
+      <h1>{{.Title}} {{priobadge .Priority}}</h1>
       <p class='grey'>Posted by {{(account .Author).Name}} at {{timestr .CreatedAt}}</p>
       <div class='post_body'>
         {{raw .Body}}
