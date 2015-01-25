@@ -15,7 +15,7 @@
       <input type='text' class='am-form-field' id='ipt-title' name='title' placeholder='Project title' value='{{.prj.Title}}'>
       <textarea class='am-form-field' rows='5' id='txt-desc' name='desc' placeholder='A brief description for the project...'>{{.prj.Desc}}</textarea>
       <label for='f-bannerimg'>Banner image</label>
-      <input type='file' id='f-bannerimg' name='bannerimg'>
+      <input type='file' accept='image/*' id='f-bannerimg' name='bannerimg'>
       <label for='sel-bannertype'>Banner type</label>
       <select id='sel-bannertype' name='bannertype'>
         {{autoselitem .prj.BannerType 0 "Repeated"}}
