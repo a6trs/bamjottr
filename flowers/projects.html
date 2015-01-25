@@ -14,7 +14,10 @@
     {{range .prjpage}}
       <div class='project-summary'>
         <div class='bg {{bannerclass .BannerType}}' style='{{if ne .BannerImg ""}}background-image: url(/uploads/banner_img/{{.BannerImg}}){{end}}'></div>
-        <p class='small-title big-shadow'><a href='/project/{{.ID}}' style='{{if ne .TitleColour ""}}color: {{.TitleColour}}{{end}}'>{{.Title}}</a></p>
+        <p>
+          <a class='small-title big-shadow' href='/project/{{.ID}}' style='{{if ne .TitleColour ""}}color: {{.TitleColour}}{{end}}'>{{.Title}}</a>&nbsp;
+          {{statebadge .State}}
+        </p>
         <span class='grey'>Created by {{(account .Author).Name}} at {{timestr .CreatedAt}}</span>
         <br>
         <span class='small-shadow' style='{{if ne .TitleColour ""}}color: {{.TitleColour}}{{end}}'>{{.Desc}}</span>

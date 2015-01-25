@@ -13,7 +13,7 @@ import (
 var sstore = sessions.NewCookieStore([]byte("these-are-very-important-yeah"))
 
 var templates, _ = template.New("IDONTKNOW").
-	Funcs(template.FuncMap{"validuser": validUser, "account": account, "project": project, "post": post, "bannerclass": soil.ClassOfBannerType, "statename": soil.StateName, "raw": rawhtml, "timestr": timestr, "nutshell": nutshell, "autoselitem": autoSelectItem}).
+	Funcs(template.FuncMap{"validuser": validUser, "account": account, "project": project, "post": post, "bannerclass": soil.ClassOfBannerType, "statebadge": stateBadge, "raw": rawhtml, "timestr": timestr, "nutshell": nutshell, "autoselitem": autoSelectItem}).
 	ParseFiles("flowers/_html_head.html", "flowers/_topbar.html", "flowers/_icons.svg", "flowers/_project_banner.html", "flowers/_emojify.html", "flowers/index.html", "flowers/login.html", "flowers/signup.html", "flowers/profedit.html", "flowers/projects.html", "flowers/project_edit.html", "flowers/project_page.html", "flowers/post_create.html", "flowers/post_page.html")
 
 func validUser(aid int) bool {
@@ -50,6 +50,11 @@ func post(pstid int) *soil.Project {
 	} else {
 		return nil
 	}
+}
+
+func stateBadge(state int) template.HTML {
+	bg, name := soil.StateStyles(state)
+	return rawhtml(fmt.Sprintf("<span class='am-badge am-round am-text-default' style='background-color: %s'>%s</span>", bg, name))
 }
 
 func rawhtml(s string) template.HTML {

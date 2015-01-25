@@ -55,28 +55,28 @@ const (
 	BI_Cover
 )
 
-func StateName(state int) string {
+func StateStyles(state int) (string, string) {
 	switch state {
 	case Project_StUnsaved:
-		return "Unsaved"
+		return "#999999", "Unsaved"
 	case Project_StPurposed:
-		return "Purposed"
+		return "#0dcfc7", "Purposed"
 	case Project_StSeeded:
-		return "Seeded"
+		return "#9f8e0e", "Seeded"
 	case Project_StRooting:
-		return "Rooting"
+		return "#e2d904", "Rooting"
 	case Project_StSprouts:
-		return "Sprouts"
+		return "#76e331", "Sprouts"
 	case Project_StLawn:
-		return "Lawn"
+		return "#01dd63", "Lawn"
 	case Project_StWood:
-		return "Wood"
+		return "#16bc08", "Wood"
 	case Project_StJungle:
-		return "Jungle"
+		return "#049b27", "Jungle"
 	case Project_StForest:
-		return "Forest"
+		return "#046009", "Forest"
 	default:
-		return "Unknown"
+		return "#999999", "Unknown"
 	}
 }
 
