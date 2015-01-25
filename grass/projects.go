@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"time"
 )
 
 func ProjectsHandler(w http.ResponseWriter, r *http.Request) {
@@ -54,9 +55,10 @@ func ProjectEditHandler(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		} else {
-			bannerimg_file = handler.Filename
+			// Build a file name with timestamp in order to prevent conflicts.
+			bannerimg_file = strconv.FormatInt(time.Now().Unix(), 36) + "-" + handler.Filename
 			defer file.Close()
-			newfile, err := os.OpenFile("./uploads/banner_img/"+handler.Filename,
+			newfile, err := os.OpenFile("./uploads/banner_img/"+bannerimg_file,
 				os.O_WRONLY|os.O_CREATE, 0666)
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
