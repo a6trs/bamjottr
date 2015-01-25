@@ -100,11 +100,11 @@
   margin-left: 0px;
 }
 
-.big-shadow, .banner.project-banner .desc {
+.small-shadow, .banner.project-banner .desc {
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
 }
 
-.small-shadow, .banner.project-banner .big-title {
+.big-shadow, .banner.project-banner .big-title {
   text-shadow: 2px 3px 1px rgba(0, 0, 0, 0.3);
 }
 
