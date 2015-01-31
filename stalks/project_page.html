@@ -13,9 +13,9 @@
     <div class='am-dropdown' data-am-dropdown>
       <button id='sight-btn' class='am-btn am-btn-default am-dropdown-toggle' data-am-dropdown-toggle><span class='am-icon-star-o'></span>&nbsp;Glance&nbsp;<span class='am-icon-caret-down'></span></button>
       <ul class='am-dropdown-content'>
-        <li><a class='cursor-pointer' id='sight-sel-0'><span class='am-icon-star-o'></span>&nbsp;Glance</a></li>
-        <li><a class='cursor-pointer' id='sight-sel-1'><span class='am-icon-star-half-o'></span>&nbsp;Watch</a></li>
-        <li><a class='cursor-pointer' id='sight-sel-2'><span class='am-icon-star'></span>&nbsp;Stare</a></li>
+        <li><a class='cursor-pointer' id='sight-sel-0'><span class='am-icon-star-o'></span>&nbsp;Glance&nbsp;<span class='am-badge'>{{index .allsights 0}}</span></a></li>
+        <li><a class='cursor-pointer' id='sight-sel-1'><span class='am-icon-star-half-o'></span>&nbsp;Watch&nbsp;<span class='am-badge'>{{index .allsights 1}}</span></a></li>
+        <li><a class='cursor-pointer' id='sight-sel-2'><span class='am-icon-star'></span>&nbsp;Stare&nbsp;<span class='am-badge'>{{index .allsights 2}}</span></a></li>
       </ul>
     </div>
     <div class='postlist_area'>

@@ -90,6 +90,23 @@ func (this *Sight) Save(key int) error {
 		this.Level = level
 	}
 	// Update last updated time
+	// stackoverflow.com/q/2218662
 	_, err := db.Exec(`UPDATE `+this.TableName+` SET account = ?, target = ?, level = ?, updated_at = datetime('now') WHERE id = ?`, this.Account, this.Target, this.Level, this.ID)
 	return err
+}
+
+func SightCount(tbl string, tgtid int) map[int]int {
+	ct := map[int]int{}
+	rows, err := db.Query(`SELECT level FROM ` + tbl + ` WHERE target = ?`, tgtid)
+	if err != nil {
+		return nil
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var level int
+		if rows.Scan(&level) == nil {
+			ct[level]++
+		}
+	}
+	return ct
 }

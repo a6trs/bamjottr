@@ -1,12 +1,25 @@
 sight_items = [];
 sight_dropdown = document.getElementById('sight-btn');
-sight_lastsel = 0;
+sight_lastsel = -1;
+
+var remove_last = function (s, pattern) {
+  return s.substr(0, s.lastIndexOf(pattern));
+};
+
+var inc_text = function (el, inc) {
+  el.innerHTML = (parseInt(el.innerHTML) + inc).toString();
+};
 
 disp_sel_sight_item = function (idx) {
   'use strict';
-  sight_dropdown.innerHTML = sight_items[idx].innerHTML + "&nbsp;<span class='am-icon-caret-down'></span>";
-  sight_items[sight_lastsel].classList.remove('am-active');
-  sight_items[idx].classList.add('am-active');
+  // Remove contents after the last '&nbsp;'
+  sight_dropdown.innerHTML = remove_last(sight_items[idx].innerHTML, '&nbsp;') + "&nbsp;<span class='am-icon-caret-down'></span>";
+  if (sight_lastsel !== -1) {
+    sight_items[sight_lastsel].parentElement.classList.remove('am-active');
+    inc_text(sight_items[sight_lastsel].getElementsByClassName('am-badge')[0], -1);
+  }
+  sight_items[idx].parentElement.classList.add('am-active');
+  inc_text(sight_items[idx].getElementsByClassName('am-badge')[0], 1);
   sight_lastsel = idx;
 };
 
