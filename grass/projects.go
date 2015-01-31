@@ -115,5 +115,11 @@ func ProjectPageHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	renderTemplate(w, r, "project_page", map[string]interface{}{"prj": prj, "pstpage": pstpage})
+	sightstate := 0
+	sight := &soil.Sight{Account: accountInSession(w, r), Target: prjid, TableName: "sights_projects"}
+	err = sight.Load(soil.KEY_Sight_AccountAndTarget)
+	if err == nil {
+		sightstate = sight.Level
+	}
+	renderTemplate(w, r, "project_page", map[string]interface{}{"prj": prj, "pstpage": pstpage, "sightstate": sightstate})
 }

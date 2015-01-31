@@ -32,6 +32,7 @@ const (
 	KEY_Sight_ID = iota
 	KEY_Sight_Account
 	KEY_Sight_Target
+	KEY_Sight_AccountAndTarget
 	KEY_Sight_Level // Used when creating new records
 )
 
@@ -52,6 +53,8 @@ func (this *Sight) Find(key int) int {
 		row = db.QueryRow(`SELECT id FROM `+this.TableName+` WHERE account = ?`, this.Account)
 	case KEY_Sight_Target:
 		row = db.QueryRow(`SELECT id FROM `+this.TableName+` WHERE target = ?`, this.Target)
+	case KEY_Sight_AccountAndTarget:
+		row = db.QueryRow(`SELECT id FROM `+this.TableName+` WHERE account = ? AND target = ?`, this.Account, this.Target)
 	case KEY_Sight_Level:
 		row = db.QueryRow(`SELECT id FROM `+this.TableName+` WHERE level = ?`, this.Level)
 	default:

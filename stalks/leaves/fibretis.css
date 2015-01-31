@@ -85,6 +85,10 @@
   color: #888;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .banner {
   padding: 0.8em 0px 0.8em 24px;
   font-size: 18px;

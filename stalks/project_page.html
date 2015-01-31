@@ -10,6 +10,14 @@
     <hr>
     <a class='am-btn am-btn-warning' href='/project_edit/{{.prj.ID}}'><span class='am-icon-pencil'></span>&nbsp;Edit info</a>
     <a class='am-btn am-btn-success' href='/post_create/{{.prj.ID}}'><span class='am-icon-paint-brush'></span>&nbsp;New post</a>
+    <div class='am-dropdown' data-am-dropdown>
+      <button id='sight-btn' class='am-btn am-btn-default am-dropdown-toggle' data-am-dropdown-toggle><span class='am-icon-star-o'></span>&nbsp;Glance&nbsp;<span class='am-icon-caret-down'></span></button>
+      <ul class='am-dropdown-content'>
+        <li><a class='cursor-pointer' id='sight-sel-0'><span class='am-icon-star-o'></span>&nbsp;Glance</a></li>
+        <li><a class='cursor-pointer' id='sight-sel-1'><span class='am-icon-star-half-o'></span>&nbsp;Watch</a></li>
+        <li><a class='cursor-pointer' id='sight-sel-2'><span class='am-icon-star'></span>&nbsp;Stare</a></li>
+      </ul>
+    </div>
     <div class='postlist_area'>
     {{range .pstpage}}
       <h1><a href='/post/{{.ID}}'>{{.Title}}</a> {{priobadge .Priority}}</h1>
@@ -19,5 +27,7 @@
     {{end}}
     </div>
     {{template "_emojify.html"}}
+    <script type='application/javascript' src='/leaves/sight-dropdown.js'></script>
+    <script>init_sight_dropdown({{.prj.ID}}); disp_sel_sight_item({{.sightstate}});</script>
   </body>
 </html>
