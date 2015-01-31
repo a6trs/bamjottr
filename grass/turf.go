@@ -14,7 +14,7 @@ var sstore = sessions.NewCookieStore([]byte("these-are-very-important-yeah"))
 
 var templates, _ = template.New("IDONTKNOW").
 	Funcs(template.FuncMap{"validuser": validUser, "account": account, "project": project, "post": post, "bannerclass": soil.ClassOfBannerType, "statebadge": stateBadge, "priobadge": priorityBadge, "raw": rawhtml, "timestr": timestr, "nutshell": nutshell, "autoselitem": autoSelectItem}).
-	ParseFiles("flowers/_html_head.html", "flowers/_topbar.html", "flowers/_icons.svg", "flowers/_project_banner.html", "flowers/_emojify.html", "flowers/index.html", "flowers/login.html", "flowers/signup.html", "flowers/profedit.html", "flowers/projects.html", "flowers/project_edit.html", "flowers/project_page.html", "flowers/post_create.html", "flowers/post_page.html")
+	ParseFiles("stalks/_html_head.html", "stalks/_topbar.html", "stalks/_icons.svg", "stalks/_project_banner.html", "stalks/_emojify.html", "stalks/index.html", "stalks/login.html", "stalks/signup.html", "stalks/profedit.html", "stalks/projects.html", "stalks/project_edit.html", "stalks/project_page.html", "stalks/post_create.html", "stalks/post_page.html")
 
 func validUser(aid int) bool {
 	acc := &soil.Account{ID: aid}
