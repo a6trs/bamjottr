@@ -2,32 +2,34 @@ package grass
 
 import (
 	"../soil"
-	"github.com/gorilla/mux"
 	"net/http"
 	"strconv"
 )
 
 func SightHandler(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	tgttype := vars["tgttype"]
-	tgtid, err := strconv.Atoi(vars["tgtid"])
+	tgttype, err := strconv.Atoi(r.FormValue("tgttype"))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	silvl, err := strconv.Atoi(vars["silvl"])
+	tgtid, err := strconv.Atoi(r.FormValue("tgtid"))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	// TODO: Check whether the target exists
-	// TODO: Map `tgttype` to table names
-	sight := &soil.Sight{Account: accountInSession(w, r), Target: tgtid, TableName: "sights_" + tgttype}
+	level, err := strconv.Atoi(r.FormValue("level"))
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	// TODO: Move this map (or, array) somewhere else
+	tblname := []string{"sights_projects", "sights_posts"}
+	sight := &soil.Sight{Account: accountInSession(w, r), Target: tgtid, TableName: tblname[tgttype]}
 	err = sight.Load(soil.KEY_Sight_AccountAndTarget)
 	if err != nil {
-		sight = &soil.Sight{ID: -1, Account: accountInSession(w, r), Target: tgtid, Level: silvl, TableName: "sights_" + tgttype}
+		sight = &soil.Sight{ID: -1, Account: accountInSession(w, r), Target: tgtid, Level: level, TableName: tblname[tgttype]}
 	} else {
-		sight.Level = silvl
+		sight.Level = level
 	}
 	if err = sight.Save(soil.KEY_Sight_ID); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

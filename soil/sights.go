@@ -10,7 +10,7 @@ type Sight struct {
 	Account   int
 	Target    int
 	Level     int
-	CreatedAt time.Time
+	UpdatedAt time.Time
 	// Stores which table it belongs to.
 	TableName string
 }
@@ -21,7 +21,7 @@ func init_Sight(targetTable string) error {
 		account INTEGER,
 		target INTEGER,
 		level INTEGER,
-		created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+		updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
 		FOREIGN KEY(account) REFERENCES accounts(id)
 		FOREIGN KEY(target) REFERENCES ` + targetTable + `(id)
 	)`)
@@ -74,7 +74,7 @@ func (this *Sight) Load(key int) error {
 		return ErrRowNotFound
 	}
 	row := db.QueryRow(`SELECT * FROM `+this.TableName+` WHERE id = ?`, this.ID)
-	return row.Scan(&this.ID, &this.Account, &this.Target, &this.Level, &this.CreatedAt)
+	return row.Scan(&this.ID, &this.Account, &this.Target, &this.Level, &this.UpdatedAt)
 }
 
 func (this *Sight) Save(key int) error {
@@ -89,6 +89,7 @@ func (this *Sight) Save(key int) error {
 		this.ID = this.Find(KEY_Sight_Level)
 		this.Level = level
 	}
-	_, err := db.Exec(`UPDATE `+this.TableName+` SET account = ?, target = ?, level = ? WHERE id = ?`, this.Account, this.Target, this.Level, this.ID)
+	// Update last updated time
+	_, err := db.Exec(`UPDATE `+this.TableName+` SET account = ?, target = ?, level = ?, updated_at = datetime('now') WHERE id = ?`, this.Account, this.Target, this.Level, this.ID)
 	return err
 }
