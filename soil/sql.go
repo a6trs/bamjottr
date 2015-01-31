@@ -38,5 +38,13 @@ func InitDatabase() error {
 	if err != nil {
 		return err
 	}
+	err = init_Sight("projects")
+	if err != nil {
+		return err
+	}
+	err = init_Sight("posts")
+	if err != nil {
+		return err
+	}
 	return nil
 }

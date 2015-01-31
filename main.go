@@ -29,6 +29,9 @@ func main() {
 	// Posts-related [grass/posts.go]
 	r.HandleFunc("/post_create/{prjid:[0-9]+}", grass.PostCreateHandler)
 	r.HandleFunc("/post/{pstid:[0-9]+}", grass.PostPageHandler)
+	// Sights-related [grass/sights.go]
+	// TODO: Restrict this URL to POST requests only
+	r.HandleFunc("/sight/{tgttype}/{tgtid:[0-9]+}", grass.SightHandler)
 	// Static file server
 	r.PathPrefix("/leaves").Handler(http.FileServer(http.Dir("./stalks/")))
 	r.PathPrefix("/uploads").Handler(http.FileServer(http.Dir("./")))
