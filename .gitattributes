@@ -1,0 +1,8 @@
+# Linguist custom overrides
+# External Javascript libraries
+flowers/leaves/emojify.js/* linguist-vendored
+flowers/leaves/jscolor/* linguist-vendored
+flowers/leaves/medium-editor/* linguist-vendored
+
+# Automated tools
+tools/* linguist-vendored
