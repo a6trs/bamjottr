@@ -13,7 +13,12 @@
     <a class='am-btn am-btn-default' href='/post_edit/{{.ID}}'><span class='am-icon-pencil'></span>&nbsp;Edit</a>
     <div class='post_area'>
       <h1>{{.Title}} {{priobadge .Priority}}</h1>
-      <p class='grey'>Posted by {{(account .Author).Name}} at {{timestr .CreatedAt}}</p>
+      <p class='grey'>
+        Posted by {{(account .Author).Name}} at {{timestr .CreatedAt}}
+        {{if not (sametime .CreatedAt .UpdatedAt)}}
+          <span class='updatetime-highlight'> · Updated at {{timestr .UpdatedAt}}</span>
+        {{end}}
+      </p>
       <div class='post_body'>
         {{raw .Body}}
       </div>

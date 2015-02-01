@@ -13,6 +13,7 @@ type Post struct {
 	Author    int
 	Priority  int
 	CreatedAt time.Time
+	UpdatedAt time.Time
 }
 
 func init_Post() error {
@@ -24,6 +25,7 @@ func init_Post() error {
 		author INTEGER,
 		priority INTEGER,
 		created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+		updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
 		FOREIGN KEY(prjid) REFERENCES projects(id),
 		FOREIGN KEY(author) REFERENCES accounts(id)
 	)`)
@@ -66,7 +68,7 @@ func (this *Post) Load(key int) error {
 		return ErrRowNotFound
 	}
 	row := db.QueryRow(`SELECT * FROM posts WHERE id = ?`, this.ID)
-	return row.Scan(&this.ID, &this.ProjectID, &this.Title, &this.Body, &this.Author, &this.Priority, &this.CreatedAt)
+	return row.Scan(&this.ID, &this.ProjectID, &this.Title, &this.Body, &this.Author, &this.Priority, &this.CreatedAt, &this.UpdatedAt)
 }
 
 func (this *Post) Save(key int) error {
@@ -81,7 +83,7 @@ func (this *Post) Save(key int) error {
 		this.ID = this.Find(KEY_Post_Priority)
 		this.Priority = prio
 	}
-	_, err := db.Exec(`UPDATE posts SET prjid = ?, title = ?, body = ?, author = ?, priority = ? WHERE id = ?`, this.ProjectID, this.Title, this.Body, this.Author, this.Priority, this.ID)
+	_, err := db.Exec(`UPDATE posts SET prjid = ?, title = ?, body = ?, author = ?, priority = ?, updated_at = datetime('now') WHERE id = ?`, this.ProjectID, this.Title, this.Body, this.Author, this.Priority, this.ID)
 	return err
 }
 
@@ -94,7 +96,7 @@ func PostsForProject(prjid int) []*Post {
 	defer rows.Close()
 	for rows.Next() {
 		post := &Post{}
-		if rows.Scan(&post.ID, &post.ProjectID, &post.Title, &post.Body, &post.Author, &post.Priority, &post.CreatedAt) == nil {
+		if rows.Scan(&post.ID, &post.ProjectID, &post.Title, &post.Body, &post.Author, &post.Priority, &post.CreatedAt, &post.UpdatedAt) == nil {
 			posts = append(posts, post)
 		}
 	}

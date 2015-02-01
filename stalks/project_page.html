@@ -22,7 +22,12 @@
       <div class='postlist_area am-u-md-9'>
       {{range .pstpage}}
         <h1><a href='/post/{{.ID}}'>{{.Title}}</a> {{priobadge .Priority}}</h1>
-        <p class='grey'>Posted by {{(account .Author).Name}} at {{timestr .CreatedAt}}</p>
+        <p class='grey'>
+          Posted by {{(account .Author).Name}} at {{timestr .CreatedAt}}
+          {{if not (sametime .CreatedAt .UpdatedAt)}}
+            <span class='updatetime-highlight'> · Updated at {{timestr .UpdatedAt}}</span>
+          {{end}}
+        </p>
         <p>{{nutshell .Body}}</p>
         <hr>
       {{end}}

@@ -18,7 +18,7 @@ var templates, _ = template.New("IDONTKNOW").
 	"bannerclass": soil.ClassOfBannerType, "statebadge": stateBadge, "priobadge": priorityBadge,
 	"sum": int_sum, "difference": int_difference, "product": int_product,
 	"plus": int_sum, "minus": int_difference, "mul": int_product,
-	"raw": rawhtml, "timestr": timestr, "nutshell": nutshell, "autoselitem": autoSelectItem}).
+	"raw": rawhtml, "timestr": timestr, "sametime": sametime, "nutshell": nutshell, "autoselitem": autoSelectItem}).
 	ParseFiles("stalks/_html_head.html", "stalks/_topbar.html", "stalks/_icons.svg", "stalks/_project_banner.html", "stalks/_emojify.html", "stalks/index.html", "stalks/login.html", "stalks/signup.html", "stalks/profedit.html", "stalks/projects.html", "stalks/project_edit.html", "stalks/project_page.html", "stalks/post_edit.html", "stalks/post_page.html")
 
 func validUser(aid int) bool {
@@ -85,6 +85,11 @@ func rawhtml(s string) template.HTML {
 
 func timestr(t time.Time) string {
 	return t.Format(time.RFC822)
+}
+
+func sametime(t1, t2 time.Time) bool {
+	d := t1.Unix() - t2.Unix()
+	return (d > -5) && (d < 5)
 }
 
 func nutshell(body string) string {
