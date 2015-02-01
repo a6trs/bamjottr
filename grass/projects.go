@@ -172,5 +172,7 @@ func ProjectPageHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		allsights[sight.Level]++
 	}
-	renderTemplate(w, r, "project_page", map[string]interface{}{"prj": prj, "pstpage": pstpage, "allsights": allsights, "cursight": sight.Level})
+	// Related project recommendations
+	alsolike_prjs := soil.RecommendProjects(prjid)
+	renderTemplate(w, r, "project_page", map[string]interface{}{"prj": prj, "pstpage": pstpage, "allsights": allsights, "cursight": sight.Level, "alsolike_prjs": alsolike_prjs})
 }

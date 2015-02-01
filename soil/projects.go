@@ -2,6 +2,8 @@ package soil
 
 import (
 	"database/sql"
+	"strconv"
+	"strings"
 	"time"
 )
 
@@ -144,4 +146,33 @@ func NumberOfProjects() int {
 	} else {
 		return -1
 	}
+}
+
+func RecommendProjects(prjid int) []int {
+	var list []int
+	// TODO: Improve this algorithm whenever possible
+	// Here we just retrieve all the people whose sight level for this project
+	//   is not zero and find what else they stared at (or you can say starred)
+	rs1, err := db.Query(`SELECT account FROM sights_projects WHERE target = ? AND level <> 0`, prjid)
+	if err != nil {
+		return nil
+	}
+	defer rs1.Close()
+	gazers := []string{}
+	for rs1.Next() {
+		var a int
+		if rs1.Scan(&a) == nil {
+			gazers = append(gazers, strconv.Itoa(a))
+		}
+	}
+	// stackoverflow.com/q/1503959
+	rs2, err := db.Query(`SELECT target FROM sights_projects WHERE account IN (?) AND target <> ? GROUP BY target ORDER BY count(*) DESC LIMIT 3`, strings.Join(gazers, ","), prjid)
+	defer rs2.Close()
+	for rs2.Next() {
+		var a int
+		if rs2.Scan(&a) == nil {
+			list = append(list, a)
+		}
+	}
+	return list
 }
