@@ -166,7 +166,10 @@ func RecommendProjects(prjid int) []int {
 		}
 	}
 	// stackoverflow.com/q/1503959
-	rs2, err := db.Query(`SELECT target FROM sights_projects WHERE account IN (?) AND target <> ? GROUP BY target ORDER BY count(*) DESC LIMIT 3`, strings.Join(gazers, ","), prjid)
+	rs2, err := db.Query(`SELECT target FROM sights_projects WHERE account IN (`+strings.Join(gazers, ",")+`) AND target <> ? GROUP BY target ORDER BY count(*) DESC LIMIT 3`, prjid)
+	if err != nil {
+		return nil
+	}
 	defer rs2.Close()
 	for rs2.Next() {
 		var a int
