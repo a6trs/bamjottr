@@ -14,11 +14,11 @@ var sstore = sessions.NewCookieStore([]byte("these-are-very-important-yeah"))
 
 var templates, _ = template.New("IDONTKNOW").
 	Funcs(template.FuncMap{
-		"validuser": validUser, "account": account, "project": project, "post": post,
-		"bannerclass": soil.ClassOfBannerType, "statebadge": stateBadge, "priobadge": priorityBadge,
-		"sum": int_sum, "difference": int_difference, "product": int_product,
-		"plus": int_sum, "minus": int_difference, "mul": int_product,
-		"raw": rawhtml, "timestr": timestr, "nutshell": nutshell, "autoselitem": autoSelectItem}).
+	"validuser": validUser, "account": account, "project": project, "post": post,
+	"bannerclass": soil.ClassOfBannerType, "statebadge": stateBadge, "priobadge": priorityBadge,
+	"sum": int_sum, "difference": int_difference, "product": int_product,
+	"plus": int_sum, "minus": int_difference, "mul": int_product,
+	"raw": rawhtml, "timestr": timestr, "nutshell": nutshell, "autoselitem": autoSelectItem}).
 	ParseFiles("stalks/_html_head.html", "stalks/_topbar.html", "stalks/_icons.svg", "stalks/_project_banner.html", "stalks/_emojify.html", "stalks/index.html", "stalks/login.html", "stalks/signup.html", "stalks/profedit.html", "stalks/projects.html", "stalks/project_edit.html", "stalks/project_page.html", "stalks/post_create.html", "stalks/post_page.html")
 
 func validUser(aid int) bool {

@@ -97,7 +97,7 @@ func (this *Sight) Save(key int) error {
 
 func SightCount(tbl string, tgtid int) map[int]int {
 	ct := map[int]int{}
-	rows, err := db.Query(`SELECT level FROM ` + tbl + ` WHERE target = ?`, tgtid)
+	rows, err := db.Query(`SELECT level FROM `+tbl+` WHERE target = ?`, tgtid)
 	if err != nil {
 		return nil
 	}
