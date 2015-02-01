@@ -115,12 +115,18 @@ func ProjectPageHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+	// Get counts of different sight levels. The type is `map[int]int`
 	allsights := soil.SightCount("sights_projects", prjid)
-	sightstate := 0
 	sight := &soil.Sight{Account: accountInSession(w, r), Target: prjid, TableName: "sights_projects"}
 	err = sight.Load(soil.KEY_Sight_AccountAndTarget)
-	if err == nil {
-		sightstate = sight.Level
+	if err != nil {
+		// No records found, create a new 'Glance' record.
+		sight = &soil.Sight{Account: accountInSession(w, r), Target: prjid, TableName: "sights_projects", Level: soil.Sight_Glance}
+		if err = sight.Save(soil.KEY_Sight_ID); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		allsights[sight.Level]++
 	}
-	renderTemplate(w, r, "project_page", map[string]interface{}{"prj": prj, "pstpage": pstpage, "allsights": allsights, "sightstate": sightstate})
+	renderTemplate(w, r, "project_page", map[string]interface{}{"prj": prj, "pstpage": pstpage, "allsights": allsights, "cursight": sight.Level})
 }

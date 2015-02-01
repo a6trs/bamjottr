@@ -15,11 +15,12 @@ disp_sel_sight_item = function (idx) {
   // Remove contents after the last '&nbsp;'
   sight_dropdown.innerHTML = remove_last(sight_items[idx].innerHTML, '&nbsp;') + "&nbsp;<span class='am-icon-caret-down'></span>";
   if (sight_lastsel !== -1) {
+    // Decrease the count of the last selected item by 1
     sight_items[sight_lastsel].parentElement.classList.remove('am-active');
     inc_text(sight_items[sight_lastsel].getElementsByClassName('am-badge')[0], -1);
+    inc_text(sight_items[idx].getElementsByClassName('am-badge')[0], 1);
   }
   sight_items[idx].parentElement.classList.add('am-active');
-  inc_text(sight_items[idx].getElementsByClassName('am-badge')[0], 1);
   sight_lastsel = idx;
 };
 
