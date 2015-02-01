@@ -23,6 +23,19 @@
         <span class='small-shadow' style='{{if ne .TitleColour ""}}color: {{.TitleColour}}{{end}}'>{{.Desc}}</span>
       </div>
     {{end}}
+    <ul class='am-pagination'>
+      <li class='{{if eq .curpage 1}}am-disabled{{end}}'><a href='/projects/{{minus .curpage 1}}'>&laquo;</a></li>
+      {{$curpage := .curpage}}
+      {{$pagecnt := .pagecnt}}
+      {{range .navpages}}
+      {{if eq . -1}}
+        <li><a>...</a></li>
+      {{else}}
+        <li class='{{if eq . $curpage}}am-active{{end}}'><a href='/projects/{{.}}'>{{.}}</a></li>
+      {{end}}
+      {{end}}
+      <li class='{{if eq .curpage $pagecnt}}am-disabled{{end}}'><a href='/projects/{{plus .curpage 1}}'>&raquo;</a></li>
+    </ul>
     <!-- Use scripts to move backgrounds to correct positions -->
     <script type='application/javascript' src='/leaves/bg.js'></script>
     <script type='application/javascript'>

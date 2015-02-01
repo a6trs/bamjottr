@@ -11,15 +11,59 @@ import (
 	"time"
 )
 
+const PROJECTS_PER_PAGE = 10
+
+func navigationDisplay(curpage, pagecnt int) []int {
+	p := []int{1}  // 1 always stays here
+	if 6 > curpage { // 6 = 1 + 2(omitted) + 2(near)
+		for i := 2; i <= curpage; i++ {
+			p = append(p, i)
+		}
+	} else {
+		p = append(p, -1)
+		for i := curpage - 2; i <= curpage; i++ {
+			p = append(p, i)
+		}
+	}
+	if pagecnt - 5 < curpage {
+		for i := curpage + 1; i <= pagecnt; i++ {
+			p = append(p, i)
+		}
+	} else {
+		for i := curpage + 1; i <= curpage + 2; i++ {
+			p = append(p, i)
+		}
+		p = append(p, -1)
+		p = append(p, pagecnt)
+	}
+	return p
+}
+
 func ProjectsHandler(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	curpage, err := strconv.Atoi(vars["page"])
+	if err != nil {
+		curpage = 1
+	}
 	prjpage := make([]*soil.Project, 0)
-	for i := 1; i <= 10; i++ {
+	for i := curpage * PROJECTS_PER_PAGE - 9; i <= curpage * PROJECTS_PER_PAGE; i++ {
 		prj := &soil.Project{ID: i}
 		if prj.Load(soil.KEY_Project_ID) == nil {
 			prjpage = append(prjpage, prj)
 		}
 	}
-	renderTemplate(w, r, "projects", map[string]interface{}{"prjpage": prjpage})
+	prjcnt := soil.NumberOfProjects()
+	pagecnt := 0
+	// XXX: Is there a better way to do this?
+	if prjcnt != -1 {
+		if prjcnt % PROJECTS_PER_PAGE == 0 {
+			pagecnt = prjcnt / PROJECTS_PER_PAGE
+		} else {
+			pagecnt = prjcnt / PROJECTS_PER_PAGE + 1
+		}
+	}
+	navpages := navigationDisplay(curpage, pagecnt)
+	renderTemplate(w, r, "projects", map[string]interface{}{"prjpage": prjpage, "curpage": curpage, "pagecnt": pagecnt, "navpages": navpages})
 }
 
 func ProjectEditHandler(w http.ResponseWriter, r *http.Request) {

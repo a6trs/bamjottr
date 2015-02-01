@@ -135,3 +135,13 @@ func (this *Project) Save(key int) error {
 	_, err := db.Exec(`UPDATE projects SET title = ?, desc = ?, author = ?, state = ?, title_clr = ?, banner_img = ?, banner_type = ? WHERE id = ?`, this.Title, this.Desc, this.Author, this.State, this.TitleColour, this.BannerImg, this.BannerType, this.ID)
 	return err
 }
+
+func NumberOfProjects() int {
+	var n int
+	row := db.QueryRow(`SELECT COUNT(*) FROM projects`)
+	if row.Scan(&n) == nil {
+		return n
+	} else {
+		return -1
+	}
+}
