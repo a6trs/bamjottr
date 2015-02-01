@@ -28,7 +28,8 @@ func main() {
 	r.HandleFunc("/project/{prjid:[0-9]+}", grass.ProjectPageHandler)
 	r.HandleFunc("/project_edit/{prjid:[0-9]+}", grass.ProjectEditHandler)
 	// Posts-related [grass/posts.go]
-	r.HandleFunc("/post_create/{prjid:[0-9]+}", grass.PostCreateHandler)
+	r.HandleFunc("/post_create/{prjid:[0-9]+}", grass.PostEditHandler)
+	r.HandleFunc("/post_edit/{pstid:[0-9]+}", grass.PostEditHandler)
 	r.HandleFunc("/post/{pstid:[0-9]+}", grass.PostPageHandler)
 	// Sights-related [grass/sights.go]
 	// TODO: Restrict this URL to POST requests only

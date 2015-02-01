@@ -19,7 +19,7 @@ var templates, _ = template.New("IDONTKNOW").
 	"sum": int_sum, "difference": int_difference, "product": int_product,
 	"plus": int_sum, "minus": int_difference, "mul": int_product,
 	"raw": rawhtml, "timestr": timestr, "nutshell": nutshell, "autoselitem": autoSelectItem}).
-	ParseFiles("stalks/_html_head.html", "stalks/_topbar.html", "stalks/_icons.svg", "stalks/_project_banner.html", "stalks/_emojify.html", "stalks/index.html", "stalks/login.html", "stalks/signup.html", "stalks/profedit.html", "stalks/projects.html", "stalks/project_edit.html", "stalks/project_page.html", "stalks/post_create.html", "stalks/post_page.html")
+	ParseFiles("stalks/_html_head.html", "stalks/_topbar.html", "stalks/_icons.svg", "stalks/_project_banner.html", "stalks/_emojify.html", "stalks/index.html", "stalks/login.html", "stalks/signup.html", "stalks/profedit.html", "stalks/projects.html", "stalks/project_edit.html", "stalks/project_page.html", "stalks/post_edit.html", "stalks/post_page.html")
 
 func validUser(aid int) bool {
 	acc := &soil.Account{ID: aid}
@@ -47,13 +47,13 @@ func project(prjid int) *soil.Project {
 	}
 }
 
-func post(pstid int) *soil.Project {
-	pst := &soil.Project{ID: pstid}
+func post(pstid int) *soil.Post {
+	pst := &soil.Post{ID: pstid}
 	err := pst.Load(soil.KEY_Post_ID)
 	if err == nil {
 		return pst
 	} else {
-		return nil
+		return &soil.Post{Title: "", Body: "Write something to tell them...", Priority: soil.Post_PrioHighest}
 	}
 }
 

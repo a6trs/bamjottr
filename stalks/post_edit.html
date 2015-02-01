@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Write Post - Fibretis</title>
+    <title>Write / Edit Post - Fibretis</title>
     {{template "_html_head.html"}}
     <script type='application/javascript' src='/leaves/meduim-editor/medium-editor.min.js'></script>
     <link rel='stylesheet' type='text/css' href='/leaves/meduim-editor/medium-editor.min.css'>
@@ -18,9 +18,11 @@
       {{if .crpstmsg}}
         <div id='errmsg' class='bg-danger'>{{.crpstmsg}}</div>
       {{end}}
-      <input type='text' class='am-form-field' id='ipt-title' name='title' placeholder='Post title'>
-      <input type='number' class='am-form-field' id='ipt-prio' name='prio' placeholder='Priority' min='0' max='23332'>
-      <div class='am-form-field' id='txt-body'>Write something to tell them...</div>
+      {{with (post .pstid)}}
+        <input type='text' class='am-form-field' id='ipt-title' name='title' placeholder='Post title' value='{{.Title}}'>
+        <input type='number' class='am-form-field' id='ipt-prio' name='prio' placeholder='Priority' min='0' max='23332' value='{{.Priority}}'>
+        <div class='am-form-field' id='txt-body'>{{raw .Body}}</div>
+      {{end}}
       <input type='hidden' id='ipt-body' name='body'>
       <button type='submit' class='am-btn am-btn-default' onclick='completeform_post();'>Post</button>
     </form>
