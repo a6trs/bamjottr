@@ -36,3 +36,12 @@ func InvitationLink(project, receiver int) string {
 		return ""
 	}
 }
+
+func InvitationByToken(token int64) *Invitation {
+	row := db.QueryRow(`SELECT * FROM invitations WHERE token = ?`, token)
+	rsvp := &Invitation{}
+	if row.Scan(&rsvp.ID, &rsvp.Project, &rsvp.Receiver, &rsvp.Token) != nil {
+		return nil
+	}
+	return rsvp
+}

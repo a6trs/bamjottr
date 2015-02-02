@@ -4,6 +4,8 @@ import (
 	"database/sql"
 	"errors"
 	_ "github.com/mattn/go-sqlite3"
+	"math/rand"
+	"time"
 )
 
 type Storable interface {
@@ -60,5 +62,6 @@ func InitDatabase() error {
 	if err != nil {
 		return err
 	}
+	rand.Seed(time.Now().UnixNano())
 	return nil
 }

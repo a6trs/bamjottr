@@ -30,6 +30,7 @@ func main() {
 	r.HandleFunc("/project_edit/{prjid:[0-9]+}", grass.ProjectEditHandler)
 	r.HandleFunc("/invite/{prjid:[0-9]+}", grass.InviteHandler)
 	r.HandleFunc("/invite/{prjid:[0-9]+}/{aid:[0-9]+}", grass.InviteHandler)
+	r.HandleFunc("/answer_invitation/{token}", grass.AnswerInvitationHandler)
 	// Posts-related [grass/posts.go]
 	r.HandleFunc("/post_create/{prjid:[0-9]+}", grass.PostEditHandler)
 	r.HandleFunc("/post_edit/{pstid:[0-9]+}", grass.PostEditHandler)

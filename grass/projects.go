@@ -200,5 +200,22 @@ func InviteHandler(w http.ResponseWriter, r *http.Request) {
 		if soil.SendNotification(accountInSession(w, r), aid, s) != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
+		http.Redirect(w, r, "/invite/"+vars["prjid"], http.StatusFound)
+	}
+}
+
+func AnswerInvitationHandler(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	token, err := strconv.ParseInt(vars["token"], 36, 64)
+	if err != nil {
+		http.Redirect(w, r, "/notifications", http.StatusSeeOther)
+		return
+	}
+	rsvp := soil.InvitationByToken(token)
+	if rsvp != nil && rsvp.Receiver == accountInSession(w, r) {
+		soil.AddMembership(rsvp.Project, rsvp.Receiver)
+		http.Redirect(w, r, "/project/"+strconv.Itoa(rsvp.Project), http.StatusFound)
+	} else {
+		http.Redirect(w, r, "/notifications", http.StatusSeeOther)
 	}
 }
