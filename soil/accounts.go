@@ -3,9 +3,9 @@ package soil
 import (
 	"database/sql"
 	"fmt"
+	"golang.org/x/crypto/bcrypt"
 	"strconv"
 	"strings"
-	"golang.org/x/crypto/bcrypt"
 	"time"
 )
 

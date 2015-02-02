@@ -30,7 +30,7 @@ func InvitationLink(project, receiver int) string {
 	token := rand.Int63()
 	_, err := db.Exec(`INSERT INTO invitations (project, receiver, token) VALUES (?, ?, ?)`, project, receiver, token)
 	if err == nil {
-		return "/answer_invitation/"+strconv.FormatInt(token, 36)
+		return "/answer_invitation/" + strconv.FormatInt(token, 36)
 	} else {
 		// fmt.Println("Oops.", err.Error())
 		return ""

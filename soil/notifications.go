@@ -6,12 +6,12 @@ import (
 )
 
 type Notification struct {
-	ID          int
-	Text string
-	Sender      int
-	Receiver int
-	IsRead bool
-	CreatedAt   time.Time
+	ID        int
+	Text      string
+	Sender    int
+	Receiver  int
+	IsRead    bool
+	CreatedAt time.Time
 }
 
 func init_Notification() error {
