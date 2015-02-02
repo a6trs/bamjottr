@@ -34,9 +34,7 @@
       </div>
       <aside id='also-like' class='am-u-md-3'>
         <h2>You may also like</h2>
-        {{range .alsolike_prjs}}
-        {{(project .).Title}}<hr>
-        {{end}}
+        {{template "alsolike_projects" .prj.ID}}
       </aside>
     </section>
     {{template "_emojify.html"}}

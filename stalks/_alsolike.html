@@ -1,0 +1,11 @@
+{{define "alsolike_projects"}}
+  {{range (recommendedPrjs .)}}
+    <a href='/project/{{.ID}}'>{{.Title}}</a><hr>
+  {{end}}
+{{end}}
+
+{{define "alsolike_posts"}}
+  {{range (recommendedPsts .)}}
+    <a href='/post/{{.ID}}'>{{.Title}}</a><hr>
+  {{end}}
+{{end}}
