@@ -61,8 +61,16 @@ func post(pstid int) *soil.Post {
 }
 
 func outsider(project *soil.Project, aid int) bool {
-	fmt.Println(project.Author, aid)
-	return project.Author != aid
+	members, err := soil.GetMembers(project.ID)
+	if err != nil {
+		return false
+	}
+	for _, member := range members {
+		if aid == member {
+			return false
+		}
+	}
+	return true
 }
 
 func outsider_colour(project *soil.Project) string {
