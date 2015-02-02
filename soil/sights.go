@@ -110,3 +110,23 @@ func SightCount(tbl string, tgtid int) map[int]int {
 	}
 	return ct
 }
+
+// Counts the number of all different levels of sights.
+// At the same time, it creates a new glance-level sight
+//   if target has never been visited by account before.
+// By counting glance-level sights, we can know how many unique people visited that.
+func VisitAndCountSights(table string, tgtid int, account int) (map[int]int, int) {
+	allsights := SightCount("sights_"+table, tgtid)
+	sight := &Sight{Account: account, Target: tgtid, TableName: "sights_"+table}
+	err := sight.Load(KEY_Sight_AccountAndTarget)
+	if err != nil {
+		// No records found, create a new 'Glance' record.
+		sight = &Sight{Account: account, Target: tgtid, TableName: "sights_"+table, Level: Sight_Glance}
+		if err = sight.Save(KEY_Sight_ID); err != nil {
+			// Oops.
+			return map[int]int{}, -1
+		}
+		allsights[sight.Level]++
+	}
+	return allsights, sight.Level
+}
