@@ -2,6 +2,9 @@ package soil
 
 import (
 	"database/sql"
+	"fmt"
+	"strconv"
+	"strings"
 	"golang.org/x/crypto/bcrypt"
 	"time"
 )
@@ -107,16 +110,31 @@ func UpdateLastReadTime(aid int) error {
 }
 
 // TODO: Replace this with a searching method. The LIKE operator in SQL can be used to do this.
-func FindAccounts() ([]*Account, error) {
-	rows, err := db.Query(`SELECT * FROM accounts`)
+func FindAccounts(prjid, exclusion int) ([]*Account, error) {
+	// Retrieve all accounts that have been invited
+	rows1, err := db.Query(`SELECT account FROM invitations WHERE project = ?`, prjid)
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
+	defer rows1.Close()
+	list := []string{}
+	for rows1.Next() {
+		var a int
+		if rows1.Scan(&a) == nil {
+			list = append(list, strconv.Itoa(a))
+		}
+	}
+	list = append(list, strconv.Itoa(exclusion))
+	// Find all accounts
+	rows2, err := db.Query(fmt.Sprintf(`SELECT * FROM accounts WHERE id NOT IN (%s)`, strings.Join(list, ",")))
+	if err != nil {
+		return nil, err
+	}
+	defer rows2.Close()
 	ret := []*Account{}
-	for rows.Next() {
+	for rows2.Next() {
 		a := &Account{}
-		if rows.Scan(&a.ID, &a.Name, &a.Email, &a.Password, &a.LastRead) == nil {
+		if rows2.Scan(&a.ID, &a.Name, &a.Email, &a.Password, &a.LastRead) == nil {
 			ret = append(ret, a)
 		}
 	}
