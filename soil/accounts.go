@@ -3,6 +3,7 @@ package soil
 import (
 	"database/sql"
 	"golang.org/x/crypto/bcrypt"
+	"time"
 )
 
 type Account struct {
@@ -10,6 +11,8 @@ type Account struct {
 	Name     string
 	Email    string
 	Password []byte
+	// The time when the notifications page was last visited
+	LastRead time.Time
 }
 
 func init_Account() error {
@@ -17,7 +20,8 @@ func init_Account() error {
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
 		name VARCHAR(32),
 		email VARCHAR(64),
-		password VARCHAR(64)
+		password VARCHAR(64),
+		lastread DATETIME
 	)`)
 	return err
 }
@@ -56,7 +60,7 @@ func (this *Account) Load(key int) error {
 		return ErrRowNotFound
 	}
 	row := db.QueryRow(`SELECT * FROM accounts WHERE id = ?`, this.ID)
-	return row.Scan(&this.ID, &this.Name, &this.Email, &this.Password)
+	return row.Scan(&this.ID, &this.Name, &this.Email, &this.Password, &this.LastRead)
 }
 
 func (this *Account) Save(key int) error {
@@ -75,9 +79,9 @@ func (this *Account) Save(key int) error {
 	changingPswd := this.Password[0] == Account_PswdChangeMark
 	var err error
 	if changingPswd {
-		_, err = db.Exec(`UPDATE accounts SET name = ?, email = ?, password = ? WHERE id = ?`, this.Name, this.Email, this.Password[1:], this.ID)
+		_, err = db.Exec(`UPDATE accounts SET name = ?, email = ?, lastread = ?, password = ? WHERE id = ?`, this.Name, this.Email, this.LastRead, this.Password[1:], this.ID)
 	} else {
-		_, err = db.Exec(`UPDATE accounts SET name = ?, email = ? WHERE id = ?`, this.Name, this.Email, this.ID)
+		_, err = db.Exec(`UPDATE accounts SET name = ?, email = ?, lastread = ? WHERE id = ?`, this.Name, this.Email, this.LastRead, this.ID)
 	}
 	return err
 }

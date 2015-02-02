@@ -24,6 +24,12 @@
       <div class="am-dropdown" data-am-dropdown="{boundary: '.am-topbar'}">
         <button class="am-btn am-btn-default am-topbar-btn am-btn-sm am-dropdown-toggle" data-am-dropdown-toggle>{{(account .).Name}} <span class="am-icon-caret-down"></span></button>
         <ul class="am-dropdown-content">
+          {{$unread := (newNotificationsCount (account .))}}
+          {{if $unread}}
+            <li><a href='#'><span class='am-icon-bell'>&nbsp;Notifications <span class='am-badge am-badge-round am-text-default'>{{$unread}}</span></a></li>
+          {{else}}
+            <li><a href='/profedit'><span class='am-icon-bell-o'>&nbsp;Notifications</a></li>
+          {{end}}
           <li><a href='/profedit'><span class='am-icon-pencil'>&nbsp;Edit Profile</a></li>
           <li><a href='/logout'><span class='am-icon-sign-out'>&nbsp;Log Out</a></li>
         </ul>
