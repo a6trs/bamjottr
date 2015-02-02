@@ -68,7 +68,12 @@ func recommendedPrjs(from int) []*soil.Project {
 }
 
 func recommendedPsts(from int) []*soil.Post {
-	return []*soil.Post{}
+	rcmlist := soil.RecommendPosts(from)
+	ret := make([]*soil.Post, len(rcmlist))
+	for i, id := range rcmlist {
+		ret[i] = post(id)
+	}
+	return ret
 }
 
 func stateBadge(state int) template.HTML {

@@ -11,7 +11,8 @@
     <hr>
     <a class='am-btn' href='/project/{{(project .ProjectID).ID}}'>Back</a>
     <a class='am-btn am-btn-default' href='/post_edit/{{.ID}}'><span class='am-icon-pencil'></span>&nbsp;Edit</a>
-    <div class='post_area'>
+    <br>
+    <div class='post_area am-u-md-9'>
       <h1>{{.Title}} {{priobadge .Priority}}</h1>
       <p class='grey'>
         Posted by {{(account .Author).Name}} at {{timestr .CreatedAt}}
@@ -23,6 +24,12 @@
         {{raw .Body}}
       </div>
     </div>
+    <aside id='also-like' class='am-u-md-3'>
+      <h2>You may also like</h2>
+      {{template "alsolike_projects" .ProjectID}}
+      <hr class='bold'>
+      {{template "alsolike_posts" .ID}}
+    </aside>
     {{end}}
     {{template "_emojify.html"}}
   </body>

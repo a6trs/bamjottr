@@ -2,6 +2,8 @@ package soil
 
 import (
 	"database/sql"
+	"strconv"
+	"strings"
 	"time"
 )
 
@@ -101,4 +103,34 @@ func PostsForProject(prjid int) []*Post {
 		}
 	}
 	return posts
+}
+
+func RecommendPosts(prjid int) []int {
+	var list []int
+	// TODO: Shall we merge this with `RecommendProjects`?
+	// For comments see `RecommendProjects` [soil/projects.go].
+	rs1, err := db.Query(`SELECT account FROM sights_posts WHERE target = ? AND level <> 0`, prjid)
+	if err != nil {
+		return nil
+	}
+	defer rs1.Close()
+	gazers := []string{}
+	for rs1.Next() {
+		var a int
+		if rs1.Scan(&a) == nil {
+			gazers = append(gazers, strconv.Itoa(a))
+		}
+	}
+	rs2, err := db.Query(`SELECT target FROM sights_posts WHERE account IN (`+strings.Join(gazers, ",")+`) AND target <> ? GROUP BY target ORDER BY count(*) DESC LIMIT 5`, prjid)
+	if err != nil {
+		return nil
+	}
+	defer rs2.Close()
+	for rs2.Next() {
+		var a int
+		if rs2.Scan(&a) == nil {
+			list = append(list, a)
+		}
+	}
+	return list
 }

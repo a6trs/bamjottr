@@ -85,6 +85,11 @@
   color: #888;
 }
 
+hr.bold {
+  border: 2px solid;
+  border-radius: 2px;
+}
+
 .cursor-pointer {
   cursor: pointer;
 }
