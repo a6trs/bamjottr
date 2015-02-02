@@ -96,3 +96,9 @@ func NotificationsFor(aid int) []*Notification {
 	}
 	return ret
 }
+
+// XXX: Do not expose this method to anything outside the program.
+func SendNotification(from, to int, text string) error {
+	n := &Notification{Sender: from, Receiver: to, Text: text}
+	return n.Save(KEY_Notification_ID)
+}

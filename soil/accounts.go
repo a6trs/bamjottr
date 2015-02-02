@@ -105,3 +105,24 @@ func UpdateLastReadTime(aid int) error {
 	_, err := db.Exec(`UPDATE accounts SET lastread = datetime('now') WHERE id = ?`, aid)
 	return err
 }
+
+// TODO: Replace this with a searching method. The LIKE operator in SQL can be used to do this.
+func FindAccounts() ([]*Account, error) {
+	rows, err := db.Query(`SELECT * FROM accounts`)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	ret := []*Account{}
+	for rows.Next() {
+		a := &Account{}
+		if rows.Scan(&a.ID, &a.Name, &a.Email, &a.Password, &a.LastRead) == nil {
+			ret = append(ret, a)
+		}
+	}
+	if len(ret) == 0 {
+		return ret, ErrAccountsNotFound
+	} else {
+		return ret, nil
+	}
+}

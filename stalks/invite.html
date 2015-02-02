@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<!-- This page needs a lot of improvements, like styles, modal dialogues, etc. -->
+<html>
+  <head>
+    <title>Invite - Fibretis</title>
+    {{template "_html_head.html"}}
+  </head>
+  <body>
+    {{template "_topbar.html" .aid}}
+    {{template "_project_banner.html" .prj}}
+    <hr>
+    {{/* TOOD: Enable searching for accounts */}}
+    {{/* TODO: Display a modal dialogue for confirmation */}}
+    {{$prjid := .prj.ID}}
+    {{range .allaccounts}}
+      <a href='/invite/{{$prjid}}/{{.ID}}'>{{.Name}}</a>
+    {{end}}
+  </body>
+</html>

@@ -169,3 +169,36 @@ func ProjectPageHandler(w http.ResponseWriter, r *http.Request) {
 	allsights, cursight := soil.VisitAndCountSights("projects", prjid, accountInSession(w, r))
 	renderTemplate(w, r, "project_page", map[string]interface{}{"prj": prj, "pstpage": pstpage, "allsights": allsights, "cursight": cursight})
 }
+
+func InviteHandler(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	// Load the project
+	prjid, err := strconv.Atoi(vars["prjid"])
+	if err != nil {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
+	prj := &soil.Project{ID: prjid}
+	if err := prj.Load(soil.KEY_Project_ID); err != nil {
+		http.Redirect(w, r, "/projects", http.StatusSeeOther)
+		return
+	}
+	// Check whether an account ID has been passed in
+	aid, err := strconv.Atoi(vars["aid"])
+	if err != nil {
+		// Show the list.
+		allaccounts, _ := soil.FindAccounts()
+		renderTemplate(w, r, "invite", map[string]interface{}{"prj": prj, "allaccounts": allaccounts})
+	} else {
+		// Send an invitation to account #`aid`.
+		link := soil.InvitationLink(prjid, aid)
+		if link == "" {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		s := fmt.Sprintf("Hey! Join us, the team of <a href='/project/%d'>%s</a>! Follow <a href='%s'>this link</a> to confirm.", prj.ID, prj.Title, link)
+		if soil.SendNotification(accountInSession(w, r), aid, s) != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+	}
+}
