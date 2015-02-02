@@ -15,6 +15,7 @@ var sstore = sessions.NewCookieStore([]byte("these-are-very-important-yeah"))
 var templates, _ = template.New("IDONTKNOW").
 	Funcs(template.FuncMap{
 	"validuser": validUser, "account": account, "project": project, "post": post,
+	"outsider": outsider, "outsider_colour": outsider_colour,
 	"recommendedPrjs": recommendedPrjs, "recommendedPsts": recommendedPsts,
 	"bannerclass": soil.ClassOfBannerType, "statebadge": stateBadge, "priobadge": priorityBadge,
 	"sum": int_sum, "difference": int_difference, "product": int_product,
@@ -56,6 +57,15 @@ func post(pstid int) *soil.Post {
 	} else {
 		return &soil.Post{Title: "", Body: "Write something to tell them...", Priority: soil.Post_PrioHighest}
 	}
+}
+
+func outsider(project *soil.Project, aid int) bool {
+	fmt.Println(project.Author, aid)
+	return project.Author != aid
+}
+
+func outsider_colour(project *soil.Project) string {
+	return "#ccf"
 }
 
 func recommendedPrjs(from int) []*soil.Project {

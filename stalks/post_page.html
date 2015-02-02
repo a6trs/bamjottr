@@ -15,7 +15,13 @@
     {{template "_sight_dropdown.html" $allsights}}
     <br>
     <div class='post_area am-u-md-9'>
-      <h1>{{.Title}} {{priobadge .Priority}}</h1>
+      {{$isOutsider := (outsider (project .ProjectID) .Author)}}
+      <h1>
+        <a href='/post/{{.ID}}'>{{.Title}}</a>
+        {{if $isOutsider}}<span class='am-badge am-radius am-text-sm'>Outsider</span>
+        {{else}}{{priobadge .Priority}}
+        {{end}}
+      </h1>
       <p class='grey'>
         Posted by {{(account .Author).Name}} at {{timestr .CreatedAt}}
         {{if not (sametime .CreatedAt .UpdatedAt)}}

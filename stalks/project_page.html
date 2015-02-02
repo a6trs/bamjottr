@@ -13,16 +13,25 @@
     {{template "_sight_dropdown.html" .allsights}}
     <section id='project-maincontent' class='am-g'>
       <div class='postlist_area am-u-md-9'>
+      {{$prj := .prj}}
       {{range .pstpage}}
-        <h1><a href='/post/{{.ID}}'>{{.Title}}</a> {{priobadge .Priority}}</h1>
-        <p class='grey'>
-          Posted by {{(account .Author).Name}} at {{timestr .CreatedAt}}
-          {{if not (sametime .CreatedAt .UpdatedAt)}}
-            <span class='updatetime-highlight'> · Updated at {{timestr .UpdatedAt}}</span>
-          {{end}}
-        </p>
-        <p>{{nutshell .Body}}</p>
-        <hr>
+        {{$isOutsider := (outsider $prj .Author)}}
+        <div class='post-summary' style='{{if $isOutsider}}background-color: {{outsider_colour $prj}}{{end}}'>
+          <h1>
+            <a href='/post/{{.ID}}'>{{.Title}}</a>
+            {{if $isOutsider}}<span class='am-badge am-radius am-text-sm'>Outsider</span>
+            {{else}}{{priobadge .Priority}}
+            {{end}}
+          </h1>
+          <p class='grey'>
+            Posted by {{(account .Author).Name}} at {{timestr .CreatedAt}}
+            {{if not (sametime .CreatedAt .UpdatedAt)}}
+              <span class='updatetime-highlight'> · Updated at {{timestr .UpdatedAt}}</span>
+            {{end}}
+          </p>
+          <p>{{nutshell .Body}}</p>
+        </div>
+        <hr class='no-margin'>
       {{end}}
       </div>
       <aside id='also-like' class='am-u-md-3'>

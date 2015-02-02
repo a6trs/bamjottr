@@ -64,6 +64,18 @@
   z-index: -1;
 }
 
+.post-summary {
+  padding: 16px;
+}
+
+.post-summary h1 {
+  margin: 0 0 1.6rem;
+}
+
+.no-margin {
+  margin: 0px;
+}
+
 /* Derived from Bootstrap 3 */
 .bg-danger {
   margin: 12px;
