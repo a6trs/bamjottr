@@ -98,3 +98,10 @@ func (this *Account) ChangePassword(pwd string) {
 		this.Password = append([]byte{Account_PswdChangeMark}, passhash...)
 	}
 }
+
+// Just a helper function, can be replaced by Find() and Save() calls.
+// This simplifies the process of updating `LastRead` field a lot.
+func UpdateLastReadTime(aid int) error {
+	_, err := db.Exec(`UPDATE accounts SET lastread = datetime('now') WHERE id = ?`, aid)
+	return err
+}

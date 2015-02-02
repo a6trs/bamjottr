@@ -220,3 +220,9 @@ func ProfEditHandler(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, r.URL.Path, http.StatusFound)
 	}
 }
+
+func NotificationsHandler(w http.ResponseWriter, r *http.Request) {
+	// Reset last read time of the account
+	soil.UpdateLastReadTime(accountInSession(w, r))
+	renderTemplate(w, r, "notifications", map[string]interface{}{})
+}

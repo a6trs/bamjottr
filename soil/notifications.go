@@ -80,3 +80,19 @@ func NewNotificationsCount(account *Account) int {
 		return n
 	}
 }
+
+func NotificationsFor(aid int) []*Notification {
+	ret := make([]*Notification, 0)
+	rows, err := db.Query(`SELECT * FROM notifications WHERE receiver = ? ORDER BY created_at DESC`, aid)
+	if err != nil {
+		return ret
+	}
+	defer rows.Close()
+	for rows.Next() {
+		n := &Notification{}
+		if rows.Scan(&n.ID, &n.Text, &n.Sender, &n.Receiver, &n.IsRead, &n.CreatedAt) == nil {
+			ret = append(ret, n)
+		}
+	}
+	return ret
+}

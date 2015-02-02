@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Notifications - Fibretis</title>
+    {{template "_html_head.html"}}
+  </head>
+  <body>
+    {{template "_topbar.html" .aid}}
+    <p class='big-title'>Notifications</p>
+    {{range (notificationsFor .aid)}}
+    <div class='notification'>
+      {{(account .Sender).Name}}<span class='grey'> at {{timestr .CreatedAt}}</span>
+      <p class='notification-text'>{{raw .Text}}</p>
+    </div><hr>
+    {{end}}
+  </body>
+</html>

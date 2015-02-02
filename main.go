@@ -20,6 +20,7 @@ func main() {
 	r.HandleFunc("/signup/{return}", grass.SignupHandler).Methods("GET")
 	r.HandleFunc("/logout", grass.LogoutHandler)
 	r.HandleFunc("/logout/{return}", grass.LogoutHandler)
+	r.HandleFunc("/notifications", grass.NotificationsHandler)
 	r.HandleFunc("/profedit", grass.ProfEditHandler)
 	// Projects-related [grass/projects.go]
 	r.HandleFunc("/projects", grass.ProjectsHandler)

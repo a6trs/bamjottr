@@ -76,6 +76,14 @@
   margin: 0px;
 }
 
+.notification {
+  padding: 16px;
+}
+
+.notification-text {
+  font-size: 1.5em;
+}
+
 /* Derived from Bootstrap 3 */
 .bg-danger {
   margin: 12px;

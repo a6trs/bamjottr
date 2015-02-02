@@ -26,7 +26,7 @@
         <ul class="am-dropdown-content">
           {{$unread := (newNotificationsCount (account .))}}
           {{if $unread}}
-            <li><a href='#'><span class='am-icon-bell'>&nbsp;Notifications <span class='am-badge am-badge-round am-text-default'>{{$unread}}</span></a></li>
+            <li><a href='/notifications'><span class='am-icon-bell'>&nbsp;Notifications <span class='am-badge am-badge-round am-text-default'>{{$unread}}</span></a></li>
           {{else}}
             <li><a href='/profedit'><span class='am-icon-bell-o'>&nbsp;Notifications</a></li>
           {{end}}
