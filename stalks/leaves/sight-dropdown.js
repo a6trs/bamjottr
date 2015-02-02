@@ -2,6 +2,13 @@ sight_items = [];
 sight_dropdown = document.getElementById('sight-btn');
 sight_lastsel = -1;
 
+// Target type: 0 = project, 1 = post
+// See [grass/sights.go] for details
+sight_target = {
+  PROJECT: 0,
+  POST: 1
+};
+
 var remove_last = function (s, pattern) {
   return s.substr(0, s.lastIndexOf(pattern));
 };
@@ -24,7 +31,7 @@ disp_sel_sight_item = function (idx) {
   sight_lastsel = idx;
 };
 
-init_sight_dropdown = function (prjid) {
+init_sight_dropdown = function (targetType, targetId) {
   'use strict';
 
   var sight_selctd = function (idx) {
@@ -35,9 +42,7 @@ init_sight_dropdown = function (prjid) {
     xhr.open('POST', '/sight');
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.setRequestHeader('Connection', 'close');
-    // Target type: 0 = project, 1 = post
-    // See [grass/sights.go] for details
-    var params = 'tgttype=0&tgtid=' + prjid + '&level=' + idx;
+    var params = 'tgttype=' + targetType + '&tgtid=' + targetId + '&level=' + idx;
     xhr.send(params);
     disp_sel_sight_item(idx);
   };

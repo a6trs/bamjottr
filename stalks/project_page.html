@@ -10,14 +10,7 @@
     <hr>
     <a class='am-btn am-btn-warning' href='/project_edit/{{.prj.ID}}'><span class='am-icon-pencil'></span>&nbsp;Edit info</a>
     <a class='am-btn am-btn-success' href='/post_create/{{.prj.ID}}'><span class='am-icon-paint-brush'></span>&nbsp;New post</a>
-    <div class='am-dropdown' data-am-dropdown>
-      <button id='sight-btn' class='am-btn am-btn-default am-dropdown-toggle' data-am-dropdown-toggle><span class='am-icon-star-o'></span>&nbsp;Glance&nbsp;<span class='am-icon-caret-down'></span></button>
-      <ul class='am-dropdown-content'>
-        <li><a class='cursor-pointer' id='sight-sel-0'><span class='am-icon-star-o'></span>&nbsp;Glance&nbsp;<span class='am-badge'>{{index .allsights 0}}</span></a></li>
-        <li><a class='cursor-pointer' id='sight-sel-1'><span class='am-icon-star-half-o'></span>&nbsp;Watch&nbsp;<span class='am-badge'>{{index .allsights 1}}</span></a></li>
-        <li><a class='cursor-pointer' id='sight-sel-2'><span class='am-icon-star'></span>&nbsp;Stare&nbsp;<span class='am-badge'>{{index .allsights 2}}</span></a></li>
-      </ul>
-    </div>
+    {{template "_sight_dropdown.html" .allsights}}
     <section id='project-maincontent' class='am-g'>
       <div class='postlist_area am-u-md-9'>
       {{range .pstpage}}
@@ -39,6 +32,6 @@
     </section>
     {{template "_emojify.html"}}
     <script type='application/javascript' src='/leaves/sight-dropdown.js'></script>
-    <script>init_sight_dropdown({{.prj.ID}}); disp_sel_sight_item({{.cursight}});</script>
+    <script>init_sight_dropdown(sight_target.PROJECT, {{.prj.ID}}); disp_sel_sight_item({{.cursight}});</script>
   </body>
 </html>

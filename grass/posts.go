@@ -69,5 +69,19 @@ func PostPageHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusNotFound)
 		return
 	}
-	renderTemplate(w, r, "post_page", map[string]interface{}{"post": post})
+	// Get counts of different sight levels.
+	// TODO: Merge this with code in `ProjectPageHandler` [grass/projects.go]
+	allsights := soil.SightCount("sights_posts", pstid)
+	sight := &soil.Sight{Account: accountInSession(w, r), Target: pstid, TableName: "sights_posts"}
+	err = sight.Load(soil.KEY_Sight_AccountAndTarget)
+	if err != nil {
+		// No records found, create a new 'Glance' record.
+		sight = &soil.Sight{Account: accountInSession(w, r), Target: pstid, TableName: "sights_posts", Level: soil.Sight_Glance}
+		if err = sight.Save(soil.KEY_Sight_ID); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		allsights[sight.Level]++
+	}
+	renderTemplate(w, r, "post_page", map[string]interface{}{"post": post, "allsights": allsights, "cursight": sight.Level})
 }

@@ -6,11 +6,13 @@
   </head>
   <body>
     {{template "_topbar.html" .aid}}
+    {{$allsights := .allsights}}
     {{with .post}}
     {{template "_project_banner.html" (project .ProjectID)}}
     <hr>
     <a class='am-btn' href='/project/{{(project .ProjectID).ID}}'>Back</a>
     <a class='am-btn am-btn-default' href='/post_edit/{{.ID}}'><span class='am-icon-pencil'></span>&nbsp;Edit</a>
+    {{template "_sight_dropdown.html" $allsights}}
     <br>
     <div class='post_area am-u-md-9'>
       <h1>{{.Title}} {{priobadge .Priority}}</h1>
@@ -32,5 +34,7 @@
     </aside>
     {{end}}
     {{template "_emojify.html"}}
+    <script type='application/javascript' src='/leaves/sight-dropdown.js'></script>
+    <script>init_sight_dropdown(sight_target.POST, {{.post.ID}}); disp_sel_sight_item({{.cursight}});</script>
   </body>
 </html>

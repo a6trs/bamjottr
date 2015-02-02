@@ -1,0 +1,9 @@
+{{/* Usage: {{template "_sight_dropdown.html" IntMapOrSlice_CountsOfDifferentSightLevels}} */}}
+<div class='am-dropdown' data-am-dropdown>
+  <button id='sight-btn' class='am-btn am-btn-default am-dropdown-toggle' data-am-dropdown-toggle><span class='am-icon-star-o'></span>&nbsp;Glance&nbsp;<span class='am-icon-caret-down'></span></button>
+  <ul class='am-dropdown-content'>
+    <li><a class='cursor-pointer' id='sight-sel-0'><span class='am-icon-star-o'></span>&nbsp;Glance&nbsp;<span class='am-badge'>{{index . 0}}</span></a></li>
+    <li><a class='cursor-pointer' id='sight-sel-1'><span class='am-icon-star-half-o'></span>&nbsp;Watch&nbsp;<span class='am-badge'>{{index . 1}}</span></a></li>
+    <li><a class='cursor-pointer' id='sight-sel-2'><span class='am-icon-star'></span>&nbsp;Stare&nbsp;<span class='am-badge'>{{index . 2}}</span></a></li>
+  </ul>
+</div>
