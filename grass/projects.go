@@ -78,6 +78,7 @@ func ProjectEditHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	if r.Method == "GET" {
+		// Retrieve basic project data.
 		var prj *soil.Project
 		if prjid != -1 {
 			prj = &soil.Project{ID: prjid}
@@ -88,7 +89,12 @@ func ProjectEditHandler(w http.ResponseWriter, r *http.Request) {
 		} else {
 			prj = &soil.Project{ID: -1}
 		}
-		renderTemplate(w, r, "project_edit", map[string]interface{}{"prj": prj})
+		// Find all team members of this project.
+		members, err := soil.GetMembers(prjid)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+		renderTemplate(w, r, "project_edit", map[string]interface{}{"prj": prj, "members": members})
 	} else {
 		r.ParseMultipartForm(16 << 20) // 16 MB of memory
 		file, handler, err := r.FormFile("bannerimg")

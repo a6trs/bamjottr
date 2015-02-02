@@ -149,3 +149,55 @@ func NumberOfProjects() int {
 func RecommendProjects(prjid int) []int {
 	return Recommend(prjid, "projects", 3)
 }
+
+// ========
+//  Project Team Related Section
+// ========
+
+type ProjectTeamMembership struct {
+	ID int
+	ProjectID int
+	AccountID int
+}
+
+func init_ProjectTeamMembership() error {
+	_, err := db.Exec(`CREATE TABLE IF NOT EXISTS projects_membership (
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		project_id INTEGER,
+		account_id INTEGER,
+		FOREIGN KEY(project_id) REFERENCES projects(id),
+		FOREIGN KEY(account_id) REFERENCES accounts(id)
+	)`)
+	return err
+}
+
+func AddMembership(prjid, aid int) error {
+	_, err := db.Exec(`INSERT INTO projects_membership (project_id, account_id) VALUES (?, ?)`, prjid, aid)
+	return err
+}
+
+// Call with **great care**!! This operation can **not** be undone!
+func RemoveMembership(prjid, aid int) error {
+	_, err := db.Exec(`DELETE FROM projects_membership WHERE project_id = ? AND account_id = ?`, prjid, aid)
+	return err
+}
+
+func GetMembers(prjid int) ([]int, error) {
+	rows, err := db.Query(`SELECT account_id FROM projects_membership WHERE project_id = ?`, prjid)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	ret := []int{}
+	for rows.Next() {
+		var aid int
+		if rows.Scan(&aid) == nil {
+			ret = append(ret, aid)
+		}
+	}
+	if len(ret) == 0 {
+		return ret, ErrMembersNotFound
+	} else {
+		return ret, nil
+	}
+}

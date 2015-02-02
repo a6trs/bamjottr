@@ -13,6 +13,7 @@ type Storable interface {
 }
 
 var ErrRowNotFound = errors.New("Storable.Load: Not found")
+var ErrMembersNotFound = errors.New("GetMembers: No members found u^u")
 
 var db *sql.DB
 
@@ -31,6 +32,10 @@ func InitDatabase() error {
 		return err
 	}
 	err = init_Project()
+	if err != nil {
+		return err
+	}
+	err = init_ProjectTeamMembership()
 	if err != nil {
 		return err
 	}

@@ -76,6 +76,10 @@
   margin: 0px;
 }
 
+.members-list {
+  padding: 16px;
+}
+
 .notification {
   padding: 16px;
 }
