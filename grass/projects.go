@@ -187,9 +187,8 @@ func InviteHandler(w http.ResponseWriter, r *http.Request) {
 	// Check whether an account ID has been passed in
 	aid, err := strconv.Atoi(vars["aid"])
 	if err != nil {
-		// Show the list.
-		allaccounts, _ := soil.FindAccounts(prjid, accountInSession(w, r))
-		renderTemplate(w, r, "invite", map[string]interface{}{"prj": prj, "allaccounts": allaccounts})
+		// Show the page
+		renderTemplate(w, r, "invite", map[string]interface{}{"prj": prj})
 	} else {
 		// Send an invitation to account #`aid`.
 		link := soil.InvitationLink(prjid, aid)

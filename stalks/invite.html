@@ -22,13 +22,7 @@
     </div>
     <div id='search_results'>
     </div>
-    {{$prjid := .prj.ID}}
-    {{range .allaccounts}}
-      <a href='/invite/{{$prjid}}/{{.Account.ID}}'>{{.Account.Name}}</a>
-      {{if .Invited}}<span class='am-badge am-round badge-invite'>Invited</span>{{end}}
-      <br>
-    {{end}}
     <script src='/leaves/account-search.js'></script>
-    <script>invite_search_init(0);</script>
+    <script>invite_search_init({{.prj.ID}});</script>
   </body>
 </html>
