@@ -109,6 +109,10 @@
   color: #888;
 }
 
+.badge-invite {
+  background-color: #e0f;
+}
+
 hr.bold {
   border: 2px solid;
   border-radius: 2px;

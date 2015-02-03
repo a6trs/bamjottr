@@ -13,7 +13,9 @@
     {{/* TODO: Display a modal dialogue for confirmation */}}
     {{$prjid := .prj.ID}}
     {{range .allaccounts}}
-      <a href='/invite/{{$prjid}}/{{.ID}}'>{{.Name}}</a>
+      <a href='/invite/{{$prjid}}/{{.Account.ID}}'>{{.Account.Name}}</a>
+      {{if .Invited}}<span class='am-badge am-round badge-invite'>Invited</span>{{end}}
+      <br>
     {{end}}
   </body>
 </html>

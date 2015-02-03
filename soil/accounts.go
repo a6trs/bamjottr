@@ -109,19 +109,26 @@ func UpdateLastReadTime(aid int) error {
 	return err
 }
 
+type InvitationState struct {
+	Account *Account
+	Invited bool
+}
+
 // TODO: Replace this with a searching method. The LIKE operator in SQL can be used to do this.
-func FindAccounts(prjid, exclusion int) ([]*Account, error) {
+func FindAccounts(prjid, exclusion int) ([]InvitationState, error) {
+	ret := []InvitationState{}
 	// Retrieve all accounts that have been invited
-	rows1, err := db.Query(`SELECT account FROM invitations WHERE project = ?`, prjid)
+	rows1, err := db.Query(`SELECT accounts.* FROM accounts INNER JOIN invitations ON project = ? AND accounts.id = invitations.receiver`, prjid)
 	if err != nil {
 		return nil, err
 	}
 	defer rows1.Close()
 	list := []string{}
 	for rows1.Next() {
-		var a int
-		if rows1.Scan(&a) == nil {
-			list = append(list, strconv.Itoa(a))
+		a := &Account{}
+		if rows1.Scan(&a.ID, &a.Name, &a.Email, &a.Password, &a.LastRead) == nil {
+			list = append(list, strconv.Itoa(a.ID))
+			ret = append(ret, InvitationState{a, true})
 		}
 	}
 	list = append(list, strconv.Itoa(exclusion))
@@ -131,11 +138,10 @@ func FindAccounts(prjid, exclusion int) ([]*Account, error) {
 		return nil, err
 	}
 	defer rows2.Close()
-	ret := []*Account{}
 	for rows2.Next() {
 		a := &Account{}
 		if rows2.Scan(&a.ID, &a.Name, &a.Email, &a.Password, &a.LastRead) == nil {
-			ret = append(ret, a)
+			ret = append(ret, InvitationState{a, false})
 		}
 	}
 	if len(ret) == 0 {
