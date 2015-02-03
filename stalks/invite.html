@@ -9,13 +9,26 @@
     {{template "_topbar.html" .aid}}
     {{template "_project_banner.html" .prj}}
     <hr>
+    <p class='small-title'>Invite someone to join your team...</p>
     {{/* TOOD: Enable searching for accounts */}}
     {{/* TODO: Display a modal dialogue for confirmation */}}
+    <div class='am-g'>
+      <div class='am-u-sm-1 am-u-md-2'>&nbsp;</div>
+      <div class='am-u-sm-10 am-u-md-8 am-input-group'>
+        <span class='am-input-group-label am-icon-search'></span>
+        <input id='search_ipt_name' type='text' class='am-form-field' placeholder='Name'>
+      </div>
+      <div class='am-u-sm-1 am-u-md-2'>&nbsp;</div>
+    </div>
+    <div id='search_results'>
+    </div>
     {{$prjid := .prj.ID}}
     {{range .allaccounts}}
       <a href='/invite/{{$prjid}}/{{.Account.ID}}'>{{.Account.Name}}</a>
       {{if .Invited}}<span class='am-badge am-round badge-invite'>Invited</span>{{end}}
       <br>
     {{end}}
+    <script src='/leaves/account-search.js'></script>
+    <script>invite_search_init(0);</script>
   </body>
 </html>
