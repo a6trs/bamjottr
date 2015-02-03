@@ -39,6 +39,8 @@ func navigationDisplay(curpage, pagecnt int) []int {
 	return p
 }
 
+// @url /projects
+// @url /projects/{page:[0-9]+}
 func ProjectsHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	curpage, err := strconv.Atoi(vars["page"])
@@ -66,16 +68,14 @@ func ProjectsHandler(w http.ResponseWriter, r *http.Request) {
 	renderTemplate(w, r, "projects", map[string]interface{}{"prjpage": prjpage, "curpage": curpage, "pagecnt": pagecnt, "navpages": navpages})
 }
 
+// @url /project_create
+// @url /project_edit/{prjid:[0-9]+}
 func ProjectEditHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	prjid_s := vars["prjid"]
 	prjid := -1
 	if prjid_s != "" {
-		var err error
-		prjid, err = strconv.Atoi(prjid_s)
-		if err != nil {
-			prjid = -1
-		}
+		prjid, _ = strconv.Atoi(prjid_s)
 	}
 	if r.Method == "GET" {
 		// Retrieve basic project data.
@@ -147,22 +147,19 @@ func ProjectEditHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// @url /project/{prjid:[0-9]+}
 func ProjectPageHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	prjid, err := strconv.Atoi(vars["prjid"])
-	if err != nil {
-		// Should we use HTTP 303 (StatusSeeOther) here??
-		http.Redirect(w, r, "/projects", http.StatusSeeOther)
-		return
-	}
+	prjid, _ := strconv.Atoi(vars["prjid"])
 	prj := &soil.Project{ID: prjid}
 	if err := prj.Load(soil.KEY_Project_ID); err != nil {
+		// Should we use HTTP 303 (StatusSeeOther) here??
 		http.Redirect(w, r, "/projects", http.StatusSeeOther)
 		return
 	}
 	pstpage := soil.PostsForProject(prjid)
 	if pstpage == nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		http.Error(w, "Unable to load posts TAT", http.StatusInternalServerError)
 		return
 	}
 	// Get counts of different sight levels. The type is `map[int]int`
@@ -170,14 +167,12 @@ func ProjectPageHandler(w http.ResponseWriter, r *http.Request) {
 	renderTemplate(w, r, "project_page", map[string]interface{}{"prj": prj, "pstpage": pstpage, "allsights": allsights, "cursight": cursight})
 }
 
+// @url /invite/{prjid:[0-9]+}
+// @url /invite/{prjid:[0-9]+}/{aid:[0-9]+}
 func InviteHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	// Load the project
-	prjid, err := strconv.Atoi(vars["prjid"])
-	if err != nil {
-		http.Redirect(w, r, "/", http.StatusSeeOther)
-		return
-	}
+	prjid, _ := strconv.Atoi(vars["prjid"])
 	prj := &soil.Project{ID: prjid}
 	if err := prj.Load(soil.KEY_Project_ID); err != nil {
 		http.Redirect(w, r, "/projects", http.StatusSeeOther)
@@ -204,6 +199,7 @@ func InviteHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// @url /answer_invitation/{token}
 func AnswerInvitationHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	token, err := strconv.ParseInt(vars["token"], 36, 64)

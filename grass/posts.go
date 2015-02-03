@@ -8,25 +8,19 @@ import (
 	"strconv"
 )
 
+// @url /post_create/{prjid:[0-9]+}
+// @url /post_edit/{pstid:[0-9]+}
 func PostEditHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	var prjid, pstid int
 	var post *soil.Post
 	var err error
 	if vars["prjid"] != "" {
-		prjid, err = strconv.Atoi(vars["prjid"])
-		if err != nil {
-			http.Redirect(w, r, "/projects", http.StatusSeeOther)
-			return
-		}
+		prjid, _ = strconv.Atoi(vars["prjid"])
 		post = &soil.Post{ProjectID: prjid, Author: accountInSession(w, r)}
 		pstid = -1 // Tell the page not to display any existing data
 	} else if vars["pstid"] != "" {
-		pstid, err = strconv.Atoi(vars["pstid"])
-		if err != nil {
-			http.Redirect(w, r, "/projects", http.StatusSeeOther)
-			return
-		}
+		pstid, _ = strconv.Atoi(vars["pstid"])
 		post = &soil.Post{ID: pstid}
 		if err = post.Load(soil.KEY_Post_ID); err != nil {
 			http.Redirect(w, r, "/projects", http.StatusSeeOther)
@@ -57,13 +51,10 @@ func PostEditHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// @url /post/{pstid:[0-9]+}
 func PostPageHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	pstid, err := strconv.Atoi(vars["pstid"])
-	if err != nil {
-		http.Redirect(w, r, "/projects", http.StatusSeeOther)
-		return
-	}
+	pstid, _ := strconv.Atoi(vars["pstid"])
 	post := &soil.Post{ID: pstid}
 	if err := post.Load(soil.KEY_Post_ID); err != nil {
 		http.Error(w, err.Error(), http.StatusNotFound)

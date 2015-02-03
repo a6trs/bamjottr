@@ -6,6 +6,7 @@ import (
 	"strconv"
 )
 
+// @url /sight
 func SightHandler(w http.ResponseWriter, r *http.Request) {
 	tgttype, err := strconv.Atoi(r.FormValue("tgttype"))
 	if err != nil {

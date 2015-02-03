@@ -8,6 +8,8 @@ import (
 	"net/url"
 )
 
+// @url /login          [GET, POST]
+// @url /login/{return} [GET]
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		sess, _ := sstore.Get(r, "flash")
@@ -65,6 +67,8 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// @url /signup          [GET, POST]
+// @url /signup/{return} [GET]
 func SignupHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		sess, _ := sstore.Get(r, "flash")
@@ -129,6 +133,8 @@ func SignupHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// @url /logout
+// @url /logout/{return}
 func LogoutHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	returnAddr, err := url.QueryUnescape(vars["return"])
@@ -145,6 +151,7 @@ func LogoutHandler(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, returnAddr, http.StatusFound)
 }
 
+// @url /profedit
 func ProfEditHandler(w http.ResponseWriter, r *http.Request) {
 	sess, err := sstore.Get(r, "account-auth")
 	if err != nil {
@@ -221,6 +228,7 @@ func ProfEditHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// @url /notifications
 func NotificationsHandler(w http.ResponseWriter, r *http.Request) {
 	// Reset last read time of the account
 	soil.UpdateLastReadTime(accountInSession(w, r))
