@@ -100,9 +100,39 @@ func stateBadge(state int) template.HTML {
 	return rawhtml(fmt.Sprintf("<span class='am-badge am-round am-text-default' style='background-color: %s'>%s</span>", bg, name))
 }
 
-// TODO: Use different background colours for different ranges.
 func priorityBadge(prio int) template.HTML {
-	return rawhtml(fmt.Sprintf("<span class='am-badge am-radius am-text-sm'>%d</span>", prio))
+	var r, g, b int
+	switch {
+	case prio <= 0: // barrier: red
+		r, g, b = 255, 0, 0
+	case prio <= 1:
+		r, g, b = 255, 32, 32
+	case prio <= 2:
+		r, g, b = 255, 64, 32
+	case prio <= 3:
+		r, g, b = 255, 96, 64
+	case prio <= 4:
+		r, g, b = 255, 108, 64
+	case prio <= 5: // barrier: orange
+		r, g, b = 255, 144, 96
+	case prio <= 7:
+		r, g, b = 255, 192, 48
+	case prio <= 10: // barrier: yellow
+		r, g, b = 216, 216, 0
+	case prio <= 20:
+		r, g, b = 108, 216, 0
+	case prio <= 50: // barrier: green
+		r, g, b = 0, 216, 0
+	case prio <= 100:
+		r, g, b = 0, 144, 255
+	case prio <= 200: // barrier: blue
+		r, g, b = 0, 0, 255
+	case prio <= 500: // barrier: violet
+		r, g, b = 255, 0, 255
+	default:
+		r, g, b = 168, 168, 168
+	}
+	return rawhtml(fmt.Sprintf("<span class='am-badge am-radius am-text-sm' style='background-color: #%02x%02x%02x'>%d</span>", r, g, b, prio))
 }
 
 func int_sum(a, b int) int {

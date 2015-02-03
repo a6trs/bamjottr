@@ -6,6 +6,8 @@ import (
 	"strconv"
 )
 
+var tables = []string{"sights_projects", "sights_posts"}
+
 // @url /sight
 func SightHandler(w http.ResponseWriter, r *http.Request) {
 	tgttype, err := strconv.Atoi(r.FormValue("tgttype"))
@@ -23,12 +25,10 @@ func SightHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	// TODO: Move this map (or, array) somewhere else
-	tblname := []string{"sights_projects", "sights_posts"}
-	sight := &soil.Sight{Account: accountInSession(w, r), Target: tgtid, TableName: tblname[tgttype]}
+	sight := &soil.Sight{Account: accountInSession(w, r), Target: tgtid, TableName: tables[tgttype]}
 	err = sight.Load(soil.KEY_Sight_AccountAndTarget)
 	if err != nil {
-		sight = &soil.Sight{ID: -1, Account: accountInSession(w, r), Target: tgtid, Level: level, TableName: tblname[tgttype]}
+		sight = &soil.Sight{ID: -1, Account: accountInSession(w, r), Target: tgtid, Level: level, TableName: tables[tgttype]}
 	} else {
 		sight.Level = level
 	}
