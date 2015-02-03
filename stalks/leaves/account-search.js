@@ -22,8 +22,7 @@ invite_search_done = function () {
 
 invite_search_change = function (e) {
   var xhr = new XMLHttpRequest();
-  // Testing. Retrieves all accounts.
-  xhr.open('GET', '/account_search/invite/' + invite_search_prjid); //e.target.value);
+  xhr.open('GET', '/account_search/invite/' + invite_search_prjid + '/' + e.target.value);
   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   xhr.onload = invite_search_done;
   xhr.send(null);

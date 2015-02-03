@@ -9,7 +9,7 @@ import (
 	"strconv"
 )
 
-// @url /account_search/invite/{prjid:[0-9]+}
+// @url /account_search/invite/{prjid:[0-9]+}/{q}
 func AccountSearchHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	// Load the project
@@ -20,7 +20,7 @@ func AccountSearchHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// Show the list.
-	allaccounts, err := soil.FindAccounts(prjid, accountInSession(w, r))
+	allaccounts, err := soil.FindAccounts(prjid, accountInSession(w, r), vars["q"])
 	if err != nil {
 		fmt.Fprintf(w, `{"error": "Cannot fetch the list TAT `+err.Error()+`"}`)
 		return

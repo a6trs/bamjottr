@@ -38,7 +38,7 @@ func main() {
 	// Sights-related [grass/sights.go]
 	r.HandleFunc("/sight", grass.SightHandler).Methods("POST")
 	// Searching [grass/search.go]
-	r.HandleFunc("/account_search/invite/{prjid:[0-9]+}", grass.AccountSearchHandler)
+	r.HandleFunc("/account_search/invite/{prjid:[0-9]+}/{q}", grass.AccountSearchHandler)
 	// Static file server
 	r.PathPrefix("/leaves").Handler(http.FileServer(http.Dir("./stalks/")))
 	r.PathPrefix("/uploads").Handler(http.FileServer(http.Dir("./")))

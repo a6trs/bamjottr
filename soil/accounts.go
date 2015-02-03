@@ -114,11 +114,11 @@ type InvitationState struct {
 	Invited bool
 }
 
-// TODO: Replace this with a searching method. The LIKE operator in SQL can be used to do this.
-func FindAccounts(prjid, exclusion int) ([]InvitationState, error) {
+// TODO: Make these fmt.Sprintf calls look better
+func FindAccounts(prjid, exclusion int, q string) ([]InvitationState, error) {
 	ret := []InvitationState{}
 	// Retrieve all accounts that have been invited
-	rows1, err := db.Query(`SELECT accounts.* FROM accounts INNER JOIN invitations ON project = ? AND accounts.id = invitations.receiver`, prjid)
+	rows1, err := db.Query(fmt.Sprintf(`SELECT accounts.* FROM accounts INNER JOIN invitations ON project = ? AND accounts.id = invitations.receiver AND name LIKE '%%%s%%'`, q), prjid)
 	if err != nil {
 		return nil, err
 	}
@@ -133,7 +133,7 @@ func FindAccounts(prjid, exclusion int) ([]InvitationState, error) {
 	}
 	list = append(list, strconv.Itoa(exclusion))
 	// Find all accounts
-	rows2, err := db.Query(fmt.Sprintf(`SELECT * FROM accounts WHERE id NOT IN (%s)`, strings.Join(list, ",")))
+	rows2, err := db.Query(fmt.Sprintf(`SELECT * FROM accounts WHERE id NOT IN (%s) AND name LIKE '%%%s%%'`, strings.Join(list, ","), q))
 	if err != nil {
 		return nil, err
 	}
