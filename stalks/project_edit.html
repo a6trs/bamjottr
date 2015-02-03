@@ -38,6 +38,7 @@
       <input class='am-form-field color {hash: true}' type='text' id='c-titlecolour' name='titlecolour' value='{{if eq .prj.TitleColour ""}}#000000{{else}}{{.prj.TitleColour}}{{end}}'>
       <button type='submit' class='am-btn am-btn-default'>Create project</button>
     </form>
+    {{if ne .prj.ID -1}}
     <hr>
     <h2>Members</h2>
     <div class='members-list'>
@@ -47,6 +48,7 @@
       {{end}}{{end}}
     </div>
     <a href='/invite/{{.prj.ID}}' class='am-btn am-btn-secondary'>Invite someone to join</a>
+    {{end}}
     <br><br>
   </body>
 </html>

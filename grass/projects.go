@@ -80,19 +80,21 @@ func ProjectEditHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		// Retrieve basic project data.
 		var prj *soil.Project
+		var members []int
 		if prjid != -1 {
 			prj = &soil.Project{ID: prjid}
 			err := prj.Load(soil.KEY_Project_ID)
 			if err != nil {
 				prj = &soil.Project{ID: -1}
 			}
+			// Find all team members of this project.
+			members, err = soil.GetMembers(prjid)
+			if err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+			}
 		} else {
 			prj = &soil.Project{ID: -1}
-		}
-		// Find all team members of this project.
-		members, err := soil.GetMembers(prjid)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			members = []int{}
 		}
 		renderTemplate(w, r, "project_edit", map[string]interface{}{"prj": prj, "members": members})
 	} else {
@@ -142,6 +144,10 @@ func ProjectEditHandler(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
+		}
+		// Add the creator to the project's team if creating a new project
+		if prjid == -1 {
+			soil.AddMembership(prj.ID, accountInSession(w, r))
 		}
 		http.Redirect(w, r, fmt.Sprintf("/project/%d", prj.ID), http.StatusFound)
 	}
