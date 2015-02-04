@@ -15,9 +15,9 @@ func main() {
 	r.HandleFunc("/", grass.IndexHandler)
 	// Accounts-related [grass/accounts.go]
 	r.HandleFunc("/login", grass.LoginHandler).Methods("GET", "POST")
-	r.HandleFunc("/login/{return}", grass.LoginHandler).Methods("GET")
+	r.HandleFunc("/login/{return}", grass.LoginHandler).Methods("GET", "POST")
 	r.HandleFunc("/signup", grass.SignupHandler).Methods("GET", "POST")
-	r.HandleFunc("/signup/{return}", grass.SignupHandler).Methods("GET")
+	r.HandleFunc("/signup/{return}", grass.SignupHandler).Methods("GET", "POST")
 	r.HandleFunc("/logout", grass.LogoutHandler)
 	r.HandleFunc("/logout/{return}", grass.LogoutHandler)
 	r.HandleFunc("/notifications", grass.NotificationsHandler)

@@ -9,7 +9,7 @@ import (
 )
 
 // @url /login          [GET, POST]
-// @url /login/{return} [GET]
+// @url /login/{return} [GET, POST]
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		sess, _ := sstore.Get(r, "flash")
@@ -25,6 +25,8 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		returnAddr, err := url.QueryUnescape(vars["return"])
 		if err != nil {
 			returnAddr = "/"
+		} else if returnAddr[0] != '/' {
+			returnAddr = "/"+returnAddr
 		}
 		uname := r.FormValue("uname")
 		pwd := r.FormValue("pwd")
@@ -68,7 +70,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 // @url /signup          [GET, POST]
-// @url /signup/{return} [GET]
+// @url /signup/{return} [GET, POST]
 func SignupHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		sess, _ := sstore.Get(r, "flash")
@@ -84,6 +86,8 @@ func SignupHandler(w http.ResponseWriter, r *http.Request) {
 		returnAddr, err := url.QueryUnescape(vars["return"])
 		if err != nil {
 			returnAddr = "/"
+		} else if returnAddr[0] != '/' {
+			returnAddr = "/"+returnAddr
 		}
 		uname := r.FormValue("uname")
 		email := r.FormValue("email")
@@ -140,6 +144,8 @@ func LogoutHandler(w http.ResponseWriter, r *http.Request) {
 	returnAddr, err := url.QueryUnescape(vars["return"])
 	if err != nil {
 		returnAddr = "/"
+	} else if returnAddr[0] != '/' {
+		returnAddr = "/"+returnAddr
 	}
 	sess, err := sstore.Get(r, "account-auth")
 	if err != nil {

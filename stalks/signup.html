@@ -7,7 +7,7 @@
   <body>
     <script type='application/javascript' src='/leaves/checkform.js'></script>
     {{template "_topbar.html" .aid}}
-    <form id='form-with-radius' class='am-form' action='/signup' method='POST'>
+    <form id='form-with-radius' class='am-form' method='POST'>
       <legend>Sign Up</legend>
       {{if .signupmsg}}
         <div id='errmsg' class='bg-danger'>{{.signupmsg}}</div>
