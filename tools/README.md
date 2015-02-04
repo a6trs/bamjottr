@@ -7,7 +7,7 @@ Currently, there is only one tool: `serve.lua`.
 
 `serve.lua`
 -----------
-Implements auto-rebuilding for this project. Can also be use in other golang projects.  
+Implements auto-rebuilding for this project. Can also be used in other golang projects.  
 With this script you'll be able to run the previously-built program directly if no changes are made to the code instead of rebuilding the whole project every time. Simply replace all `go run` calls with this script.
 
 **Requirements** 
