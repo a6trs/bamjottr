@@ -20,13 +20,16 @@
     </ul>
 
     {{if .Account}}
+    {{$unread := (newNotificationsCount .Account)}}
     <div class="am-topbar-right">
       <div class="am-dropdown" data-am-dropdown="{boundary: '.am-topbar'}">
-        <button class="am-btn am-btn-default am-topbar-btn am-btn-sm am-dropdown-toggle" data-am-dropdown-toggle>{{.Account.Name}} <span class="am-icon-caret-down"></span></button>
+        <button class="am-btn am-btn-default am-topbar-btn am-btn-sm am-dropdown-toggle" data-am-dropdown-toggle>
+          {{if $unread}}<span class='am-icon-circle icon-hint'></span>{{end}}
+          {{.Account.Name}} <span class="am-icon-caret-down"></span>
+        </button>
         <ul class="am-dropdown-content">
-          {{$unread := (newNotificationsCount .Account)}}
           {{if $unread}}
-            <li><a href='/notifications'><span class='am-icon-bell'>&nbsp;Notifications <span class='am-badge am-badge-round am-text-default'>{{$unread}}</span></a></li>
+            <li><a href='/notifications'><span class='am-icon-bell'>&nbsp;Notifications <span class='am-badge am-round am-text-default'>{{$unread}}</span></a></li>
           {{else}}
             <li><a href='/notifications'><span class='am-icon-bell-o'>&nbsp;Notifications</a></li>
           {{end}}
