@@ -161,12 +161,22 @@ func sametime(t1, t2 time.Time) bool {
 }
 
 func nutshell(body string) string {
-	// Simply remove all HTML tags.
-	r, _ := regexp.Compile(`<\/?\w+(?:\s+\w+=['"].*['"])*>`)
-	body = r.ReplaceAllString(body, "")
+	body_s := []byte(body)
+	// Get the first non-empty paragraph, and use its contents.
+	// The regex to split paragraphs
+	r1, _ := regexp.Compile(`<\w+(?:\s+\w+=['"].*['"])*\s*>(.+?)<\/\w+(?:\s+\w+=['"].*['"])*\s*>`)
+	// The regex to remove all HTML tags (including opening and closing tags)
+	r2, _ := regexp.Compile(`<\/?\w+(?:\s+\w+=['"].*['"])*\s*>`)
+	var s string
+	// Loop until a non-empty paragraph is found.
+	for s == "" {
+		result := r1.FindSubmatch(body_s)
+		body_s = body_s[len(result[0]):]               // Cut the string for next match.
+		s = string(r2.ReplaceAll(result[1], []byte{})) // Remove HTML tags to get pure text
+	}
 	// Help on rune arrays:
 	// http://www.cnblogs.com/howDo/archive/2013/04/20/GoLang-String.html
-	br := []rune(body)
+	br := []rune(s)
 	if len(br) <= 80 {
 		return string(br)
 	} else {
