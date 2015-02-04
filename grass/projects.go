@@ -188,18 +188,45 @@ func InviteHandler(w http.ResponseWriter, r *http.Request) {
 	aid, err := strconv.Atoi(vars["aid"])
 	if err != nil {
 		// Show the page
-		renderTemplate(w, r, "invite", map[string]interface{}{"prj": prj})
+		sess, _ := sstore.Get(r, "flash")
+		flash := sess.Flashes("errmsg")
+		msg := ""
+		iserr := true
+		if flash != nil {
+			msg = flash[0].(string)
+			iserr = flash[1].(bool)
+		}
+		sess.Save(r, w)
+		renderTemplate(w, r, "invite", map[string]interface{}{"prj": prj, "msg": msg, "iserr": iserr})
 	} else {
 		// Send an invitation to account #`aid`.
-		link := soil.InvitationLink(prjid, aid)
-		if link == "" {
+		errmsg := ""
+		for {
+			link := soil.InvitationLink(prjid, aid)
+			if link == "" {
+				errmsg = err.Error()
+				break
+			}
+			s := fmt.Sprintf("Hey! Join us, the team of <a href='/project/%d'>%s</a>! Follow <a href='%s'>this link</a> to confirm.", prj.ID, prj.Title, link)
+			if soil.SendNotification(accountInSession(w, r), aid, s) != nil {
+				errmsg = err.Error()
+				break
+			}
+			break
+		}
+		// Store error messages in flash data.
+		iserr := errmsg != ""
+		if !iserr {
+			errmsg = "Invitation successfully sent."
+		}
+		sess, err := sstore.Get(r, "flash")
+		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		s := fmt.Sprintf("Hey! Join us, the team of <a href='/project/%d'>%s</a>! Follow <a href='%s'>this link</a> to confirm.", prj.ID, prj.Title, link)
-		if soil.SendNotification(accountInSession(w, r), aid, s) != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-		}
+		sess.AddFlash(errmsg, "errmsg")
+		sess.AddFlash(iserr, "errmsg")
+		sess.Save(r, w)
 		http.Redirect(w, r, "/invite/"+vars["prjid"], http.StatusFound)
 	}
 }

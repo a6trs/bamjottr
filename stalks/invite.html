@@ -10,7 +10,9 @@
     {{template "_project_banner.html" .prj}}
     <hr>
     <p class='small-title'>Invite someone to join your team...</p>
-    {{/* TOOD: Enable searching for accounts */}}
+    {{if .msg}}
+      <div id='errmsg' class='{{if .iserr}}bg-danger{{else}}bg-success{{end}}'>{{.msg}}</div>
+    {{end}}
     {{/* TODO: Display a modal dialogue for confirmation */}}
     <div class='am-g'>
       <div class='am-u-sm-10 am-u-md-8 am-u-sm-centered am-input-group'>
