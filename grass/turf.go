@@ -6,6 +6,7 @@ import (
 	"github.com/gorilla/sessions"
 	"html/template"
 	"net/http"
+	"net/url"
 	"regexp"
 	"time"
 )
@@ -195,8 +196,12 @@ func autoSelectItem(targetval int, value int, optstr string) template.HTML {
 	return rawhtml(fmt.Sprintf("<option value='%d' %s>%s</option>", value, selected, optstr))
 }
 
+type topbarData struct {
+	Account *soil.Account
+	URL string
+}
 func renderTemplate(w http.ResponseWriter, r *http.Request, title string, arg map[string]interface{}) {
-	arg["aid"] = accountInSession(w, r)
+	arg["topbarData"] = topbarData{account(accountInSession(w, r)), url.QueryEscape(r.URL.Path[1:])}
 	err := templates.ExecuteTemplate(w, title+".html", arg)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
