@@ -8,7 +8,7 @@
     {{template "_topbar.html" .topbarData}}
     <p class='big-title'>Oops!!</p>
     <hr>
-    <p class='small-title'>{{.msg}}</p>
+    <p class='small-title'>{{raw .msg}}</p>
     <p class='small-title'>
       You can <a href='javascript:history.go(-1);'>Go back</a>
       or <a href='/'>Return to home page</a>.

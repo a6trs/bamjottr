@@ -198,10 +198,14 @@ func autoSelectItem(targetval int, value int, optstr string) template.HTML {
 
 type topbarData struct {
 	Account *soil.Account
-	URL string
+	URL     string
 }
+
 func renderTemplate(w http.ResponseWriter, r *http.Request, title string, arg map[string]interface{}) {
-	arg["topbarData"] = topbarData{account(accountInSession(w, r)), url.QueryEscape(r.URL.Path[1:])}
+	arg["topbarData"] = topbarData{
+		account(accountInSession(w, r)),
+		url.QueryEscape(r.URL.Path[1:]), // r.URL.Path begins with a slash
+	}
 	err := templates.ExecuteTemplate(w, title+".html", arg)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

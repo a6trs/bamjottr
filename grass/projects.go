@@ -73,7 +73,7 @@ func ProjectsHandler(w http.ResponseWriter, r *http.Request) {
 // @url /project_edit/{prjid:[0-9]+}
 func ProjectEditHandler(w http.ResponseWriter, r *http.Request) {
 	if accountInSession(w, r) == -1 {
-		redirectWithError(w, r, "Please log in before creating a project.", "/login/"+url.QueryEscape("/"+r.URL.Path))
+		redirectWithError(w, r, "Please log in before creating a project.", "/login/"+url.QueryEscape(r.URL.Path[1:]))
 		return
 	}
 	vars := mux.Vars(r)
@@ -84,7 +84,6 @@ func ProjectEditHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	if r.Method == "GET" {
 		if prjid != -1 && !soil.HasMembership(prjid, accountInSession(w, r)) {
-			// TODO: Implement /error handler for errors of all purposes.
 			redirectWithError(w, r, "You are not in the team of this project.", "/error")
 			return
 		}
@@ -189,6 +188,10 @@ func InviteHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	// Load the project
 	prjid, _ := strconv.Atoi(vars["prjid"])
+	if prjid != -1 && !soil.HasMembership(prjid, accountInSession(w, r)) {
+		redirectWithError(w, r, "You are not in the team of this project.", "/error")
+		return
+	}
 	prj := &soil.Project{ID: prjid}
 	if err := prj.Load(soil.KEY_Project_ID); err != nil {
 		http.Redirect(w, r, "/projects", http.StatusSeeOther)

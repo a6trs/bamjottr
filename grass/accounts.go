@@ -11,6 +11,10 @@ import (
 // @url /login          [GET, POST]
 // @url /login/{return} [GET, POST]
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
+	if accountInSession(w, r) != -1 {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	if r.Method == "GET" {
 		sess, _ := sstore.Get(r, "flash")
 		flash := sess.Flashes("errmsg")
@@ -26,7 +30,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		if returnAddr == "" || err != nil {
 			returnAddr = "/"
 		} else if returnAddr[0] != '/' {
-			returnAddr = "/"+returnAddr
+			returnAddr = "/" + returnAddr
 		}
 		uname := r.FormValue("uname")
 		pwd := r.FormValue("pwd")
@@ -72,6 +76,10 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 // @url /signup          [GET, POST]
 // @url /signup/{return} [GET, POST]
 func SignupHandler(w http.ResponseWriter, r *http.Request) {
+	if accountInSession(w, r) != -1 {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	if r.Method == "GET" {
 		sess, _ := sstore.Get(r, "flash")
 		flash := sess.Flashes("errmsg")
@@ -87,7 +95,7 @@ func SignupHandler(w http.ResponseWriter, r *http.Request) {
 		if returnAddr == "" || err != nil {
 			returnAddr = "/"
 		} else if returnAddr[0] != '/' {
-			returnAddr = "/"+returnAddr
+			returnAddr = "/" + returnAddr
 		}
 		uname := r.FormValue("uname")
 		email := r.FormValue("email")
@@ -145,7 +153,7 @@ func LogoutHandler(w http.ResponseWriter, r *http.Request) {
 	if returnAddr == "" || err != nil {
 		returnAddr = "/"
 	} else if returnAddr[0] != '/' {
-		returnAddr = "/"+returnAddr
+		returnAddr = "/" + returnAddr
 	}
 	sess, err := sstore.Get(r, "account-auth")
 	if err != nil {
@@ -159,6 +167,10 @@ func LogoutHandler(w http.ResponseWriter, r *http.Request) {
 
 // @url /profedit
 func ProfEditHandler(w http.ResponseWriter, r *http.Request) {
+	if accountInSession(w, r) == -1 {
+		redirectWithError(w, r, "How can I know whose profile to save if you aren't logged in? :)", "/login/"+url.QueryEscape(r.URL.Path[1:]))
+		return
+	}
 	sess, err := sstore.Get(r, "account-auth")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -236,6 +248,10 @@ func ProfEditHandler(w http.ResponseWriter, r *http.Request) {
 
 // @url /notifications
 func NotificationsHandler(w http.ResponseWriter, r *http.Request) {
+	if accountInSession(w, r) == -1 {
+		redirectWithError(w, r, "Well, I can't find notifications for you. There are such a large amount of notifications here.", "/login/"+url.QueryEscape(r.URL.Path[1:]))
+		return
+	}
 	// Reset last read time of the account
 	soil.UpdateLastReadTime(accountInSession(w, r))
 	renderTemplate(w, r, "notifications", map[string]interface{}{})

@@ -26,6 +26,10 @@ func PostEditHandler(w http.ResponseWriter, r *http.Request) {
 			http.Redirect(w, r, "/projects", http.StatusSeeOther)
 			return
 		}
+		if post.Author != accountInSession(w, r) {
+			redirectWithError(w, r, "Don't play with others' things without permission ^^<br>Leave a comment to tell the writer to correct the mistake if there <i>is</i> one.", "/error")
+			return
+		}
 		prjid = post.ProjectID
 	} else {
 		http.Redirect(w, r, "/projects", http.StatusSeeOther)
