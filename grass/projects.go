@@ -156,6 +156,8 @@ func ProjectEditHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		// Add the creator to the project's team if creating a new project
 		if prjid == -1 {
+			// The account ID 0 is the outsider colour
+			soil.AddMembership(prj.ID, 0)
 			soil.AddMembership(prj.ID, accountInSession(w, r))
 		} else {
 			// Update members' post colours.

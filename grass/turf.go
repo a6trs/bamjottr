@@ -17,7 +17,7 @@ var templates, _ = template.New("IDONTKNOW").
 	Funcs(template.FuncMap{
 	"validuser": validUser, "account": account, "project": project, "post": post,
 	"newNotificationsCount": soil.NewNotificationsCount, "notificationsFor": soil.NotificationsFor,
-	"outsider": outsider, "outsider_colour": outsider_colour, "member_postcolour": member_postcolour,
+	"outsider": outsider, "member_postcolour": member_postcolour,
 	"recommendedPrjs": recommendedPrjs, "recommendedPsts": recommendedPsts,
 	"bannerclass": soil.ClassOfBannerType, "statebadge": stateBadge, "priobadge": priorityBadge,
 	"sum": int_sum, "difference": int_difference, "product": int_product,
@@ -72,10 +72,6 @@ func outsider(prjid, aid int) bool {
 		}
 	}
 	return true
-}
-
-func outsider_colour(project *soil.Project) string {
-	return "#ccf"
 }
 
 func member_postcolour(project *soil.Project, aid int) string {
@@ -176,6 +172,10 @@ func nutshell(body string) string {
 	// Loop until a non-empty paragraph is found.
 	for s == "" {
 		result := r1.FindSubmatch(body_s)
+		if len(result) == 0 {
+			// Something wrong happened...?
+			result = [][]byte{[]byte{}, []byte(body)}
+		}
 		body_s = body_s[len(result[0]):]               // Cut the string for next match.
 		s = string(r2.ReplaceAll(result[1], []byte{})) // Remove HTML tags to get pure text
 	}

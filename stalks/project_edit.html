@@ -40,11 +40,10 @@
       <hr>
       <h2>Members &amp; post colours</h2>
       <div class='members-list'>
-        <label for='c-postcolour-outsider'>(Outsider)</label>
-        <input class='am-form-field color {hash: true}' type='text' id='c-postcolour-outsider' name='postcolour-outsider'>
         {{range .members}}
-          {{$account := (account .AccountID)}}
-          <label for='c-postcolour-{{.ID}}'>{{$account.Name}}</label>
+          <label for='c-postcolour-{{.ID}}'>
+            {{if eq .AccountID 0}}(Outsider){{else}}{{(account .AccountID).Name}}{{end}}
+          </label>
           <input class='am-form-field color {hash: true}' type='text' id='c-postcolour-{{.ID}}' name='postcolour-{{.ID}}' value='{{.PostColour}}'>
         {{end}}
       </div>
