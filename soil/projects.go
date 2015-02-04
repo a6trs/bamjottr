@@ -182,6 +182,16 @@ func RemoveMembership(prjid, aid int) error {
 	return err
 }
 
+func HasMembership(prjid, aid int) bool {
+	row := db.QueryRow(`SELECT COUNT(*) FROM projects_membership WHERE project_id = ? AND account_id = ?`, prjid, aid)
+	var count int
+	if row.Scan(&count) != nil {
+		return false
+	} else {
+		return (count > 0)
+	}
+}
+
 func GetMembers(prjid int) ([]int, error) {
 	rows, err := db.Query(`SELECT account_id FROM projects_membership WHERE project_id = ?`, prjid)
 	if err != nil {

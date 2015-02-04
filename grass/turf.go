@@ -215,3 +215,14 @@ func accountInSession(w http.ResponseWriter, r *http.Request) int {
 	}
 	return s.(int)
 }
+
+func redirectWithError(w http.ResponseWriter, r *http.Request, errmsg, url string) {
+	sess, err := sstore.Get(r, "flash")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	sess.AddFlash(errmsg, "errmsg")
+	sess.Save(r, w)
+	http.Redirect(w, r, url, http.StatusSeeOther)
+}

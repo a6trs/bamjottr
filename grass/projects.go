@@ -6,6 +6,7 @@ import (
 	"github.com/gorilla/mux"
 	"io"
 	"net/http"
+	"net/url"
 	"os"
 	"strconv"
 	"time"
@@ -71,6 +72,10 @@ func ProjectsHandler(w http.ResponseWriter, r *http.Request) {
 // @url /project_create
 // @url /project_edit/{prjid:[0-9]+}
 func ProjectEditHandler(w http.ResponseWriter, r *http.Request) {
+	if accountInSession(w, r) == -1 {
+		redirectWithError(w, r, "Please log in before creating a project.", "/login/"+url.QueryEscape("/"+r.URL.Path))
+		return
+	}
 	vars := mux.Vars(r)
 	prjid_s := vars["prjid"]
 	prjid := -1
@@ -78,6 +83,11 @@ func ProjectEditHandler(w http.ResponseWriter, r *http.Request) {
 		prjid, _ = strconv.Atoi(prjid_s)
 	}
 	if r.Method == "GET" {
+		if prjid != -1 && !soil.HasMembership(prjid, accountInSession(w, r)) {
+			// TODO: Implement /error handler for errors of all purposes.
+			redirectWithError(w, r, "You are not in the team of this project.", "/error")
+			return
+		}
 		// Retrieve basic project data.
 		var prj *soil.Project
 		var members []int

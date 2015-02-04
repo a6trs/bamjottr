@@ -23,7 +23,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	} else {
 		vars := mux.Vars(r)
 		returnAddr, err := url.QueryUnescape(vars["return"])
-		if err != nil {
+		if returnAddr == "" || err != nil {
 			returnAddr = "/"
 		} else if returnAddr[0] != '/' {
 			returnAddr = "/"+returnAddr
@@ -84,7 +84,7 @@ func SignupHandler(w http.ResponseWriter, r *http.Request) {
 	} else {
 		vars := mux.Vars(r)
 		returnAddr, err := url.QueryUnescape(vars["return"])
-		if err != nil {
+		if returnAddr == "" || err != nil {
 			returnAddr = "/"
 		} else if returnAddr[0] != '/' {
 			returnAddr = "/"+returnAddr
@@ -142,7 +142,7 @@ func SignupHandler(w http.ResponseWriter, r *http.Request) {
 func LogoutHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	returnAddr, err := url.QueryUnescape(vars["return"])
-	if err != nil {
+	if returnAddr == "" || err != nil {
 		returnAddr = "/"
 	} else if returnAddr[0] != '/' {
 		returnAddr = "/"+returnAddr
