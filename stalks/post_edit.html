@@ -18,9 +18,15 @@
       {{if .crpstmsg}}
         <div id='errmsg' class='bg-danger'>{{.crpstmsg}}</div>
       {{end}}
+      {{$prjid := .prjid}}
+      {{$topbarData := .topbarData}}
       {{with (post .pstid)}}
         <input type='text' class='am-form-field' id='ipt-title' name='title' placeholder='Post title' value='{{.Title}}'>
-        <input type='number' class='am-form-field' id='ipt-prio' name='prio' placeholder='Priority' min='0' max='23332' value='{{.Priority}}'>
+        {{if outsider $prjid $topbarData.Account.ID}}
+          <input type='text' disabled='disabled' class='am-form-field' value='Outsider post'>
+        {{else}}
+          <input type='number' class='am-form-field' id='ipt-prio' name='prio' placeholder='Priority' min='0' max='23332' value='{{.Priority}}'>
+        {{end}}
         <div class='am-form-field' id='txt-body'>{{raw .Body}}</div>
       {{end}}
       <input type='hidden' id='ipt-body' name='body'>

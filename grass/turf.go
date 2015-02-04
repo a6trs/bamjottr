@@ -61,8 +61,8 @@ func post(pstid int) *soil.Post {
 	}
 }
 
-func outsider(project *soil.Project, aid int) bool {
-	members, err := soil.AllMembers(project.ID)
+func outsider(prjid, aid int) bool {
+	members, err := soil.AllMembers(prjid)
 	if err != nil {
 		return false
 	}

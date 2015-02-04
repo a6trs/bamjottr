@@ -15,7 +15,7 @@
     {{template "_sight_dropdown.html" $allsights}}
     <br>
     <div class='post_area am-u-md-9'>
-      {{$isOutsider := (outsider (project .ProjectID) .Author)}}
+      {{$isOutsider := (outsider .ProjectID .Author)}}
       <h1>
         <a href='/post/{{.ID}}'>{{.Title}}</a>
         {{if $isOutsider}}<span class='am-badge am-radius am-text-sm'>Outsider</span>

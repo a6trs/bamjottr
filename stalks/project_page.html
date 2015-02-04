@@ -15,7 +15,7 @@
       <div class='postlist_area am-u-md-9'>
       {{$prj := .prj}}
       {{range .pstpage}}
-        {{$isOutsider := (outsider $prj .Author)}}
+        {{$isOutsider := (outsider $prj.ID .Author)}}
         <div class='post-summary' style='background-color: {{if $isOutsider}}{{outsider_colour $prj}}{{else}}{{member_postcolour $prj .Author}}{{end}}'>
           <h1>
             <a href='/post/{{.ID}}'>{{.Title}}</a>
