@@ -39,6 +39,8 @@ func main() {
 	r.HandleFunc("/sight", grass.SightHandler).Methods("POST")
 	// Searching [grass/search.go]
 	r.HandleFunc("/account_search/invite/{prjid:[0-9]+}/{q}", grass.AccountSearchHandler)
+	// Error pages [grass/errors.go]
+	r.HandleFunc("/error", grass.ErrorHandler)
 	// Static file server
 	r.PathPrefix("/leaves").Handler(http.FileServer(http.Dir("./stalks/")))
 	r.PathPrefix("/uploads").Handler(http.FileServer(http.Dir("./")))

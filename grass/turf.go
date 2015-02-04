@@ -22,7 +22,7 @@ var templates, _ = template.New("IDONTKNOW").
 	"sum": int_sum, "difference": int_difference, "product": int_product,
 	"plus": int_sum, "minus": int_difference, "mul": int_product,
 	"raw": rawhtml, "timestr": timestr, "sametime": sametime, "nutshell": nutshell, "autoselitem": autoSelectItem}).
-	ParseFiles("stalks/_html_head.html", "stalks/_topbar.html", "stalks/_icons.svg", "stalks/_project_banner.html", "stalks/_sight_dropdown.html", "stalks/_alsolike.html", "stalks/_emojify.html", "stalks/index.html", "stalks/login.html", "stalks/signup.html", "stalks/notifications.html", "stalks/profedit.html", "stalks/projects.html", "stalks/project_edit.html", "stalks/invite.html", "stalks/project_page.html", "stalks/post_edit.html", "stalks/post_page.html")
+	ParseFiles("stalks/_html_head.html", "stalks/_topbar.html", "stalks/_icons.svg", "stalks/_project_banner.html", "stalks/_sight_dropdown.html", "stalks/_alsolike.html", "stalks/_emojify.html", "stalks/error.html", "stalks/index.html", "stalks/login.html", "stalks/signup.html", "stalks/notifications.html", "stalks/profedit.html", "stalks/projects.html", "stalks/project_edit.html", "stalks/invite.html", "stalks/project_page.html", "stalks/post_edit.html", "stalks/post_page.html")
 
 func validUser(aid int) bool {
 	acc := &soil.Account{ID: aid}
