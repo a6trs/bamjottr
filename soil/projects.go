@@ -2,6 +2,8 @@ package soil
 
 import (
 	"database/sql"
+	"fmt"
+	"math/rand"
 	"time"
 )
 
@@ -154,17 +156,21 @@ func RecommendProjects(prjid int) []int {
 //  Project Team Related Section
 // ========
 
-type ProjectTeamMembership struct {
-	ID        int
-	ProjectID int
-	AccountID int
+type ProjectMembershipData struct {
+	ID         int
+	ProjectID  int
+	AccountID  int
+	PostColour string
+	CreatedAt  time.Time
 }
 
-func init_ProjectTeamMembership() error {
+func init_ProjectMembershipData() error {
 	_, err := db.Exec(`CREATE TABLE IF NOT EXISTS projects_membership (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
 		project_id INTEGER,
 		account_id INTEGER,
+		post_colour VARCHAR(7),
+		created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
 		FOREIGN KEY(project_id) REFERENCES projects(id),
 		FOREIGN KEY(account_id) REFERENCES accounts(id)
 	)`)
@@ -172,13 +178,18 @@ func init_ProjectTeamMembership() error {
 }
 
 func AddMembership(prjid, aid int) error {
-	_, err := db.Exec(`INSERT INTO projects_membership (project_id, account_id) VALUES (?, ?)`, prjid, aid)
+	_, err := db.Exec(`INSERT INTO projects_membership (project_id, account_id, post_colour) VALUES (?, ?, ?)`, prjid, aid, fmt.Sprintf("#%02x%02x%02x", rand.Int() % 128 + 128, rand.Int() % 128 + 128, rand.Int() % 128 + 128))
 	return err
 }
 
 // Call with **great care**!! This operation can **not** be undone!
 func RemoveMembership(prjid, aid int) error {
 	_, err := db.Exec(`DELETE FROM projects_membership WHERE project_id = ? AND account_id = ?`, prjid, aid)
+	return err
+}
+
+func UpdatePostColour(recid int, postColour string) error {
+	_, err := db.Exec(`UPDATE projects_membership SET post_colour = ? WHERE id = ?`, postColour, recid)
 	return err
 }
 
@@ -192,17 +203,27 @@ func HasMembership(prjid, aid int) bool {
 	}
 }
 
-func GetMembers(prjid int) ([]int, error) {
-	rows, err := db.Query(`SELECT account_id FROM projects_membership WHERE project_id = ?`, prjid)
+func GetPostColour(prjid, aid int) string {
+	row := db.QueryRow(`SELECT post_colour FROM projects_membership WHERE project_id = ? AND account_id = ?`, prjid, aid)
+	var s string
+	if row.Scan(&s) == nil {
+		return s
+	} else {
+		return ""
+	}
+}
+
+func AllMembers(prjid int) ([]*ProjectMembershipData, error) {
+	rows, err := db.Query(`SELECT * FROM projects_membership WHERE project_id = ?`, prjid)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	ret := []int{}
+	ret := []*ProjectMembershipData{}
 	for rows.Next() {
-		var aid int
-		if rows.Scan(&aid) == nil {
-			ret = append(ret, aid)
+		ptm := &ProjectMembershipData{}
+		if rows.Scan(&ptm.ID, &ptm.ProjectID, &ptm.AccountID, &ptm.PostColour, &ptm.CreatedAt) == nil {
+			ret = append(ret, ptm)
 		}
 	}
 	if len(ret) == 0 {

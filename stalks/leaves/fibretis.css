@@ -25,6 +25,10 @@
   font-size: 24px;
 }
 
+.am-form a.am-btn {
+  margin: 4px auto 4px 4px;
+}
+
 .am-topbar {
   margin-bottom: unset;
 }

@@ -17,7 +17,7 @@ var templates, _ = template.New("IDONTKNOW").
 	Funcs(template.FuncMap{
 	"validuser": validUser, "account": account, "project": project, "post": post,
 	"newNotificationsCount": soil.NewNotificationsCount, "notificationsFor": soil.NotificationsFor,
-	"outsider": outsider, "outsider_colour": outsider_colour,
+	"outsider": outsider, "outsider_colour": outsider_colour, "member_postcolour": member_postcolour,
 	"recommendedPrjs": recommendedPrjs, "recommendedPsts": recommendedPsts,
 	"bannerclass": soil.ClassOfBannerType, "statebadge": stateBadge, "priobadge": priorityBadge,
 	"sum": int_sum, "difference": int_difference, "product": int_product,
@@ -62,12 +62,12 @@ func post(pstid int) *soil.Post {
 }
 
 func outsider(project *soil.Project, aid int) bool {
-	members, err := soil.GetMembers(project.ID)
+	members, err := soil.AllMembers(project.ID)
 	if err != nil {
 		return false
 	}
 	for _, member := range members {
-		if aid == member {
+		if aid == member.AccountID {
 			return false
 		}
 	}
@@ -76,6 +76,10 @@ func outsider(project *soil.Project, aid int) bool {
 
 func outsider_colour(project *soil.Project) string {
 	return "#ccf"
+}
+
+func member_postcolour(project *soil.Project, aid int) string {
+	return soil.GetPostColour(project.ID, aid)
 }
 
 func recommendedPrjs(from int) []*soil.Project {

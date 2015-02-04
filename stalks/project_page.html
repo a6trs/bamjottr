@@ -16,7 +16,7 @@
       {{$prj := .prj}}
       {{range .pstpage}}
         {{$isOutsider := (outsider $prj .Author)}}
-        <div class='post-summary' style='{{if $isOutsider}}background-color: {{outsider_colour $prj}}{{end}}'>
+        <div class='post-summary' style='background-color: {{if $isOutsider}}{{outsider_colour $prj}}{{else}}{{member_postcolour $prj .Author}}{{end}}'>
           <h1>
             <a href='/post/{{.ID}}'>{{.Title}}</a>
             {{if $isOutsider}}<span class='am-badge am-radius am-text-sm'>Outsider</span>

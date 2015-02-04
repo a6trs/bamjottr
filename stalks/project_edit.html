@@ -36,19 +36,22 @@
       </select>
       <label for='c-titlecolour'>Title text colour</label>
       <input class='am-form-field color {hash: true}' type='text' id='c-titlecolour' name='titlecolour' value='{{if eq .prj.TitleColour ""}}#000000{{else}}{{.prj.TitleColour}}{{end}}'>
+      {{if ne .prj.ID -1}}
+      <hr>
+      <h2>Members &amp; post colours</h2>
+      <div class='members-list'>
+        <label for='c-postcolour-outsider'>(Outsider)</label>
+        <input class='am-form-field color {hash: true}' type='text' id='c-postcolour-outsider' name='postcolour-outsider'>
+        {{range .members}}
+          {{$account := (account .AccountID)}}
+          <label for='c-postcolour-{{.ID}}'>{{$account.Name}}</label>
+          <input class='am-form-field color {hash: true}' type='text' id='c-postcolour-{{.ID}}' name='postcolour-{{.ID}}' value='{{.PostColour}}'>
+        {{end}}
+      </div>
+      <a href='/invite/{{.prj.ID}}' class='am-btn am-btn-secondary'>Invite someone to join</a><br>
+      {{end}}
       <button type='submit' class='am-btn am-btn-default'>Create project</button>
     </form>
-    {{if ne .prj.ID -1}}
-    <hr>
-    <h2>Members</h2>
-    <div class='members-list'>
-      {{/* TODO: Make this list look better */}}
-      {{range .members}}{{with (account .)}}
-        {{.Name}}<br>
-      {{end}}{{end}}
-    </div>
-    <a href='/invite/{{.prj.ID}}' class='am-btn am-btn-secondary'>Invite someone to join</a>
-    {{end}}
     <br><br>
   </body>
 </html>

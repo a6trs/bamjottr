@@ -89,7 +89,7 @@ func ProjectEditHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		// Retrieve basic project data.
 		var prj *soil.Project
-		var members []int
+		var members []*soil.ProjectMembershipData
 		if prjid != -1 {
 			prj = &soil.Project{ID: prjid}
 			err := prj.Load(soil.KEY_Project_ID)
@@ -97,13 +97,13 @@ func ProjectEditHandler(w http.ResponseWriter, r *http.Request) {
 				prj = &soil.Project{ID: -1}
 			}
 			// Find all team members of this project.
-			members, err = soil.GetMembers(prjid)
+			members, err = soil.AllMembers(prjid)
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 			}
 		} else {
 			prj = &soil.Project{ID: -1}
-			members = []int{}
+			members = []*soil.ProjectMembershipData{}
 		}
 		renderTemplate(w, r, "project_edit", map[string]interface{}{"prj": prj, "members": members})
 	} else {
@@ -157,6 +157,16 @@ func ProjectEditHandler(w http.ResponseWriter, r *http.Request) {
 		// Add the creator to the project's team if creating a new project
 		if prjid == -1 {
 			soil.AddMembership(prj.ID, accountInSession(w, r))
+		} else {
+			// Update members' post colours.
+			members, err := soil.AllMembers(prjid)
+			if err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+			}
+			for _, membership := range members {
+				soil.UpdatePostColour(membership.ID,
+					r.FormValue("postcolour-"+strconv.Itoa(membership.ID)))
+			}
 		}
 		http.Redirect(w, r, fmt.Sprintf("/project/%d", prj.ID), http.StatusFound)
 	}
