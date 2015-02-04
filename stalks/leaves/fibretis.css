@@ -128,6 +128,11 @@ hr.bold {
   cursor: pointer;
 }
 
+.comment-button {
+  float: right;
+  margin-top: 4px;
+}
+
 .updatetime-highlight {
   color: #897210;
 }
