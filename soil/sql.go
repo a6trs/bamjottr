@@ -16,7 +16,6 @@ type Storable interface {
 
 var ErrRowNotFound = errors.New("Storable.Load: Not found")
 var ErrMembersNotFound = errors.New("GetMembers: No members found u^u")
-var ErrAccountsNotFound = errors.New("FindAccounts: No accounts found -~-")
 
 var db *sql.DB
 

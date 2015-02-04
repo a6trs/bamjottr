@@ -12,6 +12,8 @@ import (
 // @url /account_search/invite/{prjid:[0-9]+}/{q}
 func AccountSearchHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
+	// Uncomment the following line and import "time" to test spinners on pages locally.
+	// time.Sleep(1000 * time.Millisecond)
 	// Load the project
 	prjid, _ := strconv.Atoi(vars["prjid"])
 	prj := &soil.Project{ID: prjid}

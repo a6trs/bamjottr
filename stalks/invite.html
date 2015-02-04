@@ -13,14 +13,12 @@
     {{/* TOOD: Enable searching for accounts */}}
     {{/* TODO: Display a modal dialogue for confirmation */}}
     <div class='am-g'>
-      <div class='am-u-sm-1 am-u-md-2'>&nbsp;</div>
-      <div class='am-u-sm-10 am-u-md-8 am-input-group'>
+      <div class='am-u-sm-10 am-u-md-8 am-u-sm-centered am-input-group'>
         <span class='am-input-group-label am-icon-search am-radius'></span>
         <input id='search_ipt_name' type='text' class='am-form-field am-radius' placeholder='Name'>
       </div>
-      <div class='am-u-sm-1 am-u-md-2'>&nbsp;</div>
-    </div>
-    <div id='search_results'>
+      <div id='search_results' class='am-u-sm-10 am-u-md-8 am-u-sm-centered'>
+      </div>
     </div>
     <script src='/leaves/account-search.js'></script>
     <script>invite_search_init({{.prj.ID}});</script>

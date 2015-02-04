@@ -112,6 +112,7 @@
 
 .badge-invite {
   background-color: #e0f;
+  float: right;
 }
 
 hr.bold {

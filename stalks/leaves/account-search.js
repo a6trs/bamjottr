@@ -7,15 +7,22 @@ invite_search_done = function () {
   if (resp.error !== undefined) {
     invite_search_disp.innerHTML = 'Error: ' + resp.error;
   } else {
-    s = '';
+    var s;
     // `resp` shoule be an array.
-    resp.forEach(function (a) {
-      s += "<a href='/invite/" + invite_search_prjid + "/" + a.Account.ID + "'>" + a.Account.Name + "</a>";
-      if (a.Invited) {
-        s += " <span class='am-badge am-round badge-invite'>Invited</span>";
-      }
-      s += '<br>';
-    });
+    if (resp.length === 0) {
+      s = '<ul class="am-list am-list-static am-list-border">' +
+        '<li>No accounts found -~-</li></ul>';
+    } else {
+      s = '<ul class="am-list am-list-border">';
+      resp.forEach(function (a) {
+        s += "<li><a href='/invite/" + invite_search_prjid + "/" + a.Account.ID + "'>" + a.Account.Name;
+        if (a.Invited) {
+          s += " <span class='am-badge am-round am-text-sm badge-invite'>Invited</span>";
+        }
+        s += '</a></li>';
+      });
+      s += '</ul>';
+    }
     invite_search_disp.innerHTML = s;
   }
 };
@@ -26,6 +33,8 @@ invite_search_change = function (e) {
   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   xhr.onload = invite_search_done;
   xhr.send(null);
+  // Display the spinner
+  invite_search_disp.innerHTML = "<span class='am-icon-spinner am-icon-spin'></span>";
 };
 
 invite_search_init = function (prjid) {

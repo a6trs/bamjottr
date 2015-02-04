@@ -144,9 +144,5 @@ func FindAccounts(prjid, exclusion int, q string) ([]InvitationState, error) {
 			ret = append(ret, InvitationState{a, false})
 		}
 	}
-	if len(ret) == 0 {
-		return ret, ErrAccountsNotFound
-	} else {
-		return ret, nil
-	}
+	return ret, nil
 }
