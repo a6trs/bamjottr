@@ -167,7 +167,7 @@ func nutshell(body string) string {
 	// Help on rune arrays:
 	// http://www.cnblogs.com/howDo/archive/2013/04/20/GoLang-String.html
 	br := []rune(body)
-	if len(body) <= 80 {
+	if len(br) <= 80 {
 		return string(br)
 	} else {
 		return string(br[:80]) + "..."
