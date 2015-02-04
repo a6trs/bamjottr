@@ -13,7 +13,7 @@
     {{template "_topbar.html" .aid}}
     {{template "_project_banner.html" (project .prjid)}}
     <br>
-    <form class='am-form' method='POST'>
+    <form id='form-with-radius' class='am-form' method='POST'>
       <legend>Write A New Post</legend>
       {{if .crpstmsg}}
         <div id='errmsg' class='bg-danger'>{{.crpstmsg}}</div>

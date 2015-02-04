@@ -7,7 +7,7 @@
   <body>
     {{template "_topbar.html" .aid}}
     <script type='application/javascript' src='/leaves/checkform.js'></script>
-    <form class='am-form' method='POST'>
+    <form id='form-with-radius' class='am-form' method='POST'>
       <legend>Edit {{(account .aid).Name}}'s Profile</legend>
       {{if .msg}}
         <div id='errmsg' class='{{if .iserr}}bg-danger{{else}}bg-success{{end}}'>{{.msg}}</div>

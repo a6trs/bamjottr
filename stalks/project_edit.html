@@ -7,7 +7,7 @@
   <body>
     {{template "_topbar.html" .aid}}
     <script type='application/javascript' src='/leaves/jscolor/jscolor.js'></script>
-    <form class='am-form' method='POST' enctype='multipart/form-data'>
+    <form id='form-with-radius' class='am-form' method='POST' enctype='multipart/form-data'>
       <legend>Create / Edit Project</legend>
       {{if .crprjmsg}}
         <div id='errmsg' class='bg-danger'>{{.crprjmsg}}</div>

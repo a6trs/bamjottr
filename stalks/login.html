@@ -6,7 +6,7 @@
   </head>
   <body>
     {{template "_topbar.html" .aid}}
-    <form class='am-form' action='/login' method='POST'>
+    <form id='form-with-radius' class='am-form' action='/login' method='POST'>
       <legend>Log In</legend>
       {{if .loginmsg}}
         <div id='errmsg' class='bg-danger'>{{.loginmsg}}</div>
