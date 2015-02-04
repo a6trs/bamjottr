@@ -133,7 +133,7 @@ func FindAccounts(prjid, exclusion int, q string) ([]InvitationState, error) {
 	}
 	list = append(list, strconv.Itoa(exclusion))
 	// Find all accounts
-	rows2, err := db.Query(fmt.Sprintf(`SELECT * FROM accounts WHERE id NOT IN (%s) AND name LIKE '%%%s%%'`, strings.Join(list, ","), q))
+	rows2, err := db.Query(fmt.Sprintf(`SELECT * FROM accounts WHERE id NOT IN (%s) AND name LIKE '%%%s%%' LIMIT 10`, strings.Join(list, ","), q))
 	if err != nil {
 		return nil, err
 	}
