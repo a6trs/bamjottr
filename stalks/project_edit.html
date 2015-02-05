@@ -45,7 +45,7 @@
       <div class='members-list'>
         {{range .members}}
           <label for='c-postcolour-{{.ID}}'>
-            {{if eq .AccountID 0}}(Outsider){{else}}{{(account .AccountID).Name}}{{end}}
+            {{if eq .AccountID 0}}(Outsider){{else}}{{accountName .AccountID}}{{end}}
           </label>
           <input class='am-form-field color {hash: true}' type='text' id='c-postcolour-{{.ID}}' name='postcolour-{{.ID}}' value='{{.PostColour}}'>
         {{end}}

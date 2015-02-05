@@ -9,7 +9,7 @@
     <p class='big-title'>Notifications</p>
     {{range (notificationsFor .topbarData.Account.ID)}}
     <div class='notification'>
-      {{(account .Sender).Name}}<span class='grey'> at {{timestr .CreatedAt}}</span>
+      {{accountName .Sender}}<span class='grey'> at {{timestr .CreatedAt}}</span>
       <p class='notification-text'>{{raw .Text}}</p>
     </div><hr>
     {{end}}

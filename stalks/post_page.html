@@ -24,7 +24,7 @@
         {{end}}
       </h1>
       <p class='grey'>
-        Posted by {{(account .Author).Name}} at {{timestr .CreatedAt}}
+        Posted by {{accountName .Author}} at {{timestr .CreatedAt}}
         {{if not (sametime .CreatedAt .UpdatedAt)}}
           <span class='updatetime-highlight'> · Updated at {{timestr .UpdatedAt}}</span>
         {{end}}
@@ -36,7 +36,7 @@
       <h2>Thoughts collected</h2>
       {{range $comments}}
         <hr>
-        {{(account .Author).Name}}<span class='grey'> at {{timestr .CreatedAt}}</span>
+        {{accountName .Author}}<span class='grey'> at {{timestr .CreatedAt}}</span>
         <p class='comment-text'>{{.Text}}</p>
       {{end}}
       <form id='form-with-radius' action='/comment/{{.ID}}' method='POST'>

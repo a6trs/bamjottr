@@ -18,7 +18,7 @@
           <a class='small-title big-shadow' href='/project/{{.ID}}' style='{{if ne .TitleColour ""}}color: {{.TitleColour}}{{end}}'>{{.Title}}</a>&nbsp;
           {{statebadge .State}}
         </p>
-        <span class='grey'>Created by {{(account .Author).Name}} at {{timestr .CreatedAt}}</span>
+        <span class='grey'>Created by {{accountName .Author}} at {{timestr .CreatedAt}}</span>
         <br>
         <span class='small-shadow' style='{{if ne .TitleColour ""}}color: {{.TitleColour}}{{end}}'>{{.Desc}}</span>
       </div>

@@ -24,7 +24,7 @@
             {{end}}
           </h1>
           <p class='grey'>
-            Posted by {{(account .Author).Name}} at {{timestr .CreatedAt}}
+            Posted by {{accountName .Author}} at {{timestr .CreatedAt}}
             {{if not (sametime .CreatedAt .UpdatedAt)}}
               <span class='updatetime-highlight'> · Updated at {{timestr .UpdatedAt}}</span>
             {{end}}

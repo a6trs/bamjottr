@@ -16,6 +16,7 @@ var sstore = sessions.NewCookieStore([]byte("these-are-very-important-yeah"))
 var templates, _ = template.New("IDONTKNOW").
 	Funcs(template.FuncMap{
 	"validuser": validUser, "account": account, "project": project, "post": post,
+	"accountName": soil.AccountName,
 	"newNotificationsCount": soil.NewNotificationsCount, "notificationsFor": soil.NotificationsFor,
 	"outsider": outsider, "member_postcolour": member_postcolour,
 	"recommendedPrjs": recommendedPrjs, "recommendedPsts": recommendedPsts,

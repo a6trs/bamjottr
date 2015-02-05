@@ -109,6 +109,17 @@ func UpdateLastReadTime(aid int) error {
 	return err
 }
 
+// See above, faster than {{(account <AID>).Name}}
+func AccountName(aid int) string {
+	row := db.QueryRow(`SELECT name FROM accounts WHERE id = ? LIMIT 1`, aid)
+	var s string
+	if row.Scan(&s) == nil {
+		return s
+	} else {
+		return "..."
+	}
+}
+
 type InvitationState struct {
 	Account *Account
 	Invited bool
