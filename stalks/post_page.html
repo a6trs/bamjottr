@@ -32,7 +32,7 @@
         {{raw .Body}}
       </div>
       <br>
-      <form id='form-with-radius'>
+      <form id='form-with-radius' action='/comment/{{.ID}}' method='POST'>
         <legend>Leave a comment</legend>
         <textarea class='am-form-field' rows='5' id='txt-comment' name='comment' placeholder='Say something...'></textarea>
         <button class='am-btn am-btn-secondary comment-button'>Leave comment</button>

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/gorilla/mux"
 	"net/http"
+	"net/url"
 	"strconv"
 )
 
@@ -67,4 +68,24 @@ func PostPageHandler(w http.ResponseWriter, r *http.Request) {
 	// Get counts of different sight levels.
 	allsights, cursight := soil.VisitAndCountSights("posts", pstid, accountInSession(w, r))
 	renderTemplate(w, r, "post_page", map[string]interface{}{"post": post, "allsights": allsights, "cursight": cursight})
+}
+
+// @url /comment/{pstid:[0-9]+} [POST]
+func CommentHandler(w http.ResponseWriter, r *http.Request) {
+	if accountInSession(w, r) == -1 {
+		redirectWithError(w, r, "So you want to be anonymous? We'll soon support it, but I'm sorry you can't do that right now.", "/login/"+url.QueryEscape(r.URL.Path[1:]))
+		return
+	}
+	vars := mux.Vars(r)
+	pstid, _ := strconv.Atoi(vars["pstid"])
+	// No need to check whether the post exists.
+	// Comments with invalid post IDs won't be displayed and can be easily removed.
+	text := r.FormValue("comment")
+	cmt := &soil.Comment{ID: -1, PostID: pstid, Text: text, Author: accountInSession(w, r), ReplyFor: -1}
+	// The key doesn't matter here. Soon it won't matter in any Save() calls.
+	if err := cmt.Save(1234); err != nil {
+		redirectWithError(w, r, "Cannot leave your comment there right now. Try again layer :(<br>"+err.Error(), "/error")
+	} else {
+		http.Redirect(w, r, "/post/"+strconv.Itoa(pstid), http.StatusFound)
+	}
 }

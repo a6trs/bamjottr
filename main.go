@@ -35,6 +35,7 @@ func main() {
 	r.HandleFunc("/post_create/{prjid:[0-9]+}", grass.PostEditHandler)
 	r.HandleFunc("/post_edit/{pstid:[0-9]+}", grass.PostEditHandler)
 	r.HandleFunc("/post/{pstid:[0-9]+}", grass.PostPageHandler)
+	r.HandleFunc("/comment/{pstid:[0-9]+}", grass.CommentHandler).Methods("POST")
 	// Sights-related [grass/sights.go]
 	r.HandleFunc("/sight", grass.SightHandler).Methods("POST")
 	// Searching [grass/search.go]
