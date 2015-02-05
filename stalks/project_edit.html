@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Create Project - Fibretis</title>
+    <title>
+      {{if eq .prj.ID -1}}Create Project - Fibretis
+      {{else}}Edit Project - Fibretis{{end}}
+    </title>
     {{template "_html_head.html"}}
   </head>
   <body>

@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Write / Edit Post - Fibretis</title>
+    <title>
+      {{if eq .pstid -1}}Write Post - Fibretis
+      {{else}}Edit Post - Fibretis{{end}}
+    </title>
     {{template "_html_head.html"}}
     <script type='application/javascript' src='/leaves/meduim-editor/medium-editor.min.js'></script>
     <link rel='stylesheet' type='text/css' href='/leaves/meduim-editor/medium-editor.min.css'>
@@ -27,7 +30,7 @@
         {{else}}
           <input type='number' class='am-form-field' id='ipt-prio' name='prio' placeholder='Priority' min='0' max='23332' value='{{.Priority}}'>
         {{end}}
-        <div class='am-form-field' id='txt-body'>{{raw .Body}}</div>
+        <div class='am-form-field' id='txt-body' data-placeholder='Write something to tell them...'>{{raw .Body}}</div>
       {{end}}
       <input type='hidden' id='ipt-body' name='body'>
       <button type='submit' class='am-btn am-btn-default' onclick='completeform_post();'>Post</button>

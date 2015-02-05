@@ -57,7 +57,7 @@ func post(pstid int) *soil.Post {
 	if err == nil {
 		return pst
 	} else {
-		return &soil.Post{Title: "", Body: "Write something to tell them...", Priority: soil.Post_PrioHighest}
+		return &soil.Post{Title: "", Body: "", Priority: soil.Post_PrioHighest}
 	}
 }
 
