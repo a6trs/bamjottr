@@ -93,6 +93,10 @@
   font-size: 1.5em;
 }
 
+.comment-text {
+  font-size: 1.4em;
+}
+
 /* Derived from Bootstrap 3 */
 .bg-danger {
   margin: 12px;

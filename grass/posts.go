@@ -67,7 +67,9 @@ func PostPageHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	// Get counts of different sight levels.
 	allsights, cursight := soil.VisitAndCountSights("posts", pstid, accountInSession(w, r))
-	renderTemplate(w, r, "post_page", map[string]interface{}{"post": post, "allsights": allsights, "cursight": cursight})
+	// Get all comments left here.
+	cmts := soil.CommentsForPost(pstid)
+	renderTemplate(w, r, "post_page", map[string]interface{}{"post": post, "allsights": allsights, "cursight": cursight, "comments": cmts})
 }
 
 // @url /comment/{pstid:[0-9]+} [POST]

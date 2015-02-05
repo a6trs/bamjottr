@@ -7,6 +7,7 @@
   <body>
     {{template "_topbar.html" .topbarData}}
     {{$allsights := .allsights}}
+    {{$comments := .comments}}
     {{with .post}}
     {{template "_project_banner.html" (project .ProjectID)}}
     <hr>
@@ -32,6 +33,12 @@
         {{raw .Body}}
       </div>
       <br>
+      <h2>Thoughts collected</h2>
+      {{range $comments}}
+        <hr>
+        {{(account .Author).Name}}<span class='grey'> at {{timestr .CreatedAt}}</span>
+        <p class='comment-text'>{{.Text}}</p>
+      {{end}}
       <form id='form-with-radius' action='/comment/{{.ID}}' method='POST'>
         <legend>Leave a comment</legend>
         <textarea class='am-form-field' rows='5' id='txt-comment' name='comment' placeholder='Say something...'></textarea>
