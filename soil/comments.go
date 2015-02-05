@@ -6,10 +6,10 @@ import (
 
 type Comment struct {
 	ID        int
-	PostID int
-	Text     string
+	PostID    int
+	Text      string
 	Author    int
-	ReplyFor int
+	ReplyFor  int
 	CreatedAt time.Time
 }
 

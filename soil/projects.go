@@ -178,7 +178,7 @@ func init_ProjectMembershipData() error {
 }
 
 func AddMembership(prjid, aid int) error {
-	_, err := db.Exec(`INSERT INTO projects_membership (project_id, account_id, post_colour) VALUES (?, ?, ?)`, prjid, aid, fmt.Sprintf("#%02x%02x%02x", rand.Int() % 128 + 128, rand.Int() % 128 + 128, rand.Int() % 128 + 128))
+	_, err := db.Exec(`INSERT INTO projects_membership (project_id, account_id, post_colour) VALUES (?, ?, ?)`, prjid, aid, fmt.Sprintf("#%02x%02x%02x", rand.Int()%128+128, rand.Int()%128+128, rand.Int()%128+128))
 	return err
 }
 
