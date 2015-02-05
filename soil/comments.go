@@ -45,11 +45,8 @@ func (this *Comment) Load(key int) error {
 
 func (this *Comment) Save(key int) error {
 	if this.ID == -1 {
-		this.ID = unsavedID()
-		_, err := db.Exec(`INSERT INTO comments (id) VALUES (?)`, this.ID)
-		if err != nil {
-			return err
-		}
+		_, err := db.Exec(`INSERT INTO comments (postid, text, author, reply_for) VALUES (?, ?, ?, ?)`, this.PostID, this.Text, this.Author, this.ReplyFor)
+		return err
 	}
 	_, err := db.Exec(`UPDATE comments SET postid = ?, text = ?, author = ?, reply_for = ? WHERE id = ?`, this.PostID, this.Text, this.Author, this.ReplyFor, this.ID)
 	return err

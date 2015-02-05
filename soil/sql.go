@@ -68,10 +68,3 @@ func InitDatabase() error {
 	rand.Seed(time.Now().UnixNano())
 	return nil
 }
-
-// Generate ID for an unsaved record.
-// Can only handle 80809480 requests at the same time. Is that enough? ^^
-// TODO: Use this for all unsaved records.
-func unsavedID() int {
-	return -80809480 - rand.Int() % 80809480
-}
